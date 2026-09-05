@@ -63,31 +63,31 @@
 
   // 25 catalog frames, one move step per source image.
   MOVES.sourMilkBurst=[
-    ["idleA",105,"Start"],
-    ["idleB",110,"Ausrüstung greifen"],
-    ["idleA",120,"Schüssel"],
-    ["idleB",125,"Cornflakes"],
-    ["idleA",150,"Cornflakes eingießen"],
-    ["idleB",120,"Milch"],
-    ["idleA",155,"Milch eingießen"],
-    ["idleB",105,"Löffel"],
-    ["idleA",110,"Löffel nehmen"],
-    ["idleB",145,"Probieren"],
-    ["stagger",140,"Sauer!"],
-    ["stagger",160,"Übelkeit"],
-    ["stagger",180,"Backen aufblasen"],
-    ["kmChargeA",215,"Aufladen"],
-    ["kmChargeB",245,"Maximalladung"],
-    ["kmFire",95,"Erbrechen startet"],
-    ["kmFire",105,"Säurestrahl"],
-    ["kmFire",110,"Säurestrahl"],
-    ["kmFire",125,"Treffer"],
-    ["stagger",150,"Rückstoß"],
-    ["getUp1",230,"Auf die Knie"],
-    ["kdGround",300,"Falsch gedreht"],
-    ["getUp2",190,"Orientieren"],
-    ["idleB",220,"Kopf kratzen"],
-    ["idleA",240,"Benommen zurück"]
+    ["idleA",105,"Start"],                  // 01
+    ["idleB",110,"Ausrüstung greifen"],     // 02
+    ["idleA",120,"Schüssel"],               // 03
+    ["idleB",125,"Cornflakes"],             // 04
+    ["idleA",150,"Cornflakes eingießen"],   // 05
+    ["idleB",120,"Milch"],                  // 06
+    ["idleA",155,"Milch eingießen"],        // 07
+    ["idleB",105,"Löffel"],                 // 08
+    ["idleA",110,"Löffel nehmen"],          // 09
+    ["idleB",145,"Probieren"],               // 10
+    ["stagger",140,"Sauer!"],               // 11
+    ["stagger",160,"Übelkeit"],              // 12
+    ["stagger",180,"Backen aufblasen"],     // 13
+    ["kmChargeA",215,"Aufladen"],           // 14
+    ["kmChargeB",245,"Maximalladung"],      // 15
+    ["kmFire",95,"Erbrechen startet"],      // 16
+    ["kmFire",105,"Säurestrahl"],           // 17
+    ["kmFire",110,"Säurestrahl"],           // 18
+    ["kmFire",125,"Treffer"],               // 19
+    ["stagger",150,"Rückstoß"],             // 20
+    ["getUp1",230,"Auf die Knie"],          // 21
+    ["kdGround",300,"Falsch gedreht"],      // 22
+    ["getUp2",190,"Orientieren"],            // 23
+    ["idleB",220,"Kopf kratzen"],           // 24
+    ["idleA",240,"Benommen zurück"]          // 25
   ];
   MOVES.hitSourMilk=[
     ["flailA",110,"Getroffen"],
@@ -113,6 +113,8 @@
   fighterByKey.brainbug=brainbug;
   fighterLabel.brainbug="LT.BRAINBUG";
 
+  // Normal fighting uses the original catalog. The 25-frame special is rendered
+  // separately below, so no generic pose can accidentally replace a special frame.
   const baseSpriteFrame=Fighter.prototype.spriteFrame;
   Fighter.prototype.spriteFrame=function(){
     if(this.cfg.key!=="brainbug")return baseSpriteFrame.call(this);
@@ -147,6 +149,8 @@
     return Math.floor(this.idleTime/3.6)%3===2?{row:1,col}:{row:0,col};
   };
 
+  // During cooldown frame 22 he physically turns away from the opponent for 300 ms,
+  // then restores the original facing before scratching his head.
   const baseBrainUpdate=Fighter.prototype.update;
   Fighter.prototype.update=function(dt){
     baseBrainUpdate.call(this,dt);
@@ -172,7 +176,7 @@
 
   const baseActiveHitbox=activeHitbox;
   activeHitbox=function(f,foe){
-    if(f.key==="sourMilkBurst"&&!f.hitResolved&&f.moveStep>=16&&f.moveStep<=19&&foe){
+    if(f.key==="sourMilkBurst"&&!f.hitResolved&&f.moveStep>=18&&f.moveStep<=19&&foe){
       const h=f.cfg.displayH,hb=getHurtbox(foe);
       const mouthX=f.x+f.face*h*.11;
       const mouthY=GROUND-h*.57;
@@ -228,7 +232,7 @@
     const beamH=h*.82;
     const segW=h*.63;
     const step=segW*.68;
-    const impact=f.moveStep>=18||f.hitResolved;
+    const impact=f.moveStep>=18;
 
     ctx.save();
     ctx.translate(mouthX,mouthY);
@@ -238,6 +242,8 @@
     ctx.beginPath();
     ctx.rect(-14,-beamH/2,dist+24,beamH);
     ctx.clip();
+
+    // First cell is the mouth/start module; cells 2/3 are repeatable middle modules.
     drawBeamPiece(0,-24,-beamH/2,segW,beamH);
     let x=step*.72,i=0;
     while(x<dist-segW*.26){
