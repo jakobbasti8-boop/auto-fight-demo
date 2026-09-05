@@ -1,0 +1,32 @@
+name: Import Lt.BrainBug sprite
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  import-sprite:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Import processed transparent atlas
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 'https://d2ol7oe51mr4n9.cloudfront.net/user_3IsCcBrkHCdjBKopIOKqeEP9WrB/864f9184-2336-4691-ac8c-881c0e650637.webp' -o assets/brainbug.webp
+          test -s assets/brainbug.webp
+          file assets/brainbug.webp | grep -q 'Web/P image'
+      - name: Commit sprite and remove one-shot workflow
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/import-brainbug.yml
+          git add assets/brainbug.webp
+          git commit -m 'feat: add Lt.BrainBug sprite atlas'
+          git push origin HEAD:main
