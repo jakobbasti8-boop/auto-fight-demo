@@ -143,7 +143,7 @@
         coat:"#f4f5f2",coatD:"#cbd1d5",pants:"#262936",pantsD:"#171923",boot:"#11131b",bootD:"#080910"}
     });
     const kurz=new Fighter({
-      name:"KURZDURCH",key:"kurz",specialKey:"comet",asset:"kurz",displayH:322,spriteZoom:0.463,baseline:0.0391,hurtW:.48,startX:1095,face:-1,scale:1.18,girth:.92,walkSpeed:.245,hair:"ponytail",doctor:false,
+      name:"KURZDURCH",key:"kurz",specialKey:"comet",asset:"kurz",displayH:322,spriteZoom:0.4804,baseline:0.0391,hurtW:.48,startX:1095,face:-1,scale:1.18,girth:.92,walkSpeed:.245,hair:"ponytail",doctor:false,
       col:{skin:"#d9a279",skinD:"#a96f50",hair:"#181821",hairD:"#08090d",shirt:"#39485b",shirtD:"#253041",
         pants:"#222b38",pantsD:"#131924",boot:"#10131a",bootD:"#07090d"}
     });

@@ -154,7 +154,12 @@
         ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake*.55);
         shake*=.84;if(shake<.2)shake=0;
       }
-      if(bg.complete&&bg.naturalWidth)ctx.drawImage(bg,0,0,W,H);
+      if(bg.complete&&bg.naturalWidth){
+        // formatfüllend einpassen statt verzerren: die Vorlage ist breiter als 16:9
+        const sc=Math.max(W/bg.naturalWidth,H/bg.naturalHeight);
+        const bw=bg.naturalWidth*sc,bh=bg.naturalHeight*sc;
+        ctx.drawImage(bg,(W-bw)/2,H-bh,bw,bh);
+      }
       else{const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#091027");g.addColorStop(1,"#24160f");ctx.fillStyle=g;ctx.fillRect(0,0,W,H)}
       ctx.fillStyle="rgba(0,0,8,.14)";ctx.fillRect(0,0,W,H);
       const order=fighters.filter(f=>!f.ko).sort((a,b)=>a.x-b.x);

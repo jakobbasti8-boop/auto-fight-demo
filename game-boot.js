@@ -9,7 +9,7 @@
 
     const spriteAssets={
       bob:{image:new Image(),sheet:null,defaultFacing:1,raw:true,portrait:{x:0.3791,y:0.4804,w:0.263,h:0.263}},
-      kurz:{image:new Image(),sheet:null,defaultFacing:1,raw:true,portrait:{x:0.3598,y:0.4804,w:0.2783,h:0.2783}},
+      kurz:{image:new Image(),sheet:null,defaultFacing:-1,raw:true,portrait:{x:0.3617,y:0.463,w:0.2957,h:0.2957}},
       nova:{image:new Image(),sheet:null,defaultFacing:1,raw:true,portrait:{x:0.3228,y:0.3674,w:0.2543,h:0.2543}},
       kame:{image:new Image(),sheet:null,defaultFacing:1,raw:true}
     };
