@@ -1,0 +1,35 @@
+name: Import Lt.BrainBug sour-milk assets
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  import-assets:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Import transparent special atlases
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 'https://d2ol7oe51mr4n9.cloudfront.net/user_3IsCcBrkHCdjBKopIOKqeEP9WrB/7888d022-468f-4faf-a623-0e22a809c4ea.webp' -o assets/brainbug-sourmilk-special.webp
+          curl -fL --retry 3 'https://d2ol7oe51mr4n9.cloudfront.net/user_3IsCcBrkHCdjBKopIOKqeEP9WrB/f783e4f3-dfc6-4cf3-b3f9-e603dbaa0580.webp' -o assets/brainbug-sourmilk-beam.webp
+          test -s assets/brainbug-sourmilk-special.webp
+          test -s assets/brainbug-sourmilk-beam.webp
+          file assets/brainbug-sourmilk-special.webp | grep -q 'Web/P image'
+          file assets/brainbug-sourmilk-beam.webp | grep -q 'Web/P image'
+      - name: Commit assets and remove one-shot workflow
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/import-brainbug-sourmilk.yml
+          git add assets/brainbug-sourmilk-special.webp assets/brainbug-sourmilk-beam.webp
+          git commit -m 'feat: add Lt.BrainBug sour-milk special assets'
+          git push origin HEAD:main
