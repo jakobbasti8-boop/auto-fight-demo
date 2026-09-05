@@ -1,7 +1,5 @@
 "use strict";
 
-    "use strict";
-
     const canvas = document.getElementById("arena");
     const ctx = canvas.getContext("2d");
     const W = canvas.width, H = canvas.height, GROUND = 744;
@@ -15,14 +13,18 @@
       nova:{image:new Image(),sheet:null,defaultFacing:1,raw:true,portrait:{x:0.3228,y:0.3674,w:0.2543,h:0.2543}},
       kame:{image:new Image(),sheet:null,defaultFacing:1,raw:true}
     };
-    const theresaProton={
-      frames:[],loaded:0,ready:false,frameW:256,frameH:280,
-      durations:[90,105,105,110,110,110,110,120,95,85,80,80,85,90,95,105,110,115,120,115,110,105,100,100,110]
-    };
     spriteAssets.bob.image.src="assets/bob.webp";
     spriteAssets.kurz.image.src="assets/kurz.webp";
     spriteAssets.nova.image.src="assets/nova.webp";
-    let spritesLoaded=0;
+    let spritesLoaded=0, specialRowsLoaded=0;
+
+    function maybeEnableStart(){
+      if(spritesLoaded===4&&specialRowsLoaded===10){
+        const b=document.getElementById("demo-start");
+        b.disabled=false;b.textContent="Demo starten";
+      }
+    }
+    function noteSpecialRowLoaded(){specialRowsLoaded++;maybeEnableStart();}
 
     function makeTransparentSpriteSheet(image){
       const out=document.createElement("canvas");out.width=image.naturalWidth;out.height=image.naturalHeight;
@@ -41,11 +43,6 @@
       const out=document.createElement("canvas");out.width=image.naturalWidth;out.height=image.naturalHeight;
       out.getContext("2d").drawImage(image,0,0);return out;
     }
-    function maybeEnableStart(){
-      if(spritesLoaded===4&&theresaProton.ready){
-        const b=document.getElementById("demo-start");b.disabled=false;b.textContent="Demo starten";
-      }
-    }
     function spriteLoaded(key){
       const asset=spriteAssets[key];
       asset.sheet=asset.raw?rawSheet(asset.image):makeTransparentSpriteSheet(asset.image);spritesLoaded++;
@@ -57,17 +54,10 @@
     spriteAssets.nova.image.onload=()=>spriteLoaded("nova");
     spriteAssets.kame.image.src="assets/kame.webp";
     spriteAssets.kame.image.onload=()=>spriteLoaded("kame");
-    for(let i=0;i<25;i++){
-      const img=new Image();
-      img.onload=()=>{
-        theresaProton.loaded++;
-        if(theresaProton.loaded===25){theresaProton.ready=true;maybeEnableStart();}
-      };
-      img.src=`assets/theresa-proton/frame-${String(i+1).padStart(2,"0")}.webp`;
-      theresaProton.frames.push(img);
-    }
     const KAME_FRAMES={"1": {"w": 161, "h": 208, "x": 146, "y": 234}, "2": {"w": 165, "h": 201, "x": 146, "y": 241}, "3": {"w": 167, "h": 200, "x": 144, "y": 242}, "4": {"w": 176, "h": 201, "x": 140, "y": 241}, "5": {"w": 186, "h": 200, "x": 142, "y": 242}, "6": {"w": 185, "h": 205, "x": 138, "y": 237}, "7": {"w": 198, "h": 216, "x": 132, "y": 226}, "8": {"w": 197, "h": 216, "x": 132, "y": 226}, "9": {"w": 202, "h": 216, "x": 129, "y": 226}, "10": {"w": 208, "h": 207, "x": 139, "y": 235}, "11": {"w": 240, "h": 188, "x": 142, "y": 254}, "12": {"w": 238, "h": 96, "x": 111, "y": 182}, "13": {"w": 233, "h": 103, "x": 114, "y": 178}, "14": {"w": 235, "h": 171, "x": 112, "y": 144}, "15": {"w": 235, "h": 217, "x": 112, "y": 122}, "16": {"w": 235, "h": 180, "x": 134, "y": 262}, "17": {"w": 207, "h": 179, "x": 134, "y": 263}, "18": {"w": 184, "h": 181, "x": 144, "y": 261}, "19": {"w": 168, "h": 181, "x": 147, "y": 261}, "20": {"w": 170, "h": 201, "x": 142, "y": 241}, "21": {"w": 184, "h": 209, "x": 134, "y": 233}, "22": {"w": 182, "h": 199, "x": 130, "y": 243}, "23": {"w": 182, "h": 221, "x": 130, "y": 221}, "24": {"w": 176, "h": 219, "x": 137, "y": 223}, "25": {"w": 176, "h": 220, "x": 137, "y": 222}},KAME_ZOOM=0.4522,KAME_BASE=0.0391,KAME_BEAM={"x": 151.0, "y": 322.5};
 
+    // Integer cell boundaries prevent 1px sprite bleeding because the source sheets
+    // are not perfectly divisible by 5 in width/height.
     function frameRect(asset,row,col){
       const w=asset.sheet.width,h=asset.sheet.height;
       const x0=Math.round(col*w/5),x1=Math.round((col+1)*w/5);

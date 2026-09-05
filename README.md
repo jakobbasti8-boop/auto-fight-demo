@@ -1,8 +1,8 @@
 # AUTO FIGHT — Dr. BOB vs. KurzDurch vs. Theresa MachsLochuff
 
 Eine 2D-Kampfdemo ohne Build-System, Server oder externe Abhängigkeiten.
-`index.html` im Browser öffnen und es läuft. Sprites und Hintergrund liegen optimiert im
-Ordner `assets/`; die Demo bleibt vollständig lokal und offline nutzbar.
+`index.html` im Browser öffnen und es läuft. Runtime, Sprites und Effekte liegen direkt im Repository;
+die Demo bleibt vollständig lokal und offline nutzbar.
 
 Zwei Kämpfer treten gegeneinander an, gesteuert von einem Regie-Algorithmus ("Director"),
 der Angriffe, Kombos, Blocks, Konter und Spezialattacken plant.
@@ -39,8 +39,8 @@ Der Kampf läuft von allein weiter, bis einer k. o. geht.
 | Kämpfer | Statur | Spezial | Kombos |
 |---|---|---|---|
 | **Dr. BOB** | groß, weiter Kittel | `kame` — **Kamehameha**, Energiestrahl quer über den Bildschirm | DOC RUSH, REDLINE |
-| **KurzDurch** | schwer, kurze Reichweite | `comet` — **Komet**, Einschlag von oben | BRAID BLITZ, GROUND BREAK |
-| **Theresa MachsLochuff** | leicht, schnell | `choke` — **NECK LOCK**, Sprung an den Hals mit Beinschere | WHITE FANG, AIR STING |
+| **KurzDurch** | schwer, kurze Reichweite | `comet` — **MICROWAVE METEOR**, Mikrowellenhelm + roter Blitzkomet | BRAID BLITZ, GROUND BREAK |
+| **Theresa MachsLochuff** | leicht, schnell | `protonKick` — **PROTON ROUNDHOUSE**, gelb-lila geladener Roundhouse | WHITE FANG, AIR STING |
 
 ![NECK LOCK](docs/neck-lock.jpg)
 
@@ -140,5 +140,7 @@ Die Figuren-Sprites sind eigene, KI-erzeugte Kataloge. Der **Arena-Hintergrund**
 dagegen aus fremdem Material und zeigt Marken- und Figurenelemente Dritter. Das Repo ist
 deshalb als **privates Repository** gedacht — für eine Veröffentlichung müsste der
 Hintergrund vorher gegen eigenes Material getauscht werden.
+
+Die vollständigen 25-Frame-Abläufe der beiden neuen Spezialattacken stehen in [SPECIALS.md](SPECIALS.md).
 
 Siehe [CHANGELOG.md](CHANGELOG.md) für die Entwicklungsschritte.

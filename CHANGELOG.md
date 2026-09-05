@@ -1,5 +1,13 @@
 # Changelog
 
+## 9.0.0 — Dual Special Catalog Build
+
+- **Theresa: PROTON ROUNDHOUSE** als vollständiger 25-Frame-Katalog implementiert: gelbe Protonenladung, lila Aura, Roundhouse/Abwärtstreffer, gelb-lila Detonation, Schockwelle und Kusshand-Finale.
+- **KurzDurch: MICROWAVE METEOR** als vollständiger 25-Frame-Katalog implementiert: Mikrowelle als Helm, rote Aura/Blitze, Kometenbeschwörung, Blitzwurf, massive rote Explosion, Mikrowelle abnehmen und Triumphlachen.
+- Eigene Spezial-Hitboxen, Damage/Knockback/Blockchance und Gegner-zentrierte Explosionsframes.
+- Alle fehlenden Runtime-Dateien und Basisassets in das Repository aufgenommen; Start wartet auf sämtliche Sprite- und Spezialreihen.
+- Spezialatlanten als fünf transparente Reihen à fünf Frames gespeichert, damit der Browser sie zuverlässig und offline laden kann.
+
 Alle Stände als einzelne, in sich abgeschlossene HTML-Datei.
 
 ## 8.0_6
