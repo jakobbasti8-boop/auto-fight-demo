@@ -1,0 +1,3 @@
+*.html linguist-vendored=false
+docs/*.jpg binary
+assets/*.webp binary
