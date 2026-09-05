@@ -1,0 +1,122 @@
+name: Import background and KurzDurch update
+
+on:
+  push:
+    branches:
+      - update/background-kurzdurch-20260905
+    paths:
+      - .github/workflows/import-background-kurzdurch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  import-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout update branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download exact uploaded project archive
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 \
+            'https://d2ol7oe51mr4n9.cloudfront.net/user_3IsCcBrkHCdjBKopIOKqeEP9WrB/3021f03e-5277-43c2-aec9-bb921f52f312.zip' \
+            -o /tmp/auto-fight-demo-update.zip
+          test "$(stat -c%s /tmp/auto-fight-demo-update.zip)" = "11923935"
+
+      - name: Import only background and KurzDurch assets
+        run: |
+          set -euo pipefail
+          for file in \
+            background.webp \
+            kurz.webp \
+            kurz-comet-row-1.webp \
+            kurz-comet-row-2.webp \
+            kurz-comet-row-3.webp \
+            kurz-comet-row-4.webp \
+            kurz-comet-row-5.webp
+          do
+            unzip -p /tmp/auto-fight-demo-update.zip "push/assets/$file" > "assets/$file"
+          done
+
+      - name: Apply only the required KurzDurch and background code changes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding="utf-8")
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"{path}: expected exactly one match, got {count}")
+              p.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+          replace_once(
+              "game-boot.js",
+              '      kurz:{image:new Image(),sheet:null,defaultFacing:1,raw:true,portrait:{x:0.3598,y:0.4804,w:0.2783,h:0.2783}},',
+              '      kurz:{image:new Image(),sheet:null,defaultFacing:-1,raw:true,portrait:{x:0.3617,y:0.463,w:0.2957,h:0.2957}},',
+          )
+
+          replace_once(
+              "game-fighter.js",
+              'name:"KURZDURCH",key:"kurz",specialKey:"comet",asset:"kurz",displayH:322,spriteZoom:0.463,',
+              'name:"KURZDURCH",key:"kurz",specialKey:"comet",asset:"kurz",displayH:322,spriteZoom:0.4804,',
+          )
+
+          replace_once(
+              "game-render.js",
+              '      if(bg.complete&&bg.naturalWidth)ctx.drawImage(bg,0,0,W,H);',
+              '''      if(bg.complete&&bg.naturalWidth){
+                // formatfüllend einpassen statt verzerren: die Vorlage ist breiter als 16:9
+                const sc=Math.max(W/bg.naturalWidth,H/bg.naturalHeight);
+                const bw=bg.naturalWidth*sc,bh=bg.naturalHeight*sc;
+                ctx.drawImage(bg,(W-bw)/2,H-bh,bw,bh);
+              }''',
+          )
+          PY
+
+      - name: Verify exact selected Git blobs
+        run: |
+          set -euo pipefail
+          check_blob() {
+            actual="$(git hash-object "$1")"
+            expected="$2"
+            if [ "$actual" != "$expected" ]; then
+              echo "Hash mismatch for $1: $actual != $expected" >&2
+              exit 1
+            fi
+          }
+          check_blob assets/background.webp 8faf6a4cd8965575bd0c276da2e2d02cd7218961
+          check_blob assets/kurz.webp aa07d24b0ad3ec782ae00896f06318971b33a29a
+          check_blob assets/kurz-comet-row-1.webp e3761862d6b19e3b90b08acd1d58b31516d89ed3
+          check_blob assets/kurz-comet-row-2.webp b456d65218610bd491fdf997858ecc4b96cce521
+          check_blob assets/kurz-comet-row-3.webp b1770e5b51fc8f54e5cab49ba526bcd1b4c1e84a
+          check_blob assets/kurz-comet-row-4.webp 004b71d3f715aa632eb5ba62e9a35301aa469b7a
+          check_blob assets/kurz-comet-row-5.webp f58dada38e41912ada404ea2bd2726c53a21c107
+          check_blob game-boot.js 94a30cdc49d78f96ab068fd1630ce3096f1a32ce
+          check_blob game-fighter.js 33e10e24c05a5fa5e99f47df7ea6f0ddb348bc51
+          check_blob game-render.js 6da3696823ec3d8a89aa48377f1c656166275d31
+
+      - name: Commit selected update and remove temporary workflow
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/import-background-kurzdurch.yml
+          git add \
+            assets/background.webp \
+            assets/kurz.webp \
+            assets/kurz-comet-row-1.webp \
+            assets/kurz-comet-row-2.webp \
+            assets/kurz-comet-row-3.webp \
+            assets/kurz-comet-row-4.webp \
+            assets/kurz-comet-row-5.webp \
+            game-boot.js \
+            game-fighter.js \
+            game-render.js
+          git commit -m "feat: update background and KurzDurch assets"
+          git push origin HEAD:update/background-kurzdurch-20260905
