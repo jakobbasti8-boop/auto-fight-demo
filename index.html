@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050714">
+  <title>Dr. BOB vs. KurzDurch – Auto Fight Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="game" aria-label="Automatische Kampf-Demo Dr. BOB gegen KurzDurch">
+      <canvas id="arena" width="1536" height="864"></canvas>
+      <div class="vignette"></div>
+
+      <header class="hud" aria-label="Lebensanzeigen">
+        <div class="fighter-hud">
+          <canvas class="portrait" id="portrait-bob" width="160" height="160" aria-label="Porträt Dr. BOB"></canvas>
+          <div class="identity">
+            <div class="name" id="hud-left-name">DR. BOB</div>
+            <div class="life-frame"><div class="damage" id="damage-bob"></div><div class="life" id="life-bob"></div></div>
+            <div class="hp" id="hp-bob">100 / 100</div>
+          </div>
+        </div>
+
+        <div class="center-hud">
+          <div class="round">AUTO FIGHT · 1.5×</div>
+          <div class="timer" id="round-no">01</div>
+          <div class="status" id="fight-status">BEREIT</div>
+        </div>
+
+        <div class="fighter-hud right">
+          <div class="identity">
+            <div class="name" id="hud-right-name">KURZDURCH</div>
+            <div class="life-frame"><div class="damage" id="damage-kurz"></div><div class="life" id="life-kurz"></div></div>
+            <div class="hp" id="hp-kurz">100 / 100</div>
+          </div>
+          <canvas class="portrait" id="portrait-kurz" width="160" height="160" aria-label="Porträt KurzDurch"></canvas>
+        </div>
+        <div class="fighter-hud newcomer" style="display:none">
+          <canvas class="portrait" id="portrait-neu" width="160" height="160" aria-label="Porträt der neuen Kämpferin"></canvas>
+          <div class="identity">
+            <div class="name">THERESA</div>
+            <div class="life-frame"><div class="damage" id="damage-neu"></div><div class="life" id="life-neu"></div></div>
+            <div class="hp" id="hp-neu">100 / 100</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="overlay" id="start-overlay">
+        <div class="panel">
+          <div class="eyebrow">Endlose Kampf-Demo</div>
+          <div class="title">AUTO FIGHT</div>
+          <div class="versus" id="matchup">DR. BOB <span style="color:#ff4052">VS.</span> KURZDURCH</div>
+          <div class="team-select" aria-label="Kämpferauswahl">
+            <div class="team-side"><h3>Linke Seite</h3><div class="pick-row" data-side="left">
+              <button class="pick" type="button" data-fighter="bob" aria-pressed="true">Dr. BOB</button>
+              <button class="pick" type="button" data-fighter="kurz" aria-pressed="false">KurzDurch</button>
+              <button class="pick" type="button" data-fighter="nova" aria-pressed="false">Theresa MachsLochuff</button>
+            </div></div>
+            <div class="team-side"><h3>Rechte Seite</h3><div class="pick-row" data-side="right">
+              <button class="pick" type="button" data-fighter="bob" aria-pressed="false">Dr. BOB</button>
+              <button class="pick" type="button" data-fighter="kurz" aria-pressed="true">KurzDurch</button>
+              <button class="pick" type="button" data-fighter="nova" aria-pressed="false">Theresa MachsLochuff</button>
+            </div></div>
+          </div>
+          <div class="selection-note" id="selection-note">Je Seite genau einen Kämpfer auswählen · dieselbe Figur kann nicht zweimal antreten.</div>
+          <button class="action" id="demo-start" disabled>Sprites werden geladen …</button>
+        </div>
+      </div>
+
+      <div class="overlay" id="result-overlay" hidden>
+        <div class="panel result">
+          <div class="eyebrow">Kampf entschieden</div>
+          <div class="title">WIN</div>
+          <div class="winner" id="winner-name">DR. BOB</div>
+          <button class="action" id="new-fight">Neuer Kampf</button>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="mini" id="hitbox-toggle" type="button" aria-pressed="false">Hitboxen</button>
+      </div>
+      <div class="flash" id="flash"></div>
+    </section>
+  </main>
+
+    <script src="game-boot.js"></script>
+  <script src="game-moves.js"></script>
+  <script src="game-fighter.js"></script>
+  <script src="game-director.js"></script>
+  <script src="game-render.js"></script>
+</body>
+</html>
