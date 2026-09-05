@@ -41,8 +41,9 @@ jobs:
           do
             unzip -p /tmp/auto-fight-demo-update.zip "push/assets/$file" > "assets/$file"
           done
+          unzip -p /tmp/auto-fight-demo-update.zip "push/game-render.js" > game-render.js
 
-      - name: Apply only the required KurzDurch and background code changes
+      - name: Apply only the required KurzDurch code changes
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -65,17 +66,6 @@ jobs:
               "game-fighter.js",
               'name:"KURZDURCH",key:"kurz",specialKey:"comet",asset:"kurz",displayH:322,spriteZoom:0.463,',
               'name:"KURZDURCH",key:"kurz",specialKey:"comet",asset:"kurz",displayH:322,spriteZoom:0.4804,',
-          )
-
-          replace_once(
-              "game-render.js",
-              '      if(bg.complete&&bg.naturalWidth)ctx.drawImage(bg,0,0,W,H);',
-              '''      if(bg.complete&&bg.naturalWidth){
-                // formatfüllend einpassen statt verzerren: die Vorlage ist breiter als 16:9
-                const sc=Math.max(W/bg.naturalWidth,H/bg.naturalHeight);
-                const bw=bg.naturalWidth*sc,bh=bg.naturalHeight*sc;
-                ctx.drawImage(bg,(W-bw)/2,H-bh,bw,bh);
-              }''',
           )
           PY
 
