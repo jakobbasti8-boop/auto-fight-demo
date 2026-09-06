@@ -1,0 +1,111 @@
+name: Validate Auto Fight Demo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in assets/catalog.js game-catalog.js game-boot.js game-moves.js game-fighter.js game-director.js game-render.js game-brainbug.js game-specials.js game-bob-hd.js; do
+            node --check "$f"
+          done
+
+      - name: Python syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile tools/recut.py tools/spritekit.py
+          rm -rf tools/__pycache__
+
+      - name: Catalog and local-reference integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, re, sys
+
+          root = Path.cwd()
+          catalog_path = root / 'assets/catalog.json'
+          catalog_js_path = root / 'assets/catalog.js'
+          catalog = json.loads(catalog_path.read_text(encoding='utf-8'))
+
+          expected = {
+              'bob', 'kame', 'kame-beam',
+              'kurz', 'kurz-comet',
+              'theresa', 'theresa-proton',
+              'brainbug', 'brainbug-sourmilk', 'brainbug-sourmilk-beam'
+          }
+          if set(catalog) != expected:
+              raise SystemExit('unexpected catalog keys: ' + repr(sorted(catalog)))
+
+          missing = []
+          for key, item in catalog.items():
+              file = item.get('file')
+              if not file or not (root / 'assets' / file).is_file():
+                  missing.append(f'{key}: {file}')
+              if item.get('type') != 'strip':
+                  if item.get('cols') != 5 or item.get('rows') != 5:
+                      raise SystemExit(f'{key}: expected 5x5 catalog')
+                  if item.get('cell') != 512:
+                      raise SystemExit(f'{key}: expected 512px cell')
+                  frames = item.get('frames') or []
+                  if len(frames) != 25:
+                      raise SystemExit(f'{key}: expected 25 frame metadata entries, got {len(frames)}')
+                  for n, frame in enumerate(frames, 1):
+                      bbox = frame.get('bbox')
+                      if bbox is None:
+                          continue
+                      if len(bbox) != 4:
+                          raise SystemExit(f'{key} frame {n}: malformed bbox')
+                      x0, y0, x1, y1 = bbox
+                      # bbox is half-open [x0,y0,x1,y1); x1/y1 == 512 is valid.
+                      if not (0 <= x0 < x1 <= 512 and 0 <= y0 < y1 <= 512):
+                          raise SystemExit(f'{key} frame {n}: bbox outside 512px cell: {bbox}')
+
+          if missing:
+              raise SystemExit('missing catalog assets: ' + ', '.join(missing))
+
+          js = catalog_js_path.read_text(encoding='utf-8').strip()
+          prefix = 'window.SPRITE_CATALOG='
+          if not js.startswith(prefix):
+              raise SystemExit('catalog.js has unexpected wrapper')
+          payload = js[len(prefix):]
+          if payload.endswith(';'):
+              payload = payload[:-1]
+          js_catalog = json.loads(payload)
+          if js_catalog != catalog:
+              raise SystemExit('assets/catalog.js is not synchronized with assets/catalog.json')
+
+          html = (root / 'index.html').read_text(encoding='utf-8')
+          refs = re.findall(r'(?:src|href)="([^"]+)"', html)
+          local = [r for r in refs if not r.startswith(('http://', 'https://', '#', 'data:'))]
+          absent = [r for r in local if not (root / r).exists()]
+          if absent:
+              raise SystemExit('missing index references: ' + ', '.join(absent))
+
+          bad_cache = [p for p in root.rglob('*') if '__pycache__' in p.parts or p.suffix == '.pyc']
+          if bad_cache:
+              raise SystemExit('Python cache files committed: ' + ', '.join(str(p) for p in bad_cache))
+
+          print(f'catalog OK: {len(catalog)} entries; {len(local)} local index refs')
+          PY
+
+      - name: Verify archived v10 ZIP integrity
+        if: ${{ hashFiles('444444444444444_3.zip') != '' }}
+        shell: bash
+        run: unzip -t 444444444444444_3.zip >/dev/null
