@@ -8,16 +8,103 @@
       kickLowL:[["sinkL",85,"Absenken"],["windLowL",90,"Ausholen"],["kickLowL",78,"Treffer"],["kickLowL",86,"Treffer"],["windLowL",105,"Zurück"],["idleA",190,"Erholung"]],
       jumpKick:[["jkCrouch",120,"Absprung"],["jkRise",135,"Aufstieg"],["jkStrike",100,"Treffer"],["jkStrike",110,"Treffer"],["jkRise",105,"Fallen"],["jkLand",120,"Landung"],["idleA",205,"Erholung"]],
       headbutt:[["hbWind",135,"Ausholen"],["hbHit",78,"Treffer"],["hbHit",96,"Treffer"],["idleA",220,"Erholung"]],
-      kame:[["kmSink",190,"Absenken"],["kmChargeA",410,"Aufladen"],["kmChargeB",410,"Aufladen"],["kmChargeA",350,"Aufladen"],["kmFire",135,"Abschuss"],["kmFire",720,"Strahl"],["kmFire",260,"Nachhall"],["idleA",220,"Erholung"]],
-      choke:[["idleA",170,"Ansprung"],["chokeA",260,"Sprung"],["chokeB",360,"Neck Lock"],["chokeC",520,"Würgegriff"],["chokeB",300,"Lösen"],["idleA",240,"Erholung"]],
-      protonKick:[
-        ["idleA",90,"Fokus"],["windHighR",105,"Kammer"],["idleB",105,"Fokus"],
-        ["windHighR",110,"Protonenladung"],["windHighR",110,"Protonenladung"],["windHighR",110,"Protonenladung"],["windHighR",110,"Protonenladung"],["windHighR",120,"Maximalladung"],
-        ["windHighR",95,"Roundhouse"],["kickHighR",85,"Roundhouse"],["kickHighR",80,"Roundhouse"],["kickHighR",80,"Roundhouse"],["kickHighR",85,"Roundhouse"],["kickHighR",90,"Roundhouse"],
-        ["kickHighR",95,"Treffer"],["kickHighR",105,"Photonenkern"],["kickHighR",110,"Photonenkern"],["kickHighR",115,"Schockwelle"],["windHighR",120,"Schockwelle"],
-        ["windHighR",115,"Rückstoß"],["sinkR",110,"Abklingen"],["windHighR",105,"Abklingen"],["idleB",100,"Deckung"],["idleA",100,"Reset"],["idleA",110,"Erholung"]
+      brainFlail:[
+        ["idleB",180,"Orientierung"],
+        ["chamberR",150,"Ausholen"],
+        ["punchR",95,"Treffer"],
+        ["windLowR",130,"Ausholen"],
+        ["kickLowR",105,"Treffer"],
+        ["stagger",250,"Taumeln"],
+        ["idleA",240,"Erholung"]
       ],
-      comet:[["cmRaiseA",180,"Arme hoch"],["cmRaiseB",430,"Aufladen"],["cmRaiseA",400,"Aufladen"],["cmRaiseB",260,"Komet"],["cmThrow",260,"Wurf"],["cmThrow",680,"Komet"],["cmAfter",310,"Einschlag"],["idleA",260,"Erholung"]],
+
+      // Dr. BOB: 25-stufiges DBZ Kamehameha
+      kame:[
+        ["idleA",     110, "Fokus"],                 // 01: Kampfhaltung senken
+        ["kmSink",    120, "Hände sammeln"],        // 02: Hände an die Hüfte
+        ["kmChargeA", 130, "KA..."],                // 03: Erster Ki-Funke
+        ["kmChargeA", 140, "KA..."],                // 04: Ki-Kugel bildet sich
+        ["kmChargeB", 140, "...ME..."],             // 05: Energie dehnt sich aus
+        ["kmChargeB", 150, "...ME..."],             // 06: Aura flackert auf
+        ["kmChargeB", 150, "...HA..."],             // 07: Konzentrische Druckwellen
+        ["kmChargeB", 160, "...HA..."],             // 08: Elektrische Blitze zucken
+        ["kmChargeB", 170, "...ME..."],             // 09: Kern wird gleißend weiß
+        ["kmChargeB", 190, "MAXIMALLADUNG!"],       // 10: Maximale Kompression & Erschütterung
+        ["kmFire",    110, "Abschuss vorbereiten"], // 11: Arme schnellen nach vorn
+        ["kmFire",     95, "...HAAAA!"],            // 12: Strahl bricht hervor!
+        ["kmFire",     90, "KAMEHAMEHA!"],          // 13: Voller Plasmastrom
+        ["kmFire",     90, "KAMEHAMEHA!"],          // 14: Turbulenter Energiestrom
+        ["kmFire",     90, "KAMEHAMEHA!"],          // 15: Maximale Strahlkraft
+        ["kmFire",     90, "KAMEHAMEHA!"],          // 16: Schockwellen am Ziel
+        ["kmFire",     95, "KAMEHAMEHA!"],          // 17: Dauerfeuer
+        ["kmFire",    105, "KAMEHAMEHA!"],          // 18: Letzter Entladungsstoß
+        ["kmFire",    115, "Nachhall"],             // 19: Strahl trennt sich von Händen
+        ["kmFire",    125, "Verwehen"],             // 20: Plasma löst sich auf
+        ["kmSink",    140, "Rückstoß"],             // 21: Bob sackt zurück, Hitzedampf
+        ["kmSink",    160, "Erschöpft"],            // 22: Schweres Atmen, Abkühlen
+        ["idleB",     130, "Aufrichten"],            // 23: Körper streckt sich
+        ["idleA",     120, "Deckung"],               // 24: Abwehrhaltung
+        ["idleA",     150, "Bereit"]                 // 25: Kampfbereit
+      ],
+
+      // Theresa: 25-stufiger Proton Roundhouse Kick
+      protonKick:[
+        ["idleA",90,"Fokus"],["idleB",90,"Fokus"],["windHighR",100,"Kammer"],
+        ["windHighR",110,"Protonenladung"],["windHighR",120,"Protonenladung"],
+        ["windHighR",120,"Protonenladung"],["windHighR",120,"Protonenladung"],
+        ["windHighR",130,"Ladungsspitze"],["windHighR",130,"Lila Protonenaura"],
+        ["windHighR",140,"Maximalladung"],["windHighR",95,"Ausholen"],
+        ["kickHighR",85,"Roundhouse"],["kickHighR",80,"Roundhouse"],
+        ["kickHighR",80,"Abwärtsschlag"],["kickHighR",90,"Treffer"],
+        ["kickHighR",90,"Detonation"],["kickHighR",100,"Photonenkern"],
+        ["kickHighR",110,"Detonationsspitze"],["windHighR",120,"Schockwelle"],
+        ["windHighR",110,"Explosionsnachhall"],["sinkR",95,"Abklingen"],
+        ["idleB",100,"Pose"],["idleA",110,"Kusshand"],["idleA",130,"Kusshand"],["idleA",150,"Erholung"]
+      ],
+
+      // KurzDurch: 25-stufiger Microwave Meteor
+      comet:[
+        ["idleA",105,"Fokus"],["idleB",105,"Ausholen"],["cmRaiseA",115,"Mikrowelle greifen"],
+        ["cmRaiseA",115,"Mikrowelle öffnen"],["cmRaiseA",120,"Helm aufsetzen"],
+        ["cmRaiseB",120,"Mikrowellenhelm"],["cmRaiseB",125,"Aura startet"],
+        ["cmRaiseB",125,"Rote Blitze"],["cmRaiseB",130,"Rote Blitze"],["cmRaiseB",135,"Maximalladung"],
+        ["cmRaiseA",135,"Arme hoch"],["cmRaiseB",140,"Himmel laden"],["cmRaiseB",140,"Komet erfassen"],
+        ["cmRaiseB",145,"Komet heranziehen"],["cmRaiseB",155,"Riesenkomet"],
+        ["cmThrow",110,"Wurf vorbereiten"],["cmThrow",120,"Blitzwurf"],["cmThrow",135,"Komet fliegt"],
+        ["cmAfter",110,"Einschlag"],["cmAfter",120,"Blitzexplosion"],["cmAfter",135,"Explosionsnachhall"],
+        ["idleB",120,"Mikrowelle abnehmen"],["idleA",125,"Triumph"],["idleA",135,"Lachen"],["idleA",160,"Erholung"]
+      ],
+
+      // Lt. BrainBug: 25-stufiger Sour Milk Burst
+      sourMilkBurst:[
+        ["idleA",105,"Start"],                  // 01
+        ["idleB",110,"Ausrüstung greifen"],     // 02
+        ["idleA",120,"Schüssel"],               // 03
+        ["idleB",125,"Cornflakes"],             // 04
+        ["idleA",150,"Cornflakes eingießen"],   // 05
+        ["idleB",120,"Milch"],                  // 06
+        ["idleA",155,"Milch eingießen"],        // 07
+        ["idleB",105,"Löffel"],                 // 08
+        ["idleA",110,"Löffel nehmen"],          // 09
+        ["idleB",145,"Probieren"],               // 10
+        ["stagger",140,"Sauer!"],               // 11
+        ["stagger",160,"Übelkeit"],              // 12
+        ["stagger",180,"Backen aufblasen"],     // 13
+        ["kmChargeA",215,"Aufladen"],           // 14
+        ["kmChargeB",245,"Maximalladung"],      // 15
+        ["kmFire",95,"Erbrechen startet"],      // 16
+        ["kmFire",105,"Säurestrahl"],           // 17
+        ["kmFire",110,"Säurestrahl"],           // 18
+        ["kmFire",125,"Treffer"],               // 19
+        ["stagger",150,"Rückstoß"],             // 20
+        ["getUp1",230,"Auf die Knie"],          // 21
+        ["kdGround",300,"Falsch gedreht"],      // 22
+        ["getUp2",190,"Orientieren"],            // 23
+        ["idleB",220,"Kopf kratzen"],           // 24
+        ["idleA",240,"Benommen zurück"]          // 25
+      ],
+
+      // Trefferreaktionen
       hitPunch:[["hitHigh",70,"Treffer"],["hitHigh2",130,"Erholung"],["idleA",160,"Erholung"]],
       hitKickHigh:[["hitHigh",80,"Treffer"],["stagger",180,"Taumeln"],["idleA",180,"Erholung"]],
       hitKickLow:[["hitLeg",80,"Treffer"],["stagger",155,"Taumeln"],["idleA",180,"Erholung"]],
@@ -25,6 +112,7 @@
       hitJumpKick:[["hitHigh",60,"Treffer"],["kdAir",190,"Wegfliegen"],["kdGround",150,"Aufschlag"],["kdGround",410,"Am Boden"],["getUp1",230,"Aufstehen"],["getUp2",180,"Aufstehen"],["idleA",170,"Erholung"]],
       hitBeam:[["flailA",130,"Getroffen"],["flailB",130,"Getroffen"],["flailC",130,"Getroffen"],["flailD",130,"Getroffen"],["kdAir",190,"Wegfliegen"],["kdGround",140,"Aufschlag"],["kdGround",420,"Am Boden"],["getUp1",230,"Aufstehen"],["getUp2",180,"Aufstehen"]],
       hitComet:[["hitHigh",70,"Treffer"],["kdAir",160,"Wegfliegen"],["kdGround",145,"Aufschlag"],["kdGround",450,"Am Boden"],["getUp1",230,"Aufstehen"],["getUp2",180,"Aufstehen"]],
+      hitSourMilk:[["flailA",110,"Getroffen"],["flailB",190,"Betäubt"],["stagger",260,"Taumeln"],["idleA",180,"Erholung"]],
       blockHigh:[["guardHigh",60,"Block"],["guardPush",110,"Block"],["guardHigh",140,"Deckung"],["idleA",160,"Erholung"]],
       blockLow:[["guardLow",60,"Block"],["guardLowP",110,"Block"],["guardLow",140,"Deckung"],["idleA",160,"Erholung"]]
     };
@@ -35,6 +123,7 @@
       kickLow:{keys:["kickLowR","kickLowL"],reaction:"hitKickLow",damage:9,range:268,knock:30},
       jumpKick:{keys:["jumpKick"],reaction:"hitJumpKick",damage:15,range:310,knock:72},
       headbutt:{keys:["headbutt"],reaction:"hitHeadbutt",damage:13,range:185,knock:48},
+      brainFlail:{keys:["brainFlail"],reaction:"hitKickHigh",damage:17,range:270,knock:58},
       special:{keys:[],reaction:"hitBeam",damage:20,range:9999,knock:92}
     };
 
@@ -50,18 +139,24 @@
       nova:[
         {name:"WHITE FANG",keys:["punchL","kickHighR","kickLowL"]},
         {name:"AIR STING",keys:["kickLowR","punchR","jumpKick"]}
+      ],
+      brainbug:[
+        {name:"WRONG WAY",keys:["punchR","kickLowL","punchL"]},
+        {name:"LOST FORMATION",keys:["kickHighR","punchR","jumpKick"]}
       ]
     };
     const SPECIAL_COMBOS = {
       bob:{name:"DOC OVERDRIVE",keys:["punchR","kickLowL","kickHighR","kame"]},
-      kurz:{name:"COMET BREAKER",keys:["kickLowR","punchL","jumpKick","comet"]},
-      nova:{name:"PROTON CRESCENT",keys:["punchR","kickHighL","protonKick"]}
+      kurz:{name:"MICROWAVE METEOR",keys:["kickLowR","punchL","jumpKick","comet"]},
+      nova:{name:"PROTON ROUNDHOUSE",keys:["punchR","kickHighL","protonKick"]},
+      brainbug:{name:"SOUR MILK SURGE",keys:["punchL","kickLowR","sourMilkBurst"]}
     };
 
     const lerp = (a,b,t) => a+(b-a)*t;
     const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
     const ease = t => t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
     const choose = a => a[(Math.random()*a.length)|0];
+
 
     const PIX = 6;
     const fx = [];
@@ -105,25 +200,5 @@
     function drawTinted(img,sx,sy,sw,sh,dx,dy,dw,dh,col,alpha){
       if(tintCv.width!==sw||tintCv.height!==sh){tintCv.width=sw;tintCv.height=sh} tintCtx.globalCompositeOperation="source-over";tintCtx.clearRect(0,0,sw,sh);tintCtx.drawImage(img,sx,sy,sw,sh,0,0,sw,sh);tintCtx.globalCompositeOperation="source-atop";tintCtx.fillStyle=col;tintCtx.fillRect(0,0,sw,sh);tintCtx.globalCompositeOperation="source-over";ctx.save();ctx.globalAlpha=alpha;ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";ctx.drawImage(tintCv,0,0,sw,sh,dx,dy,dw,dh);ctx.restore();
     }
-    function blend(p,q,t){return {rx:lerp(p.rx,q.rx,t),ry:lerp(p.ry,q.ry,t),spine:lerp(p.spine,q.spine,t),head:lerp(p.head,q.head,t),fR:[lerp(p.fR[0],q.fR[0],t),lerp(p.fR[1],q.fR[1],t)],fL:[lerp(p.fL[0],q.fL[0],t),lerp(p.fL[1],q.fL[1],t)],hR:[lerp(p.hR[0],q.hR[0],t),lerp(p.hR[1],q.hR[1],t)],hL:[lerp(p.hL[0],q.hL[0],t),lerp(p.hL[1],q.hL[1],t)]};}
-    function ik(ax,ay,bx,by,l1,l2,bend){let dx=bx-ax,dy=by-ay,d=Math.hypot(dx,dy),max=l1+l2-.01;if(d>max){dx*=max/d;dy*=max/d;d=max;bx=ax+dx;by=ay+dy}d=Math.max(.01,d);const a=(l1*l1-l2*l2+d*d)/(2*d),h=Math.sqrt(Math.max(0,l1*l1-a*a));const mx=ax+a*dx/d,my=ay+a*dy/d;return [mx-bend*h*dy/d,my+bend*h*dx/d,bx,by];}
-    function limb(g,x1,y1,x2,y2,col,w,edge=true){g.lineCap="round";if(edge){g.strokeStyle="#11131c";g.lineWidth=w+4;g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke()}g.strokeStyle=col;g.lineWidth=w;g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke();}
-    function poly(g,pts,fill,stroke="#11131c"){g.beginPath();g.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)g.lineTo(pts[i][0],pts[i][1]);g.closePath();g.strokeStyle=stroke;g.lineWidth=3;g.stroke();g.fillStyle=fill;g.fill();}
-    function blob(g,x,y,r,col,edge=true){if(edge){g.fillStyle="#11131c";g.beginPath();g.arc(x,y,r+2,0,Math.PI*2);g.fill()}g.fillStyle=col;g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fill();}
-    function headPoint(p){const sr=p.spine*Math.PI/180,cx=p.rx+Math.cos(sr)*54,cy=p.ry+Math.sin(sr)*54;const hr=p.head*Math.PI/180,nx=cx+Math.cos(hr)*15,ny=cy+Math.sin(hr)*15;return [nx+Math.cos(hr)*15.7,ny+Math.sin(hr)*15.7,hr,cx,cy];}
 
-    function drawHead(g,p,cfg,time){
-      const [hx,hy,hr]=headPoint(p),K=cfg.col;g.save();g.translate(hx,hy);g.rotate(hr+Math.PI/2);g.fillStyle="#11131c";g.beginPath();g.ellipse(0,0,16,18,0,0,Math.PI*2);g.fill();g.fillStyle=K.skin;g.beginPath();g.ellipse(0,0,13.5,15.7,0,0,Math.PI*2);g.fill();g.fillStyle=K.skinD;g.beginPath();g.ellipse(-5,4,7,10,0,0,Math.PI*2);g.fill();g.fillStyle=K.skin;g.beginPath();g.moveTo(9,-3);g.lineTo(16,1);g.lineTo(9,4);g.closePath();g.fill();g.strokeStyle="#2a1510";g.lineWidth=1.8;g.beginPath();g.moveTo(2,-4);g.lineTo(8,-4);g.stroke();g.fillStyle="#090a0f";g.beginPath();g.arc(6,-2,1.5,0,Math.PI*2);g.fill();
-      if(cfg.hair==="spikes"){g.fillStyle="#160508";g.beginPath();g.moveTo(-12,-7);g.lineTo(13,-7);g.lineTo(12,2);g.lineTo(-11,0);g.closePath();g.fill();g.fillStyle=K.hairD;g.beginPath();g.moveTo(13,-8);g.lineTo(21,-31);g.lineTo(8,-14);g.lineTo(4,-43);g.lineTo(-2,-14);g.lineTo(-14,-39);g.lineTo(-9,-11);g.lineTo(-25,-26);g.lineTo(-14,-3);g.lineTo(-13,7);g.lineTo(-6,-6);g.lineTo(6,-8);g.closePath();g.fill();g.fillStyle=K.hair;g.beginPath();g.moveTo(11,-9);g.lineTo(17,-28);g.lineTo(6,-14);g.lineTo(3,-39);g.lineTo(-2,-14);g.lineTo(-12,-35);g.lineTo(-8,-11);g.lineTo(-22,-23);g.lineTo(-12,-4);g.lineTo(-6,-7);g.lineTo(5,-9);g.closePath();g.fill();g.strokeStyle="#181820";g.lineWidth=3;g.beginPath();g.moveTo(0,-1);g.lineTo(12,-1);g.stroke();}
-      else{const wob=Math.sin(time*3)*5;g.fillStyle=K.hairD;g.beginPath();g.moveTo(-12,-6);g.quadraticCurveTo(-30,2,-36+wob,30);g.quadraticCurveTo(-33+wob,38,-26+wob,36);g.quadraticCurveTo(-22,10,-6,2);g.closePath();g.fill();g.fillStyle=K.hair;g.beginPath();g.ellipse(-1,-6,14,12,0,0,Math.PI*2);g.fill();g.beginPath();g.ellipse(-12,2,7,8,0,0,Math.PI*2);g.fill();g.fillStyle="#8a6a2a";g.beginPath();g.ellipse(-15,2,3.5,5,0,0,Math.PI*2);g.fill();}g.restore();
-    }
-
-    function drawBody(g,p,cfg,time){
-      const girth=cfg.girth,K=cfg.col,sr=p.spine*Math.PI/180;const cx=p.rx+Math.cos(sr)*54,cy=p.ry+Math.sin(sr)*54;const px=-Math.sin(sr),py=Math.cos(sr);const lR=ik(p.rx-5,p.ry,p.fR[0],p.fR[1],60,60,-1);const lL=ik(p.rx+5,p.ry,p.fL[0],p.fL[1],60,60,-1);const shRx=cx-px*5,shRy=cy-py*5,shLx=cx+px*5,shLy=cy+py*5;const aR=ik(shRx,shRy+2,p.hR[0],p.hR[1],32,31,1);const aL=ik(shLx,shLy+2,p.hL[0],p.hL[1],32,31,1);
-      const boot=(kx,ky,ax,ay,far)=>{let dx=ax-kx,dy=ay-ky,l=Math.hypot(dx,dy)||1,fx=-dy/l,fy=dx/l;if(fx<0){fx=-fx;fy=-fy}limb(g,ax-fx*3,ay-fy*3,ax+fx*13,ay+fy*13,far?K.bootD:K.boot,13*girth);};
-      const arm=(sx,sy,ex,ey,ax,ay,far)=>{limb(g,sx,sy,ex,ey,far?K.skinD:K.skin,13*girth);limb(g,ex,ey,ax,ay,far?K.skinD:K.skin,11*girth);limb(g,sx,sy,sx+(ex-sx)*.34,sy+(ey-sy)*.34,far?K.shirtD:K.shirt,15*girth,false);blob(g,ax,ay,7.5*girth,far?K.skinD:K.skin);};
-      limb(g,p.rx-5,p.ry,lR[0],lR[1],K.pantsD,17*girth);limb(g,lR[0],lR[1],lR[2],lR[3],K.pantsD,14*girth);boot(lR[0],lR[1],lR[2],lR[3],true);arm(shRx,shRy+2,aR[0],aR[1],aR[2],aR[3],true);limb(g,p.rx+5,p.ry,lL[0],lL[1],K.pants,18*girth);limb(g,lL[0],lL[1],lL[2],lL[3],K.pants,15*girth);boot(lL[0],lL[1],lL[2],lL[3],false);const tw=15*girth;poly(g,[[cx-px*tw,cy-py*tw],[cx+px*tw,cy+py*tw],[p.rx+px*12*girth,p.ry+py*12*girth],[p.rx-px*12*girth,p.ry-py*12*girth]],K.shirt);
-      if(cfg.doctor){poly(g,[[cx-px*tw,cy-py*tw],[cx+px*tw,cy+py*tw],[p.rx+px*16,p.ry+py*15+22],[p.rx,p.ry+30]],K.coat);poly(g,[[cx-px*tw,cy-py*tw],[p.rx,p.ry+30],[p.rx-px*16,p.ry-py*15+22]],K.coatD);g.strokeStyle="#9ea8b6";g.lineWidth=3;g.beginPath();g.moveTo(cx-px*7,cy-py*7);g.quadraticCurveTo(cx-px*13,cy+18,cx-px*4,cy+31);g.moveTo(cx+px*7,cy+py*7);g.quadraticCurveTo(cx+px*13,cy+20,cx+px*4,cy+32);g.stroke();blob(g,cx-px*4,cy+31,4,"#d9e2eb",false);}
-      limb(g,p.rx-px*11*girth,p.ry-py*11*girth,p.rx+px*11*girth,p.ry+py*11*girth,"#70451f",7);arm(shLx,shLy+2,aL[0],aL[1],aL[2],aL[3],false);const hp=headPoint(p);limb(g,cx,cy,hp[0]-Math.cos(hp[2])*15.7,hp[1]-Math.sin(hp[2])*15.7,K.skin,11*girth);drawHead(g,p,cfg,time);
-    }
 

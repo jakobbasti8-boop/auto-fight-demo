@@ -1,0 +1,15 @@
+{
+  "name": "auto-fight-demo",
+  "version": "1.0.0",
+  "description": "Browserbasierte 2D-Auto-Fight-Demo mit Dr. BOB, KurzDurch und weiteren Kämpfern",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "echo 'Static app ready'"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "sharp": "^0.35.4"
+  }
+}

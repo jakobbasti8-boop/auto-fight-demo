@@ -6,29 +6,15 @@
       reset(x){
         this.x=x;this.face=this.cfg.face;this.health=100;this.displayHealth=100;
         this.move=null;this.key=null;this.moveStep=0;this.stepElapsed=0;this.moveElapsed=0;
-        this.from=null;this.idleTime=Math.random()*10;this.walkCycle=Math.random()*6;
+        this.idleTime=Math.random()*10;this.walkCycle=Math.random()*6;
         this.moveTarget=null;this.queued=null;this.hitResolved=false;this.ko=false;this.vx=0;
         this.hitFlash=0;this.flashCol="#ff3b30";this.dustAcc=0;this.blockCool=0;
         this.comboQueue=[];this.comboHits=0;this.comboLabel="";this.comboTarget=null;this.comboActive=false;
+        this._brainWrongWay=false;
       }
       isBusy(){return !!this.move||this.ko}
-      pose(){
-        if(this.ko)return P.ko;
-        if(this.move){
-          const frame=this.move[this.moveStep];
-          if(!frame)return P.idleA;
-          return blend(this.from||P[frame[0]],P[frame[0]],ease(clamp(this.stepElapsed/frame[1],0,1)));
-        }
-        let p=blend(P.idleA,P.idleB,(Math.sin(this.idleTime*2.5)+1)/2);
-        if(Math.abs(this.vx)>.01){
-          const wave=Math.sin(this.walkCycle);
-          p={...p,fR:[p.fR[0]+wave*23,p.fR[1]],fL:[p.fL[0]-wave*23,p.fL[1]],
-            hR:[p.hR[0]-wave*10,p.hR[1]],hL:[p.hL[0]+wave*10,p.hL[1]]};
-        }
-        return p;
-      }
       start(key){
-        this.from=this.pose();this.move=MOVES[key];this.key=key;this.moveStep=0;
+        this.move=MOVES[key]||null;this.key=key;this.moveStep=0;
         this.stepElapsed=0;this.moveElapsed=0;this.hitResolved=false;this.moveTarget=null;this.vx=0;
       }
       beginCombo(keys,label,target){
@@ -42,14 +28,26 @@
         if(this.hitFlash>0)this.hitFlash=Math.max(0,this.hitFlash-dt);
         if(this.blockCool>0)this.blockCool=Math.max(0,this.blockCool-dt);
         if(this.ko)return;
+
+        if(this.cfg.key==="brainbug"){
+          const wrong=this.key==="sourMilkBurst"&&this.move?.[this.moveStep]?.[2]==="Falsch gedreht";
+          if(wrong&&!this._brainWrongWay){
+            this.face*=-1;
+            this._brainWrongWay=true;
+          }else if(!wrong&&this._brainWrongWay){
+            this.face*=-1;
+            this._brainWrongWay=false;
+          }
+        }
+
         if(this.move){
           this.stepElapsed+=dt;this.moveElapsed+=dt;
           let frame=this.move[this.moveStep];
           while(frame&&this.stepElapsed>=frame[1]){
-            this.stepElapsed-=frame[1];this.from=P[frame[0]];this.moveStep++;
+            this.stepElapsed-=frame[1];this.moveStep++;
             if(this.moveStep>=this.move.length){
               const done=this.key;
-              this.move=null;this.key=null;this.from=null;
+              this.move=null;this.key=null;
               this.onMoveEnd(done);
               break;
             }
@@ -92,8 +90,6 @@
           if(info.type!=="special"){
             const desired=Math.max(110,info.range-34);
             const targetX=this.comboTarget.x-this.face*desired;
-            // Small forward cancel between combo links keeps the sequence connected
-            // without teleporting through the opponent.
             this.x=lerp(this.x,clamp(targetX,160,W-160),.42);
           }
           this.start(next);
@@ -106,35 +102,6 @@
         }
         if(!this.hitResolved)spawnPopup(this.x,GROUND-this.cfg.displayH*1.02,"DANEBEN","#a8b6dd");
       }
-      spriteFrame(){
-        if(this.ko)return {row:4,col:4};
-        if(this.move){
-          const total=this.move.reduce((sum,f)=>sum+f[1],0),progress=clamp(this.moveElapsed/total,0,.999);
-          if(this.key==="choke"){
-            const ph=this.move[this.moveStep]?.[2];
-            if(ph==="Ansprung")return {row:3,col:0};
-            if(ph==="Sprung")return {row:3,col:1};
-            if(ph==="Neck Lock")return {row:3,col:2};
-            if(ph==="Würgegriff"||ph==="Lösen")return {row:3,col:3};
-            return {row:3,col:4};
-          }
-          if(this.key.startsWith("block"))return {row:0,col:1};
-          if(this.key.startsWith("hit")){
-            const phase=this.move[this.moveStep]?.[2];
-            if(phase==="Aufstehen")return {row:4,col:Math.max(0,3-Math.floor((this.stepElapsed/(this.move[this.moveStep][1]||1))*3))};
-            return {row:4,col:Math.min(4,Math.floor(progress*5))};
-          }
-          if(this.key.startsWith("kick")||this.key==="jumpKick")return {row:3,col:Math.min(4,Math.floor(progress*5))};
-          return {row:2,col:Math.min(4,Math.floor(progress*5))};
-        }
-        if(Math.abs(this.vx)>.01){
-          let col=Math.floor(this.walkCycle)%5;if(this.vx*this.face<0)col=4-col;
-          return {row:1,col};
-        }
-        return {row:0,col:Math.floor(this.idleTime*5)%5};
-      }
-      phase(){return this.ko?"K. o.":this.move?this.move[this.moveStep]?.[2]||"Bereit":Math.abs(this.vx)>.01?"Bewegung":"Bereit"}
-      toScreen(lx,ly){return [this.x+this.face*this.baseScale*(lx-178),GROUND+this.baseScale*(ly-352)]}
     }
 
     const bob=new Fighter({
@@ -147,23 +114,27 @@
       col:{skin:"#d9a279",skinD:"#a96f50",hair:"#181821",hairD:"#08090d",shirt:"#39485b",shirtD:"#253041",
         pants:"#222b38",pantsD:"#131924",boot:"#10131a",bootD:"#07090d"}
     });
-
     const nova=new Fighter({
-      name:"THERESA MACHSLOCHUFF",short:"THERESA",key:"nova",asset:"nova",specialKey:"choke",displayH:318,spriteZoom:0.5761,baseline:0.0391,hurtW:.36,startX:770,face:1,scale:1.18,girth:.95,walkSpeed:.23,hair:"ponytail",doctor:false,
+      name:"THERESA MACHSLOCHUFF",short:"THERESA",key:"nova",asset:"nova",specialKey:"protonKick",displayH:318,spriteZoom:0.5761,baseline:0.0391,hurtW:.36,startX:770,face:1,scale:1.18,girth:.95,walkSpeed:.23,hair:"ponytail",doctor:false,
       col:{skin:"#f1c4a6",skinD:"#c78e78",hair:"#e8a92f",hairD:"#9d5a18",shirt:"#dbe4f5",shirtD:"#aab8d2",pants:"#dbe4f5",pantsD:"#aab8d2",boot:"#edf2ff",bootD:"#8d9bb4"}
     });
-    const allFighters=[bob,kurz,nova];
+    const brainbug=new Fighter({
+      name:"LT. BRAINBUG",short:"LT.BRAINBUG",key:"brainbug",specialKey:"sourMilkBurst",asset:"brainbug",displayH:330,spriteZoom:.94,baseline:.052,hurtW:.43,startX:760,face:1,scale:1.16,girth:.94,walkSpeed:.175,hair:"helmet",doctor:false,
+      col:{skin:"#d9a279",skinD:"#9f684c",hair:"#4a2e20",hairD:"#24150f",shirt:"#7c7449",shirtD:"#4d492e",pants:"#69623e",pantsD:"#403c27",boot:"#3a2b1f",bootD:"#1d1712"}
+    });
+
+    const allFighters=[bob,kurz,nova,brainbug];
     let fighters=[bob,kurz];
     let selectedLeft="bob",selectedRight="kurz";
-    const fighterByKey={bob,kurz,nova};
-    const fighterLabel={bob:"DR. BOB",kurz:"KURZDURCH",nova:"THERESA MACHSLOCHUFF"};
+    const fighterByKey={bob,kurz,nova,brainbug};
+    const fighterLabel={bob:"DR. BOB",kurz:"KURZDURCH",nova:"THERESA MACHSLOCHUFF",brainbug:"LT. BRAINBUG"};
 
     const ui={
-      lifeBob:document.getElementById("life-bob"),lifeKurz:document.getElementById("life-kurz"),lifeNova:document.getElementById("life-neu"),
-      damageBob:document.getElementById("damage-bob"),damageKurz:document.getElementById("damage-kurz"),damageNova:document.getElementById("damage-neu"),
-      hpBob:document.getElementById("hp-bob"),hpKurz:document.getElementById("hp-kurz"),hpNova:document.getElementById("hp-neu"),
+      lifeLeft:document.getElementById("life-left"),lifeRight:document.getElementById("life-right"),
+      damageLeft:document.getElementById("damage-left"),damageRight:document.getElementById("damage-right"),
+      hpLeft:document.getElementById("hp-left"),hpRight:document.getElementById("hp-right"),
       leftName:document.getElementById("hud-left-name"),rightName:document.getElementById("hud-right-name"),
-      newHud:document.querySelector(".fighter-hud.newcomer"),
+      portraitLeft:document.getElementById("portrait-left"),portraitRight:document.getElementById("portrait-right"),
       status:document.getElementById("fight-status"),round:document.getElementById("round-no"),
       start:document.getElementById("start-overlay"),result:document.getElementById("result-overlay"),
       winner:document.getElementById("winner-name"),flash:document.getElementById("flash"),
@@ -173,4 +144,5 @@
     let running=false,round=0,directorDelay=0,directorState="idle",activePlan=null,last=performance.now();
     let showHitboxes=false,shake=0,hitStop=0,resultQueued=false,roundTime=0;
     let counterPending=null,koTime=-1,koFocus={x:W/2,y:GROUND-200};
+
 

@@ -1,9 +1,7 @@
 "use strict";
 
-/* Die beiden Spezialkataloge (Theresa PROTON ROUNDHOUSE, KurzDurch
-   MICROWAVE METEOR) liegen jetzt als je ein Blatt im Katalog und werden von
-   game-catalog.js gezeichnet. Hier bleiben nur Ablauf, Trefferfenster und
-   Schadenswerte. */
+/* Theresa (PROTON ROUNDHOUSE) and KurzDurch (MICROWAVE METEOR)
+   special moves, timings, and combo assignments. */
 function nearestSpecialFoe(f){
   return fighters.filter(x=>x!==f&&!x.ko).sort((a,b)=>Math.abs(a.x-f.x)-Math.abs(b.x-f.x))[0]||null;
 }
@@ -38,34 +36,3 @@ MOVES.comet=[
   ["idleB",120,"Mikrowelle abnehmen"],["idleA",125,"Triumph"],["idleA",135,"Lachen"],["idleA",160,"Erholung"]
 ];
 SPECIAL_COMBOS.kurz={name:"MICROWAVE METEOR",keys:["kickLowR","punchL","jumpKick","comet"]};
-
-const baseSpecialHitbox=activeHitbox;
-activeHitbox=function(f,foe){
-  if(f.key==="protonKick"){
-    if(f.hitResolved||f.moveStep<14||f.moveStep>19)return null;
-    const hb=getHurtbox(foe);return {x:hb.x-54,y:hb.y-70,w:hb.w+108,h:hb.h+118,type:"proton"};
-  }
-  if(f.key==="comet"){
-    if(f.hitResolved||f.moveStep<18||f.moveStep>20)return null;
-    const hb=getHurtbox(foe);return {x:hb.x-74,y:hb.y-92,w:hb.w+148,h:hb.h+150,type:"comet"};
-  }
-  return baseSpecialHitbox(f,foe);
-};
-
-const baseSpecialAttackInfo=attackInfo;
-attackInfo=function(key){
-  if(key==="protonKick")return {...ATTACKS.special,type:"special",reaction:"hitBeam",damage:30,range:9999,knock:145,blockChance:.08};
-  if(key==="comet")return {...ATTACKS.special,type:"special",reaction:"hitComet",damage:34,range:9999,knock:168,blockChance:.04};
-  return baseSpecialAttackInfo(key);
-};
-const baseSpecialBlock=decideBlock;
-decideBlock=function(defender,info){
-  if(info&&info.blockChance!=null){
-    if(defender.ko||defender.move||defender.blockCool>0)return false;
-    let chance=info.blockChance;if(defender.health<40)chance+=.04;return Math.random()<chance;
-  }
-  return baseSpecialBlock(defender,info);
-};
-
-/* drawFighter/effects brauchen hier keine Sonderfaelle mehr - der
-   Bewegungskatalog kennt beide Spezialblaetter samt reinen Explosionsbildern. */

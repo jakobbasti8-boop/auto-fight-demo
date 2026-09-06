@@ -4,7 +4,7 @@
       return {x:f.x-w/2,y:GROUND-h*.88,w,h:h*.84};
     }
     function activeHitbox(f,foe){
-      if(!f.key||f.hitResolved)return null;
+      if(!f||!f.key||f.hitResolved)return null;
       const phase=f.move?.[f.moveStep]?.[2],h=f.cfg.displayH;
       if(["punchR","punchL"].includes(f.key)&&phase==="Treffer"){
         const r=h*.075,cx=f.x+f.face*h*.34,cy=GROUND-h*.57;
@@ -22,17 +22,35 @@
         const r=h*.08,cx=f.x+f.face*h*.25,cy=GROUND-h*.72;
         return {x:cx-r,y:cy-r,w:r*2,h:r*2,type:"melee"};
       }
-      if(f.key==="kame"&&f.moveElapsed>1600&&f.moveElapsed<2260){
-        const x=f.x+f.face*h*.18,y=GROUND-h*.57;
-        return {x:f.face>0?x:0,y:y-h*.09,w:f.face>0?W-x:x,h:h*.18,type:"beam"};
+      if(f.key==="brainFlail"&&phase==="Treffer"){
+        const second=f.moveStep>=4;
+        const r=h*(second?.095:.085);
+        const cx=f.x+f.face*h*(second?.43:.38);
+        const cy=GROUND-h*(second?.31:.56);
+        return {x:cx-r,y:cy-r,w:r*2,h:r*2,type:"melee"};
       }
-      if(f.key==="comet"&&f.moveElapsed>1950&&f.moveElapsed<2500){
+      if(f.key==="kame"&&f.moveStep>=11&&f.moveStep<=18&&foe){
         const hb=getHurtbox(foe);
-        return {x:hb.x-28,y:hb.y-55,w:hb.w+56,h:hb.h+80,type:"comet"};
+        const ox=f.x+f.face*h*0.28,tx=hb.x+hb.w*0.5;
+        const left=Math.min(ox,tx),right=Math.max(ox,tx);
+        const cy=GROUND-h*0.49;
+        return {x:left,y:cy-h*0.22,w:Math.max(32,right-left+40),h:h*0.44,type:"beam"};
       }
-      if(f.key==="choke"&&f.moveElapsed>360&&f.moveElapsed<1120){
+      if(f.key==="comet"&&f.moveStep>=18&&f.moveStep<=20&&foe){
         const hb=getHurtbox(foe);
-        return {x:hb.x-30,y:hb.y-70,w:hb.w+60,h:hb.h+110,type:"choke"};
+        return {x:hb.x-74,y:hb.y-92,w:hb.w+148,h:hb.h+150,type:"comet"};
+      }
+      if(f.key==="protonKick"&&f.moveStep>=14&&f.moveStep<=19&&foe){
+        const hb=getHurtbox(foe);
+        return {x:hb.x-54,y:hb.y-70,w:hb.w+108,h:hb.h+118,type:"proton"};
+      }
+      if(f.key==="sourMilkBurst"&&f.moveStep>=18&&f.moveStep<=19&&foe){
+        const hb=getHurtbox(foe);
+        const mouthX=f.x+f.face*h*0.11;
+        const mouthY=GROUND-h*0.57;
+        const targetX=hb.x+hb.w/2;
+        const left=Math.min(mouthX,targetX),right=Math.max(mouthX,targetX);
+        return {x:left,y:mouthY-h*0.12,w:Math.max(28,right-left),h:h*0.24,type:"sourMilk"};
       }
       return null;
     }
@@ -44,11 +62,24 @@
       if(key.startsWith("kickLow"))return "kickLow";
       if(key==="jumpKick")return "jumpKick";
       if(key==="headbutt")return "headbutt";
+      if(key==="brainFlail")return "brainFlail";
       return "special";
     }
     function attackInfo(key){
-      const type=attackTypeFromKey(key),base=ATTACKS[type];
-      return {...base,type,reaction:key==="comet"?"hitComet":key==="kame"?"hitBeam":base.reaction};
+      if(key==="kame"){
+        return {...ATTACKS.special,type:"special",reaction:"hitBeam",damage:32,range:9999,knock:160,blockChance:0.05};
+      }
+      if(key==="comet"){
+        return {...ATTACKS.special,type:"special",reaction:"hitComet",damage:34,range:9999,knock:168,blockChance:0.04};
+      }
+      if(key==="protonKick"){
+        return {...ATTACKS.special,type:"special",reaction:"hitBeam",damage:30,range:9999,knock:145,blockChance:0.08};
+      }
+      if(key==="sourMilkBurst"){
+        return {...ATTACKS.special,type:"special",reaction:"hitSourMilk",damage:24,range:9999,knock:54,blockChance:0.06};
+      }
+      const type=attackTypeFromKey(key),base=ATTACKS[type]||ATTACKS.punch;
+      return {...base,type};
     }
 
     const STARTUP=["Ausholen","Absenken","Absprung","Aufstieg","Aufladen","Arme hoch","Zurück"];
@@ -60,8 +91,9 @@
     }
     function decideBlock(defender,info){
       if(defender.ko||defender.move||defender.blockCool>0)return false;
-      let chance=info.type==="special"?.16:.32;
-      if(defender.health<40)chance+=.13;
+      let chance=info&&info.blockChance!=null?info.blockChance:(info.type==="special"?.16:.32);
+      if(defender.health<40)chance+=.08;
+      if(defender.cfg.key==="brainbug")chance*=.65;
       return Math.random()<chance;
     }
 
@@ -200,7 +232,7 @@
       if(activePlan.counter&&info.type!=="special"&&!evade){
         counterPending={f:defender,foe:attacker,delay:80+Math.random()*170};
       }
-      ui.status.textContent=specialCombo?"SPEZIAL-KOMBO":combo?"KAMPF-KOMBO":key==="kame"?"ENERGIESTRAHL":key==="comet"?"MICROWAVE METEOR":key==="protonKick"?"PROTON ROUNDHOUSE":key==="choke"?"NECK LOCK":choose(["ANGRIFF","DUELL","ACTION"]);
+      ui.status.textContent=specialCombo?"SPEZIAL-KOMBO":combo?"KAMPF-KOMBO":key==="kame"?"ENERGIESTRAHL":key==="comet"?"MICROWAVE METEOR":key==="protonKick"?"PROTON ROUNDHOUSE":key==="sourMilkBurst"?"SOUR MILK SURGE":key==="brainFlail"?"PANIK-FLAIL":choose(["ANGRIFF","DUELL","ACTION"]);
     }
 
     function director(dt){

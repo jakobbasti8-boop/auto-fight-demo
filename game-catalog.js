@@ -192,7 +192,7 @@ const MOVEMENT = {
     damage: { hit: 20, stagger: 21, air: 22, land: 23, down: 23, ko: 23,
               getUp: [23, 24, 0] },
     special: { key: "kame", sheet: "kame",
-               beamFrames: [12, 13, 14, 15, 16, 17, 18], clipAhead: 0.32 }
+               beamFrames: [], clipAhead: 0.55 }
   },
   kurz: {
     sheet: "kurz",

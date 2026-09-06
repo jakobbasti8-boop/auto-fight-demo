@@ -75,66 +75,6 @@
   ];
   SPECIAL_COMBOS.brainbug={name:"SOUR MILK SURGE",keys:["punchL","kickLowR","sourMilkBurst"]};
 
-  const brainbug=new Fighter({
-    name:"LT.BRAINBUG",short:"LT.BRAINBUG",key:"brainbug",specialKey:"sourMilkBurst",asset:"brainbug",
-    displayH:330,spriteZoom:.94,baseline:.052,hurtW:.43,startX:760,face:1,
-    scale:1.16,girth:.94,walkSpeed:.175,hair:"helmet",doctor:false,
-    col:{skin:"#d9a279",skinD:"#9f684c",hair:"#4a2e20",hairD:"#24150f",shirt:"#7c7449",shirtD:"#4d492e",
-      pants:"#69623e",pantsD:"#403c27",boot:"#3a2b1f",bootD:"#1d1712"}
-  });
-  allFighters.push(brainbug);
-  fighterByKey.brainbug=brainbug;
-  fighterLabel.brainbug="LT.BRAINBUG";
-
-  // Die Bildauswahl steht jetzt im Bewegungskatalog (game-catalog.js,
-  // MOVEMENT.brainbug) - hier ist keine eigene Zeilenrechnerei mehr noetig.
-
-  // During cooldown frame 22 he physically turns away from the opponent for 300 ms,
-  // then restores the original facing before scratching his head.
-  const baseBrainUpdate=Fighter.prototype.update;
-  Fighter.prototype.update=function(dt){
-    baseBrainUpdate.call(this,dt);
-    if(this.cfg.key!=="brainbug")return;
-    const wrong=this.key==="sourMilkBurst"&&this.move?.[this.moveStep]?.[2]==="Falsch gedreht";
-    if(wrong&&!this._brainWrongWay){
-      this.face*=-1;
-      this._brainWrongWay=true;
-    }else if(!wrong&&this._brainWrongWay){
-      this.face*=-1;
-      this._brainWrongWay=false;
-    }
-  };
-
-  const baseAttackInfo=attackInfo;
-  attackInfo=function(key){
-    if(key==="sourMilkBurst"){
-      return {...ATTACKS.special,type:"special",reaction:"hitSourMilk",damage:24,range:9999,knock:54,blockChance:.06};
-    }
-    if(key==="brainFlail")return {keys:["brainFlail"],reaction:"hitKickHigh",damage:17,range:270,knock:58,type:"brainFlail"};
-    return baseAttackInfo(key);
-  };
-
-  const baseActiveHitbox=activeHitbox;
-  activeHitbox=function(f,foe){
-    if(f.key==="sourMilkBurst"&&!f.hitResolved&&f.moveStep>=18&&f.moveStep<=19&&foe){
-      const h=f.cfg.displayH,hb=getHurtbox(foe);
-      const mouthX=f.x+f.face*h*.11;
-      const mouthY=GROUND-h*.57;
-      const targetX=hb.x+hb.w/2;
-      const left=Math.min(mouthX,targetX),right=Math.max(mouthX,targetX);
-      return {x:left,y:mouthY-h*.12,w:Math.max(28,right-left),h:h*.24,type:"sourMilk"};
-    }
-    if(f.key==="brainFlail"&&!f.hitResolved&&f.move?.[f.moveStep]?.[2]==="Treffer"){
-      const h=f.cfg.displayH;
-      const second=f.moveStep>=4;
-      const r=h*(second?.095:.085);
-      const cx=f.x+f.face*h*(second?.43:.38);
-      const cy=GROUND-h*(second?.31:.56);
-      return {x:cx-r,y:cy-r,w:r*2,h:r*2,type:"melee"};
-    }
-    return baseActiveHitbox(f,foe);
-  };
-
   function beamCell(idx){
     const entry=beamAsset.entry;
     return spriteRect(entry,clamp(idx|0,0,entry.cols-1));
@@ -196,12 +136,6 @@
     return baseBrainEffects(f,foe,time);
   };
 
-  const baseDecideBlock=decideBlock;
-  decideBlock=function(defender,info){
-    if(defender?.cfg?.key==="brainbug"&&Math.random()<.48)return false;
-    return baseDecideBlock(defender,info);
-  };
-
   const baseSetPlan=setPlan;
   setPlan=function(){
     baseSetPlan();
@@ -223,23 +157,4 @@
     if(sourSpecial)ui.status.textContent="SAURE-MILCH-STRAHL";
     else if(brainSpecial)ui.status.textContent="LOST PATROL";
   };
-
-  drawHitboxes=function(){
-    fighters.flatMap(a=>fighters.filter(d=>d!==a).map(d=>[a,d])).forEach(([a,d])=>{
-      const hurt=getHurtbox(a),hit=activeHitbox(a,d);
-      ctx.save();ctx.lineWidth=3;ctx.strokeStyle="rgba(70,195,255,.95)";ctx.fillStyle="rgba(70,195,255,.16)";
-      ctx.fillRect(hurt.x,hurt.y,hurt.w,hurt.h);ctx.strokeRect(hurt.x,hurt.y,hurt.w,hurt.h);
-      if(hit){ctx.strokeStyle="rgba(255,72,76,.98)";ctx.fillStyle="rgba(255,72,76,.2)";ctx.fillRect(hit.x,hit.y,hit.w,hit.h);ctx.strokeRect(hit.x,hit.y,hit.w,hit.h)}
-      ctx.restore();
-    });
-  };
-
-  document.querySelectorAll(".pick-row").forEach(row=>{
-    if(row.querySelector('[data-fighter="brainbug"]'))return;
-    const b=document.createElement("button");
-    b.className="pick";b.type="button";b.dataset.fighter="brainbug";b.setAttribute("aria-pressed","false");
-    b.textContent="Lt.BrainBug";
-    b.addEventListener("click",()=>selectTeam(row.dataset.side,"brainbug"));
-    row.appendChild(b);
-  });
 })();
