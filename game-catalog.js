@@ -72,27 +72,33 @@ if (typeof window !== "undefined") window.SPRITES = SPRITES;
    Spaltenzahl teilbar, und ein halbes Pixel Versatz zieht beim Skalieren
    einen Streifen der Nachbarzelle mit herein. */
 function spriteRect(entry, index) {
-  const w = entry.img.naturalWidth, h = entry.img.naturalHeight;
+  const w = entry.img.naturalWidth || entry.img.width || 2560;
+  const h = entry.img.naturalHeight || entry.img.height || 2560;
   if (entry.type === "strip") {
-    const n = entry.cols;
+    const n = Math.max(1, entry.cols || entry.modules || 1);
     const i = Math.max(0, Math.min(n - 1, index | 0));
-    const x0 = Math.round(i * w / n), x1 = Math.round((i + 1) * w / n);
-    return { sx: x0, sy: 0, sw: x1 - x0, sh: h };
+    const x0 = Math.round(i * w / n);
+    const x1 = Math.round((i + 1) * w / n);
+    return { sx: x0, sy: 0, sw: Math.max(1, x1 - x0), sh: h };
   }
-  const cols = entry.cols, rows = entry.rows;
+  const cols = Math.max(1, entry.cols || 1);
+  const rows = Math.max(1, entry.rows || 1);
   const i = Math.max(0, Math.min(cols * rows - 1, index | 0));
-  const c = i % cols, r = (i / cols) | 0;
-  const x0 = Math.round(c * w / cols), x1 = Math.round((c + 1) * w / cols);
-  const y0 = Math.round(r * h / rows), y1 = Math.round((r + 1) * h / rows);
-  return { sx: x0, sy: y0, sw: x1 - x0, sh: y1 - y0 };
+  const c = i % cols;
+  const r = (i / cols) | 0;
+  const x0 = Math.round(c * w / cols);
+  const x1 = Math.round((c + 1) * w / cols);
+  const y0 = Math.round(r * h / rows);
+  const y1 = Math.round((r + 1) * h / rows);
+  return { sx: x0, sy: y0, sw: Math.max(1, x1 - x0), sh: Math.max(1, y1 - y0) };
 }
 
-/* Zeichnet ein Einzelbild.
+/* Zeichnet ein Einzelbild mit standardisierter Zentrierung und Fussverankerung.
 
    opts.height   Koerperhoehe in Bildschirmpixeln (displayH)
-   opts.x        Bodenposition der Figur
+   opts.x        Bodenposition der Figur (X-Zentrum)
    opts.baseY    Bodenlinie (Standard: GROUND)
-   opts.face     Blickrichtung
+   opts.face     Blickrichtung (1 = rechts, -1 = links)
    opts.zoom     Anteil der Figur an der Zelle (Standard: aus dem Katalog)
    opts.scale    zusaetzlicher Faktor, z. B. fuer Explosionen
    opts.center   true = an der Bildmitte statt am Boden ausrichten
@@ -100,41 +106,40 @@ function spriteRect(entry, index) {
 function drawSprite(entry, index, opts) {
   if (!entry || !entry.ok) return false;
   const r = spriteRect(entry, index);
-  const zoom = opts.zoom || entry.spriteZoom || 1;
-  const base = opts.baseline == null ? entry.baseline : opts.baseline;
-  const dh = (opts.height / zoom) * (opts.scale || 1);
+  const zoom = opts.zoom != null ? opts.zoom : (entry.spriteZoom || 1.0);
+  const base = opts.baseline != null ? opts.baseline : (entry.baseline != null ? entry.baseline : 0.0);
+  const scale = opts.scale != null ? opts.scale : 1.0;
+  const dh = (opts.height / zoom) * scale;
   const dw = dh * (r.sw / r.sh);
-  const baseY = opts.baseY == null ? GROUND : opts.baseY;
+  const baseY = opts.baseY != null ? opts.baseY : GROUND;
   const flip = opts.face != null && opts.face !== entry.defaultFacing;
 
+  const posX = Math.round(opts.x);
+  const posY = Math.round(opts.center ? baseY : (baseY + dh * base));
+  const drawX = Math.round(-dw * 0.5);
+  const drawY = Math.round(opts.center ? -dh * 0.5 : -dh);
+
   ctx.save();
-  ctx.translate(Math.round(opts.x), Math.round(baseY + dh * base));
+  ctx.translate(posX, posY);
   if (flip) ctx.scale(-1, 1);
-  // Die Blaetter sind gezeichnete Grafik, keine Pixel-Art: hartes
-  // Nearest-Neighbour laesst die Kanten beim Skalieren flimmern.
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
   if (opts.alpha != null) ctx.globalAlpha = opts.alpha;
-  const dy = opts.center ? -dh / 2 : -dh;
-  ctx.drawImage(entry.img, r.sx, r.sy, r.sw, r.sh, -dw / 2, dy, dw, dh);
-  if (opts.tint && opts.tintAlpha > 0) {
-    drawTinted(entry.img, r.sx, r.sy, r.sw, r.sh, -dw / 2, dy, dw, dh,
+
+  ctx.drawImage(entry.img, r.sx, r.sy, r.sw, r.sh, drawX, drawY, Math.round(dw), Math.round(dh));
+
+  if (opts.tint && opts.tintAlpha > 0 && typeof drawTinted === "function") {
+    drawTinted(entry.img, r.sx, r.sy, r.sw, r.sh, drawX, drawY, Math.round(dw), Math.round(dh),
       opts.tint, opts.tintAlpha);
   }
   ctx.restore();
   return true;
 }
 
-/* Portrait-Ausschnitt aus dem Blatt bestimmen.
-
-   Der Kopf wird nicht geraten, sondern gemessen: im ersten Einzelbild wird
-   die Deckung im obersten Fuenftel der Silhouette ausgewertet und daraus der
-   waagerechte Schwerpunkt gebildet. Bei Figuren mit weit fliegendem Haar
-   liegt der Kopf sonst deutlich neben der Bildmitte. */
+/* Portrait-Ausschnitt aus dem Blatt bestimmen. */
 function portraitRect(entry) {
   const def = (window.SPRITE_CATALOG || {})[entry.key];
   if (def && def.portrait) return def.portrait;
-  // Rueckfall, falls der Katalog aelter ist als diese Datei
   const r = spriteRect(entry, 0);
   const box = (entry.frames && entry.frames[0] && entry.frames[0].bbox)
     || [0, 0, r.sw, r.sh];
@@ -147,31 +152,28 @@ function portraitRect(entry) {
   };
 }
 
-/* Zoom und Bodenlinie stammen aus der Messung im Katalog - damit muss im
-   Spiel nichts mehr von Hand nachjustiert werden. */
+/* Zoom und Bodenlinie stammen aus der Messung im Katalog. */
 function applyCatalogMetrics() {
-  const map = { bob: "bob", kurz: "kurz", nova: "theresa", brainbug: "brainbug", mcmoney: "mcmoney", drslop: "drslop" };
+  const map = {
+    bob: "bob",
+    kurz: "kurz",
+    nova: "theresa",
+    brainbug: "brainbug",
+    mcmoney: "mcmoney",
+    drslop: "drslop"
+  };
   for (const key of Object.keys(map)) {
     const fighter = (typeof fighterByKey !== "undefined") && fighterByKey[key];
     const entry = SPRITES.get(map[key]);
-    if (!fighter || !entry || !entry.spriteZoom) continue;
-    fighter.cfg.spriteZoom = entry.spriteZoom;
-    fighter.cfg.baseline = entry.baseline;
+    if (!fighter || !entry) continue;
+    if (entry.spriteZoom) fighter.cfg.spriteZoom = entry.spriteZoom;
+    if (entry.baseline != null) fighter.cfg.baseline = entry.baseline;
   }
 }
 
 /* ------------------------------------------------------------------ */
-/* 2. Bewegungskatalog                                                 */
+/* 2. Bewegungskatalog & Standard-Raster                               */
 /* ------------------------------------------------------------------ */
-
-/* Grundraster aller vier Blaetter:
-     Zeile 0  Kampfstellung
-     Zeile 1  Laufen / Sprint
-     Zeile 2  Schlagfolge
-     Zeile 3  Trittfolge
-     Zeile 4  Treffer, Sturz, k. o., Aufstehen
-   Die Trefferzeile unterscheidet sich pro Figur, deshalb steht sie
-   ausgeschrieben statt als Spaltenrechnung. */
 
 const MOVEMENT_DEFAULT = {
   idle: { frames: [0, 1, 2, 3, 4], rate: 4.2 },
@@ -188,16 +190,17 @@ const MOVEMENT_DEFAULT = {
 const MOVEMENT = {
   bob: {
     sheet: "bob",
-    walk: { frames: [5, 6, 7, 9], rate: 1.0 },
+    walk: { frames: [5, 6, 7, 8, 9], rate: 1.0 },
     jump: { crouch: 15, rise: 8, strike: 18, fall: 9, land: 19 },
     damage: { hit: 20, stagger: 21, air: 22, land: 23, down: 23, ko: 23,
               getUp: [23, 24, 0] },
     special: { key: "kame", sheet: "kame",
-               beamFrames: [], clipAhead: 0.55 }
+               beamFrames: [10, 11, 12, 13, 14, 15, 16, 17, 18], clipAhead: 0.35 }
   },
   kurz: {
     sheet: "kurz",
     walk: { frames: [5, 6, 7, 8, 9], rate: 1.0 },
+    jump: { crouch: 15, rise: 8, strike: 18, fall: 9, land: 19 },
     damage: { hit: 20, stagger: 21, air: 22, land: 23, down: 24, ko: 24,
               getUp: [23, 21, 0] },
     special: { key: "comet", sheet: "kurz-comet",
@@ -205,11 +208,9 @@ const MOVEMENT = {
   },
   nova: {
     sheet: "theresa",
-    walk: { frames: [5, 6, 7], rate: 1.0 },
+    walk: { frames: [5, 6, 7, 8, 9], rate: 1.0 },
     run: { frames: [8, 9] },
     jump: { crouch: 15, rise: 8, strike: 18, fall: 9, land: 19 },
-    // 20 Treffer, 21 auf dem Ruecken, 22 am Boden sitzend,
-    // 23 Flug, 24 Aufrichten
     damage: { hit: 20, stagger: 24, air: 23, land: 21, down: 22, ko: 21,
               getUp: [22, 24, 0] },
     special: { key: "protonKick", sheet: "theresa-proton",
@@ -217,11 +218,10 @@ const MOVEMENT = {
   },
   brainbug: {
     sheet: "brainbug",
-    // Bei ihm sitzt der Leerlauf in Zeile 0 und die Verwirrten-Gesten in
-    // Zeile 1 - er laeuft deshalb mit den Leerlaufbildern.
     idle: { frames: [0, 1, 2, 3, 4], rate: 2.2 },
     walk: { frames: [0, 1, 2, 3, 4], rate: 1.0 },
     gesture: { frames: [5, 6, 7, 8, 9], rate: 2.2 },
+    jump: { crouch: 15, rise: 8, strike: 18, fall: 9, land: 19 },
     damage: { hit: 20, stagger: 21, air: 22, land: 23, down: 24, ko: 24,
               getUp: [23, 22, 21] },
     special: { key: "sourMilkBurst", sheet: "brainbug-sourmilk",
@@ -236,6 +236,18 @@ const MOVEMENT = {
               getUp: [24, 0] },
     special: { key: "kapitalCrash", sheet: "mcmoney-special",
                fxOnly: [16, 17, 18], fxPose: 11, fxScale: 1.5, fxDrop: 16 }
+  },
+  drslop: {
+    sheet: "drslop",
+    idle: { frames: [0, 1, 2, 3, 4], rate: 4.2 },
+    walk: { frames: [5, 6, 7, 8, 9], rate: 1.2 },
+    guard: 4,
+    punch: { wind: 0, hit: [1, 2], alt: 1, recover: 4 },
+    kickHigh: { wind: 2, hit: [2, 3], back: 2, recover: 4 },
+    kickLow: { wind: 2, hit: [2, 3], recover: 4 },
+    jump: { crouch: 3, rise: 3, strike: 3, fall: 3, land: 4 },
+    damage: { hit: 5, stagger: 6, air: 7, land: 8, down: 8, ko: 8, getUp: [9, 0] },
+    special: { key: "slopKiHack", sheet: "drslop-sp1" }
   }
 };
 
@@ -306,7 +318,7 @@ function catalogIndex(f) {
     return d.hit;
   }
 
-  if (key === "jumpKick") {
+  if (key === "jumpKick" || key === "slopJumpKick") {
     const j = m.jump;
     if (phase === "Absprung") return j.crouch;
     if (phase === "Aufstieg") return j.rise;
@@ -316,27 +328,26 @@ function catalogIndex(f) {
     return j.land;
   }
 
-  if (key.startsWith("punch") || key === "headbutt") {
+  if (key.startsWith("punch") || key.startsWith("slopPunch") || key === "slopHaymaker" || key === "headbutt" || key === "brainFlail") {
     const p = m.punch;
-    if (phase === "Ausholen") return p.wind;
-    if (phase === "Treffer") return pickPair(p.hit, step - 1);
+    if (phase.includes("Ausholen")) return p.wind;
+    if (phase.includes("Treffer")) return pickPair(p.hit, step - 1);
     return p.recover;
   }
 
-  if (key.startsWith("kickHigh")) {
+  if (key.startsWith("kickHigh") || key.startsWith("slopKickHigh")) {
     const k = m.kickHigh;
-    if (phase === "Ausholen") return k.wind;
-    if (phase === "Treffer") return pickPair(k.hit, step - 1);
-    if (phase === "Zurück") return k.back;
+    if (phase.includes("Ausholen")) return k.wind;
+    if (phase.includes("Treffer")) return pickPair(k.hit, step - 1);
+    if (phase.includes("Zurück")) return k.back != null ? k.back : k.wind;
     return k.recover;
   }
 
-  if (key.startsWith("kickLow")) {
+  if (key.startsWith("kickLow") || key.startsWith("slopKickLow")) {
     const k = m.kickLow;
-    if (phase === "Absenken") return k.wind;
-    if (phase === "Ausholen") return k.wind;
-    if (phase === "Treffer") return pickPair(k.hit, step - 2);
-    if (phase === "Zurück") return k.recover;
+    if (phase.includes("Absenken") || phase.includes("Ausholen")) return k.wind;
+    if (phase.includes("Treffer")) return pickPair(k.hit, step - 2);
+    if (phase.includes("Zurück")) return k.recover;
     return k.recover;
   }
 
@@ -362,9 +373,6 @@ function drawFighterCatalog(f, foe) {
       const idx = Math.max(0, Math.min(entry.cols * entry.rows - 1, f.moveStep | 0));
       const fxOnly = sp.fxOnly && sp.fxOnly.indexOf(idx) >= 0;
       if (fxOnly) {
-        /* Reine Explosionsbilder gehoeren an den Gegner. Frueher verschwand
-           die Angreiferin dabei komplett - jetzt bleibt sie in ihrer
-           Trittpose stehen, waehrend die Detonation am Ziel sitzt. */
         const base = SPRITES.get(m.sheet);
         if (base && base.ok) {
           drawSprite(base, sp.fxPose == null ? m.kickHigh.hit[0] : sp.fxPose, {
@@ -379,11 +387,6 @@ function drawFighterCatalog(f, foe) {
         });
         return true;
       }
-      /* In einigen Katalogbildern ist der Strahl mit ins Bild gezeichnet und
-         endet hart an der Zellkante. Sichtbar wird das als Rechteck mitten in
-         der Arena. Fuer diese Bilder wird die Figur kurz hinter der Hand
-         abgeschnitten - den Rest uebernimmt der modulare Strahl, dessen
-         Muendungsmodul die Schnittkante verdeckt. */
       const clipped = sp.beamFrames && sp.beamFrames.indexOf(idx) >= 0;
       if (clipped) ctx.save();
       if (clipped) {

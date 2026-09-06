@@ -42,26 +42,8 @@
     ["idleA",     150, "Bereit"]                 // 25: Kampfbereit
   ];
 
-  // HD-Effektmodule aus tools/source/bob_beam.png
-  const beamAssets = {
-    start:  { src: "assets/bob-beam-start.webp",  img: new Image(), ok: false },
-    mid1:   { src: "assets/bob-beam-mid.webp",    img: new Image(), ok: false },
-    mid2:   { src: "assets/bob-beam-mid2.webp",   img: new Image(), ok: false },
-    tip:    { src: "assets/bob-beam-tip.webp",    img: new Image(), ok: false },
-    impact: { src: "assets/bob-beam-impact.webp", img: new Image(), ok: false }
-  };
-
-  Object.values(beamAssets).forEach(part => {
-    part.img.onload = () => { part.ok = true; };
-    part.img.src = part.src;
-  });
-
-  function allAssetsReady() {
-    return Object.values(beamAssets).every(p => p.ok);
-  }
-
-  // Hilfsfunktion: Alter 5er-Atlas als Notfall-Rückfall
-  function beamFallbackEntry() {
+  // 5-teiliger konsolidierter HD-Beam-Atlas aus assets/kame-beam.webp
+  function getKameBeam() {
     const e = SPRITES.get("kame-beam");
     return e && e.ok ? e : null;
   }
@@ -234,8 +216,11 @@
     ctx.translate(originX, originY);
     if (f.face < 0) ctx.scale(-1, 1);
 
-    const useHD = allAssetsReady();
-    const fb = beamFallbackEntry();
+    const fb = getKameBeam();
+    if (!fb) {
+      ctx.restore();
+      return;
+    }
 
     // Modulbreite (Originalverhältnis beibehalten)
     const muzzleW = beamH * (289 / 512);
@@ -251,12 +236,8 @@
     ctx.globalAlpha = beamAlpha;
 
     // 1. Mündungsmodul (Start-Bloom um Bobs Hände)
-    if (useHD) {
-      ctx.drawImage(beamAssets.start.img, -muzzleW * 0.35, drawY, muzzleW, beamH);
-    } else if (fb) {
-      const r0 = spriteRect(fb, 0);
-      ctx.drawImage(fb.img, r0.sx, r0.sy, r0.sw, r0.sh, -muzzleW * 0.35, drawY, muzzleW, beamH);
-    }
+    const r0 = spriteRect(fb, 0);
+    ctx.drawImage(fb.img, r0.sx, r0.sy, r0.sw, r0.sh, -muzzleW * 0.35, drawY, muzzleW, beamH);
 
     // 2. Strahl-Körper (Mittelstücke nahtlos kacheln bis zur aktuellen Länge)
     let curX = muzzleW * 0.55;
@@ -265,13 +246,8 @@
 
     while (curX < maxBodyX) {
       const pieceW = Math.min(midW, maxBodyX - curX + overlap);
-      if (useHD) {
-        const midImg = (loopIdx % 2 === 0) ? beamAssets.mid1.img : beamAssets.mid2.img;
-        ctx.drawImage(midImg, curX, drawY, midW, beamH);
-      } else if (fb) {
-        const rMid = spriteRect(fb, 1 + (loopIdx % 2));
-        ctx.drawImage(fb.img, rMid.sx, rMid.sy, rMid.sw, rMid.sh, curX, drawY, midW, beamH);
-      }
+      const rMid = spriteRect(fb, 1 + (loopIdx % 2));
+      ctx.drawImage(fb.img, rMid.sx, rMid.sy, rMid.sw, rMid.sh, curX, drawY, midW, beamH);
       curX += midW - overlap;
       loopIdx++;
     }
@@ -279,12 +255,8 @@
     // 3. Strahl-Spitze (Speerspitze am Kopf des Strahls)
     if (grow < 0.98 || step <= 11) {
       const tipX = Math.max(muzzleW * 0.6, currentLen - tipW * 0.85);
-      if (useHD) {
-        ctx.drawImage(beamAssets.tip.img, tipX, drawY, tipW, beamH);
-      } else if (fb) {
-        const rTip = spriteRect(fb, 3);
-        ctx.drawImage(fb.img, rTip.sx, rTip.sy, rTip.sw, rTip.sh, tipX, drawY, tipW, beamH);
-      }
+      const rTip = spriteRect(fb, 3);
+      ctx.drawImage(fb.img, rTip.sx, rTip.sy, rTip.sw, rTip.sh, tipX, drawY, tipW, beamH);
     }
 
     // 4. DBZ Glow-Effekt: Gleißender weißer Laser-Kern & Ki-Spiralen (Additives Blending)
@@ -339,12 +311,8 @@
       // Leichte dynamische Drehung der Detonation
       ctx.rotate(time * 4);
 
-      if (useHD) {
-        ctx.drawImage(beamAssets.impact.img, -expSize * 0.5, -expSize * 0.5, expSize, expSize);
-      } else if (fb) {
-        const rImp = spriteRect(fb, 4);
-        ctx.drawImage(fb.img, rImp.sx, rImp.sy, rImp.sw, rImp.sh, -expSize * 0.5, -expSize * 0.5, expSize, expSize);
-      }
+      const rImp = spriteRect(fb, 4);
+      ctx.drawImage(fb.img, rImp.sx, rImp.sy, rImp.sw, rImp.sh, -expSize * 0.5, -expSize * 0.5, expSize, expSize);
 
       // Additive Detonations-Schockwellen & Funken
       ctx.globalCompositeOperation = "lighter";
