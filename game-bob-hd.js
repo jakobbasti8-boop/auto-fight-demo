@@ -42,15 +42,80 @@
     ["kmFire",130,"Nachhall"],            // 20
     ["kmSink",130,"Rückstoß"],            // 21
     ["kmSink",150,"Erschöpft"],           // 22
-    ["idleB",130,"Aufrichten"],           // 23
+    ["idleB",130,"Aufrichten"],            // 23
     ["idleA",120,"Deckung"],              // 24
     ["idleA",160,"Erholung"]              // 25
   ];
 
+  // Exact semantic mapping for the supplied normal-animation sheet:
+  // row 1 idle, row 2 walk/run, row 3 crouch/punch/guard,
+  // row 4 kick sequence, row 5 hit/knockdown/KO.
+  function bobBaseFrame(f){
+    if(f.ko)return {row:4,col:4};
+    if(!f.move){
+      if(Math.abs(f.vx)>.01){
+        let col=Math.floor(f.walkCycle)%5;
+        if(f.vx*f.face<0)col=4-col;
+        return {row:1,col};
+      }
+      return {row:0,col:Math.floor(f.idleTime*4.2)%5};
+    }
+
+    const key=f.key||"",step=f.moveStep|0,phase=f.move?.[step]?.[2]||"";
+
+    if(key.startsWith("block"))return {row:2,col:4};
+
+    if(key.startsWith("hit")){
+      if(phase==="Aufstehen"){
+        const k=clamp(f.stepElapsed/(f.move?.[step]?.[1]||1),0,.999);
+        return k<.34?{row:4,col:3}:k<.68?{row:4,col:2}:{row:4,col:1};
+      }
+      if(phase==="Am Boden"||phase==="Aufschlag")return {row:4,col:4};
+      if(phase==="Wegfliegen")return {row:4,col:2};
+      if(phase==="Taumeln"||phase==="Getroffen")return {row:4,col:1};
+      return {row:4,col:0};
+    }
+
+    if(key.startsWith("punch")){
+      if(phase==="Ausholen")return {row:2,col:1};
+      if(phase==="Treffer")return {row:2,col:step%2?3:2};
+      return {row:2,col:4};
+    }
+
+    if(key==="headbutt"){
+      if(phase==="Ausholen")return {row:2,col:0};
+      if(phase==="Treffer")return {row:2,col:3};
+      return {row:2,col:4};
+    }
+
+    if(key.startsWith("kickHigh")){
+      if(phase==="Ausholen"||phase==="Zurück")return {row:3,col:step%2?1:0};
+      if(phase==="Treffer")return {row:3,col:step%2?3:2};
+      return {row:3,col:4};
+    }
+
+    if(key.startsWith("kickLow")){
+      if(phase==="Absenken")return {row:2,col:0};
+      if(phase==="Ausholen"||phase==="Zurück")return {row:3,col:1};
+      if(phase==="Treffer")return {row:3,col:2};
+      return {row:3,col:4};
+    }
+
+    if(key==="jumpKick"){
+      if(phase==="Absprung")return {row:2,col:0};
+      if(phase==="Aufstieg")return {row:3,col:0};
+      if(phase==="Treffer")return {row:3,col:3};
+      if(phase==="Fallen")return {row:3,col:1};
+      if(phase==="Landung")return {row:3,col:4};
+    }
+
+    return f.spriteFrame();
+  }
+
   function bobNormalFrame(f){
     const asset=spriteAssets.bob;
     if(!asset.sheet)return false;
-    const frame=f.spriteFrame(),r=frameRect(asset,frame.row,frame.col);
+    const frame=bobBaseFrame(f),r=frameRect(asset,frame.row,frame.col);
     const dh=f.cfg.displayH/(f.cfg.spriteZoom||1),dw=dh*(r.sw/r.sh);
     const flip=f.face!==asset.defaultFacing;
     ctx.save();
@@ -123,7 +188,6 @@
     ctx.rect(-size*.52,-size*.58,len+size*1.12,size*1.16);
     ctx.clip();
 
-    // START module is centered on the palms; LOOP A/B repeat to any opponent distance.
     beamPiece(0,-size*.48,-size*.5,size,size);
     let x=size*.42,n=0;
     while(x<len-size*.58){
@@ -131,11 +195,9 @@
       x+=size-overlap;
       n++;
     }
-    // Rounded beam head always sits at the current end of the growing beam.
     beamPiece(3,len-size*.48,-size*.5,size,size);
     ctx.restore();
 
-    // Separate impact sprite is overlaid on the opponent after the collision resolves.
     if(f.hitResolved&&step<=19){
       const impact=h*.96;
       const cy=hb.y+hb.h*.48;
@@ -145,8 +207,6 @@
     }
   }
 
-  // Use the HD base atlas for every ordinary Dr. BOB pose and the dedicated
-  // 25-frame atlas only while Kamehameha is active.
   const baseBobDrawFighter=drawFighter;
   drawFighter=function(f,time){
     if(f?.cfg?.key==="bob"){
@@ -156,8 +216,6 @@
     return baseBobDrawFighter(f,time);
   };
 
-  // Replace only Dr. BOB's legacy beam renderer; all other fighter effects keep
-  // the existing chain (Theresa, KurzDurch, BrainBug, generic FX).
   const baseBobEffects=effects;
   effects=function(f,foe,time){
     if(f?.cfg?.key==="bob"&&f.key==="kame"){
@@ -167,8 +225,6 @@
     return baseBobEffects(f,foe,time);
   };
 
-  // Synchronise collision with the visible modular beam. Hit becomes active only
-  // on the sustained firing frames 12-18.
   const baseBobHitbox=activeHitbox;
   activeHitbox=function(f,foe){
     if(f?.cfg?.key==="bob"&&f.key==="kame"){
