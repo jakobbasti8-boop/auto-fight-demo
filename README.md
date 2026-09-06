@@ -1,11 +1,18 @@
-# AUTO FIGHT — Dr. BOB vs. KurzDurch vs. Theresa MachsLochuff
+# AUTO FIGHT DEMO HD
 
-Eine 2D-Kampfdemo ohne Build-System, Server oder externe Abhängigkeiten.
-`index.html` im Browser öffnen und es läuft. Runtime, Sprites und Effekte liegen direkt im Repository;
-die Demo bleibt vollständig lokal und offline nutzbar.
+Browserbasierte 2D-Auto-Fight-Demo mit vier auswählbaren Kämpfern, HD-Spritekatalogen, Hit-/Hurtboxen, Kombos, Kontern, Blocks und individuellen Spezialattacken.
 
-Zwei Kämpfer treten gegeneinander an, gesteuert von einem Regie-Algorithmus ("Director"),
-der Angriffe, Kombos, Blocks, Konter und Spezialattacken plant.
+Die Runtime besteht aus HTML, CSS und JavaScript ohne npm-/Build-Schritt. Für einen zuverlässigen Start sollte das Repository über einen **lokalen HTTP-Server** geöffnet werden; `file://` ist nicht der empfohlene Betriebsweg.
+
+## Aktueller Stand
+
+- **4 Kämpfer:** Dr. BOB, KurzDurch, Theresa MachsLochuff und Lt.BrainBug
+- Zwei unterschiedliche Kämpfer werden vor jeder Runde ausgewählt.
+- Der Kampf läuft vollautomatisch über den Director.
+- Treffer reduzieren Lebenspunkte; bei 0 HP folgt K. o., Gewinneranzeige und **Neuer Kampf**.
+- Debug-Hitboxen können im laufenden Spiel eingeblendet werden.
+- Spezialattacken besitzen eigene 25-Frame-Kataloge bzw. modulare Effekt-Assets.
+- Die Canvas-Logik läuft intern auf **1536 × 864** und wird für Desktop/Handy nur visuell skaliert.
 
 ![Kamehameha](docs/kamehameha.jpg)
 
@@ -13,134 +20,165 @@ der Angriffe, Kombos, Blocks, Konter und Spezialattacken plant.
 
 ## Schnellstart
 
-```bash
-# einfach öffnen
-xdg-open index.html      # Linux
-open index.html          # macOS
-start index.html         # Windows
+### Windows / PowerShell
+
+```powershell
+cd auto-fight-demo
+py -m http.server 8080
 ```
 
-Im Startmenü links und rechts je einen Kämpfer wählen → **Demo starten**.
-Der Kampf läuft von allein weiter, bis einer k. o. geht.
+Danach im Browser öffnen:
+
+```text
+http://localhost:8080
+```
+
+### Linux / macOS / Termux
+
+```bash
+cd auto-fight-demo
+python -m http.server 8080
+```
+
+Danach ebenfalls `http://localhost:8080` öffnen.
+
+Im Startmenü links und rechts je einen **unterschiedlichen** Kämpfer wählen und **Demo starten** drücken.
 
 | Bedienung | Wirkung |
 |---|---|
-| Karten im Startmenü | Kämpfer für linke / rechte Seite wählen |
-| **Demo starten** | Kampf beginnt |
-| **Neuer Kampf** | nächste Runde mit derselben Paarung |
-| **Hitboxen** (unten rechts) | Trefferzonen einblenden |
+| Kämpferkarten | linke/rechte Seite auswählen |
+| **Demo starten** | neue Auto-Fight-Runde starten |
+| **Neuer Kampf** | nächste Runde mit derselben Auswahl |
+| **Hitboxen** | Hurtboxen und aktive Trefferzonen anzeigen |
 
 ![Charakterauswahl](docs/charakterauswahl.jpg)
 
 ---
 
-## Die Kämpfer
+## Kämpfer und Spezialattacken
 
-| Kämpfer | Statur | Spezial | Kombos |
+| Kämpfer | Profil | Spezial | Kernwerte |
 |---|---|---|---|
-| **Dr. BOB** | groß, weiter Kittel | `kame` — **Kamehameha**, Energiestrahl quer über den Bildschirm | DOC RUSH, REDLINE |
-| **KurzDurch** | schwer, kurze Reichweite | `comet` — **MICROWAVE METEOR**, Mikrowellenhelm + roter Blitzkomet | BRAID BLITZ, GROUND BREAK |
-| **Theresa MachsLochuff** | leicht, schnell | `protonKick` — **PROTON ROUNDHOUSE**, gelb-lila geladener Roundhouse | WHITE FANG, AIR STING |
+| **Dr. BOB** | groß, Arztkittel, HD-Basisatlas | **Kamehameha** (`kame`) | 20 Schaden, 92 Knockback, modularer Distanz-Strahl |
+| **KurzDurch** | kompakt, kurze Reichweite | **MICROWAVE METEOR** (`comet`) | 34 Schaden, 168 Knockback |
+| **Theresa MachsLochuff** | leicht und schnell | **PROTON ROUNDHOUSE** (`protonKick`) | 30 Schaden, 145 Knockback |
+| **Lt.BrainBug** | unberechenbarer Kampfstil | **SOUR MILK SURGE** (`sourMilkBurst`) | 24 Schaden, 54 Knockback, kurze Betäubungsreaktion |
 
-![NECK LOCK](docs/neck-lock.jpg)
+Die vollständigen Abläufe und Trefferfenster stehen in [SPECIALS.md](SPECIALS.md).
 
 ---
 
-## Wie die Sprites aufgebaut sind
+## Sprite- und Asset-System
 
-Jede Figur hat ein **5×5-Blatt = 25 Einzelbilder**, das die Engine nach Zeile liest:
+Die normalen Kämpferatlanten sind überwiegend als **5 × 5 Raster mit 25 Frames** aufgebaut. Die Engine liest daraus Idle-, Lauf-, Schlag-, Tritt- und Treffer-/K.-o.-Posen.
 
-| Zeile | Inhalt |
-|---|---|
-| 0 | Kampfstellung (Leerlauf) |
-| 1 | Laufen |
-| 2 | Schlag |
-| 3 | Tritt / Sprungtritt |
-| 4 | Treffer, Sturz, k. o., Aufstehen |
+Wichtige Produktionsregeln:
 
-Dr. BOB hat zusätzlich ein **zweites Blatt nur für den Kamehameha** (25 Bilder:
-Aufladen → Abschuss → Strahlsegmente → Einschlag → Nachhall).
+1. **Gemeinsame Bodenlinie:** Die sichtbare Figur muss in jeder Zelle auf derselben Baseline stehen.
+2. **Fuß-Verankerung:** Die Figur wird an ihrer Fußposition statt blind an der Zellmitte ausgerichtet. Dadurch bleiben Hurtbox und Sprite bei Posewechseln deckungsgleich.
+3. **Transparente Zellränder:** Normale Produktionsframes sollen keine Greenscreen-, Raster- oder schwarzen Restflächen besitzen.
+4. **Effektmodule:** Strahlen können aus Start-, Loop-, Kopf- und Impact-Modulen zusammengesetzt werden, damit die Reichweite dynamisch bleibt.
 
-### Zwei Regeln, an denen die ganze Darstellung hängt
+Aktuelle zentrale Assets:
 
-**1. Gemeinsame Bodenlinie.** Jedes Einzelbild wird beim Aufbereiten so in seine
-460-px-Zelle gesetzt, dass die Unterkante der Figur immer auf derselben Höhe liegt.
-Dadurch stehen alle drei Kämpfer exakt auf dem Boden der Arena, ohne pro Figur
-nachjustieren zu müssen.
-
-**2. Fuß-Verankerung.** Jedes Bild wird waagerecht am **Mittelpunkt der Füße**
-(unterste 18 % der Silhouette) ausgerichtet, nicht an der Bildmitte. Ohne das wandert
-die gezeichnete Figur von Pose zu Pose hin und her, während Hurt- und Hitbox an der
-Spielposition kleben — die Boxen scheinen dann zu „springen". Mit Fuß-Verankerung
-sitzen sie fest an der Figur.
+```text
+assets/background.webp
+assets/bob.webp
+assets/kame.webp
+assets/kame-beam.webp
+assets/kurz.webp
+assets/kurz-comet-row-1.webp ... row-5.webp
+assets/nova.webp
+assets/theresa-proton-row-1.webp ... row-5.webp
+assets/brainbug.webp
+assets/brainbug-sourmilk-special.webp
+assets/brainbug-sourmilk-beam.webp
+```
 
 ![Hitboxen](docs/hitboxen.jpg)
 
-Pro Figur hält die Engine dazu drei Werte:
+---
 
-| Wert | Bedeutung |
+## Engine-Architektur
+
+Die Demo verwendet bewusst keine Bundler- oder Modul-Runtime. Alle Dateien teilen sich den globalen Browser-Kontext.
+
+### Kernmodule
+
+| Datei | Aufgabe |
 |---|---|
-| `displayH` | Körperhöhe auf dem Bildschirm in Pixeln — Bezugsgröße für alle Trefferzonen |
-| `spriteZoom` | Anteil der Figur an der 460-px-Zelle; daraus ergibt sich die Zeichengröße |
-| `baseline` | Abstand der Bodenlinie zur Zellunterkante |
-| `hurtW` | Breite der Trefferzone als Anteil von `displayH` |
+| `game-boot.js` | Canvas, Assets, globale Konstanten, Posen und Loader |
+| `game-moves.js` | Moves, Attack-Werte, Kombos und FX-Helfer |
+| `game-fighter.js` | `Fighter`-Klasse, Basis-Kämpfer und Zustände |
+| `game-director.js` | Distanzplanung, Angriffsregie, Block/Counter, Kollision und Schaden |
+| `game-render.js` | Rendering, HUD, Auswahl, Reset, Main Loop und Debug-Hooks |
+| `game-brainbug.js` | Lt.BrainBug, Sour-Milk-Spezial, AI-/Render-Erweiterungen |
+| `game-specials.js` | Theresa- und KurzDurch-Spezialkataloge |
+| `game-bob-hd.js` | Dr.-BOB-HD-Mapping und modularer Kamehameha-Strahl |
+
+**Wichtig:** Die Reihenfolge der `<script>`-Tags in `index.html` ist Teil der Architektur. Die später geladenen Fighter-/Special-Dateien wrappen vorhandene Funktionen wie `drawFighter`, `effects`, `activeHitbox`, `attackInfo` und `decideBlock`. Die Reihenfolge darf daher nicht beliebig geändert werden.
+
+Mehr Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 
-## Wie die Engine arbeitet
+## Kampflogik
 
-**`P`** — Posen-Tabelle mit Gelenkpunkten (Becken, Wirbelsäule, Hände, Füße, Kopf).
-Sie steuert Timing und Trefferzonen; gezeichnet wird das passende Sprite.
+Der Director wählt Angreifer und Verteidiger, plant Distanz, Finten und Angriffstyp und startet anschließend Einzelangriffe, normale Kombos oder Spezialkombos.
 
-**`MOVES`** — jede Aktion als Liste von `[Pose, Dauer in ms, Phasenname]`.
-Der Phasenname („Ausholen", „Treffer", „Erholung") entscheidet, wann eine Attacke
-scharf ist und ob ein Gegentreffer als **COUNTER** zählt.
+Die Trefferpipeline ist:
 
-**`ATTACKS`** — Schaden, Reichweite, Rückstoß und die Trefferreaktion pro Angriffsart.
-
-**`director(dt)`** — die Regie. Sie würfelt Angriffe, hält Abstand, plant Finten
-(`feint` → `approach` → `attack`), lässt Kombos laufen und setzt Konter an.
-Etwa jeder dritte Schlagabtausch ist eine Kette, ein kleinerer Teil endet mit einer
-Spezialattacke; unter 35 Lebenspunkten steigt deren Wahrscheinlichkeit.
-
-**Trefferprüfung** — `getHurtbox()` liefert die Trefferzone (fest an der Figur),
-`activeHitbox()` die aktive Angriffszone der laufenden Aktion. Überschneiden sie sich,
-läuft `dealHit()`: Block, Counter, Schaden, Rückstoß, Bildschirmruckeln, Trefferstopp,
-Funken und Kombozähler.
-
-**FX-Engine** — Pixelfunken, Staub, Ringe, Speedlines und Trefferzahlen als eigenes
-Partikelsystem über dem Canvas.
-
----
-
-## Konsolen-Hooks zum Testen
-
-In der Browser-Konsole (F12):
-
-```js
-__forceSpecial('left')    // Spezial der linken Seite sofort auslösen
-__forceSpecial('right')   // dasselbe für rechts
-__probeFight()            // aktueller Zustand beider Kämpfer (Aktion, Phase, Zeit, x)
+```text
+Director → Move/Phase → activeHitbox() → getHurtbox() → Intersection
+        → Block/Counter/Hit → Damage/Knockback → Reaction/KO → FX/HUD
 ```
 
----
-
-## Darstellung auf dem Handy
-
-Im Hochformat wird die Arena vollständig eingepasst (`object-fit: contain`) und das
-HUD verkleinert, damit es die kleine Spielfläche nicht zudeckt. Im Querformat und am
-Desktop läuft die Arena auf voller Breite. Die 16:9-Zeichenfläche selbst ist immer
-1536 × 864 — skaliert wird nur die Anzeige, nie die Spiellogik.
+Unter niedrigen Lebenspunkten steigt die Wahrscheinlichkeit, dass Specials ausgewählt werden. Counter-Hits verursachen erhöhten Schaden und Knockback.
 
 ---
 
-## Hinweis zu den Grafiken
+## Debug / QA
 
-Die Figuren-Sprites sind eigene, KI-erzeugte Kataloge. Der **Arena-Hintergrund** stammt
-dagegen aus fremdem Material und zeigt Marken- und Figurenelemente Dritter. Das Repo ist
-deshalb als **privates Repository** gedacht — für eine Veröffentlichung müsste der
-Hintergrund vorher gegen eigenes Material getauscht werden.
+Browser-Konsole:
 
-Die vollständigen 25-Frame-Abläufe der beiden neuen Spezialattacken stehen in [SPECIALS.md](SPECIALS.md).
+```js
+__forceSpecial('left')
+__forceSpecial('right')
+__probeFight()
+```
 
-Siehe [CHANGELOG.md](CHANGELOG.md) für die Entwicklungsschritte.
+Empfohlener Smoke-Test nach Änderungen:
+
+1. Jede mögliche Fighter-Paarung einmal starten.
+2. Beide Specials pro Paarung mit `__forceSpecial()` auslösen.
+3. Hitbox-Anzeige prüfen.
+4. K. o. und **Neuer Kampf** prüfen.
+5. Desktop sowie Handy-Hoch-/Querformat prüfen.
+6. Browser-Konsole auf Asset-, Syntax- und Runtime-Fehler kontrollieren.
+
+---
+
+## ZIP-Artefakt `444444444444444_3.zip`
+
+Das Archiv liegt auf `main` und ist ein **binäres Projektartefakt**. Der Commit, der das ZIP hinzugefügt hat, verändert keine Runtime-Datei außerhalb des Archivs. Damit ist das ZIP nicht automatisch die Source-of-Truth für den ausführbaren Stand im Repository.
+
+Für die laufende Entwicklung gilt daher:
+
+- **Source-of-Truth:** entpackte Dateien auf `main`
+- **ZIP:** Snapshot/Transportartefakt
+- Änderungen aus einem neueren ZIP müssen zuerst bewusst in die entpackte Repository-Struktur übernommen und anschließend getestet werden.
+
+---
+
+## Repository-Hinweise
+
+Das Repository ist aktuell **öffentlich**. Der Arena-Hintergrund kann Marken-/Figurenelemente Dritter enthalten; für eine öffentliche Distribution oder Veröffentlichung des Spiels sollte das Material rechtlich geprüft bzw. durch vollständig eigenes Material ersetzt werden.
+
+Große ZIP-Dateien sollten nicht dauerhaft als normaler Entwicklungsweg genutzt werden, da sie die Git-Historie stark vergrößern und nicht sinnvoll diffbar sind. Für Releases sind GitHub-Releases/Artifacts langfristig die sauberere Ablage; der vorhandene ZIP-Snapshot bleibt davon unberührt.
+
+Siehe außerdem:
+
+- [SPECIALS.md](SPECIALS.md) – Spezialattacken
+- [CHANGELOG.md](CHANGELOG.md) – Entwicklungshistorie
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) – technische Architektur
+- [docs/REPOSITORY_AUDIT_2026-09-06.md](docs/REPOSITORY_AUDIT_2026-09-06.md) – aktueller Repository-Audit
