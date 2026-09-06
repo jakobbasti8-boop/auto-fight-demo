@@ -1,96 +1,124 @@
-# Architektur — AUTO FIGHT DEMO HD
+# Architektur — AUTO FIGHT DEMO HD v10
 
 ## 1. Technisches Modell
 
 Das Projekt ist eine klassische Browser-Runtime ohne Bundler, npm oder Framework. Alle Skripte werden über normale `<script>`-Tags geladen und teilen sich denselben globalen JavaScript-Kontext.
 
-Die zentrale Spielfläche ist ein Canvas mit **1536 × 864** interner Auflösung. CSS skaliert nur die Darstellung; Kampfdistanzen, Bodenlinie, Trefferzonen und Physik arbeiten weiterhin in Canvas-Koordinaten.
+Die zentrale Spielfläche arbeitet logisch auf **1536 × 864**. v10 berücksichtigt zusätzlich die Device-Pixel-Ratio bis maximal Faktor 2, damit die Darstellung auf hochauflösenden Displays sauberer skaliert wird, ohne die Kampflogik zu verändern.
 
-## 2. Kritische Script-Reihenfolge
+## 2. v10 Katalogschicht
+
+Die wichtigste Architekturänderung ist die neue zentrale Sprite-Katalogschicht:
+
+```text
+assets/catalog.json  ← maschinenlesbare Messdaten
+assets/catalog.js    ← dieselben Daten für file://-Betrieb
+        ↓
+game-catalog.js
+        ↓
+SPRITES + drawSprite() + MOVEMENT + catalogIndex()
+```
+
+Damit liegen Sprite-Auswahl, Baseline, Zoom und Spezialkatalog-Zuordnung nicht mehr verteilt in mehreren Fighter-Dateien.
+
+### `assets/catalog.json`
+
+Enthält pro Produktionsblatt unter anderem:
+
+- Katalogtyp (`anchored`, `uniform`, `strip`)
+- Datei
+- Raster-/Modulzahl
+- Zellgröße
+- `spriteZoom`
+- `baseline`
+- `defaultFacing`
+- Portrait-Ausschnitt
+- Frame-Metadaten wie Bounding-Box und Anker
+
+Bounding-Boxes sind halboffen: `[x0, y0, x1, y1)`. Ein Endwert von `512` ist bei einer 512-px-Zelle daher gültig.
+
+### `assets/catalog.js`
+
+Stellt denselben Datensatz als `window.SPRITE_CATALOG` bereit. Dadurch muss die Runtime keine JSON-Datei per `fetch()` laden und kann technisch auch direkt über `file://` gestartet werden.
+
+### `game-catalog.js`
+
+Verantwortlich für:
+
+- Laden sämtlicher Katalogassets über `SPRITES`
+- ganzzahlige Zellgrenzen über `spriteRect()`
+- einheitliches Zeichnen über `drawSprite()`
+- Portrait-Ermittlung
+- Übernahme gemessener Zoom-/Baseline-Werte
+- zentralen `MOVEMENT`-Katalog
+- Mapping von Kampfzustand/Phase auf Katalogframe
+- konsolidiertes Spezialkatalog-Rendering
+- zielzentrierte reine FX-Frames
+- Clippen eingebrannter Beam-Reste an der Katalogkante
+
+## 3. Kritische Script-Reihenfolge
 
 Aktuelle Reihenfolge in `index.html`:
 
 ```text
-1. game-boot.js
-2. game-moves.js
-3. game-fighter.js
-4. game-director.js
-5. game-render.js
-6. game-brainbug.js
-7. game-specials.js
-8. game-bob-hd.js
+1. assets/catalog.js
+2. game-catalog.js
+3. game-boot.js
+4. game-moves.js
+5. game-fighter.js
+6. game-director.js
+7. game-render.js
+8. game-brainbug.js
+9. game-specials.js
+10. game-bob-hd.js
 ```
 
 Diese Reihenfolge ist **funktional relevant**.
 
-### Warum?
+Die letzten Fighter-/Special-Dateien erweitern bestehende globale Funktionen per Wrapper. Betroffen sind unter anderem:
 
-Die Erweiterungsmodule definieren nicht alles neu, sondern wrappen vorhandene globale Funktionen:
-
-```js
-const base = drawFighter;
-drawFighter = function (...) {
-  // neue Speziallogik
-  return base(...);
-};
-```
-
-Dieses Muster wird unter anderem für folgende Funktionen verwendet:
-
-- `drawFighter`
 - `effects`
 - `activeHitbox`
 - `attackInfo`
 - `decideBlock`
 - `setPlan`
 - `launchPlan`
-- `Fighter.prototype.spriteFrame`
 - `Fighter.prototype.update`
 
-Ein später geladenes Modul muss deshalb die bereits installierten Wrapper korrekt übernehmen. Eine Änderung der Script-Reihenfolge kann Features still überschreiben oder dazu führen, dass bestimmte Fighter keine Spezial-Hitbox, kein Rendering oder falsche Blockwerte erhalten.
+Die normale Sprite-Auswahl selbst wurde in v10 dagegen weitgehend aus diesen Wrappern herausgezogen und in `game-catalog.js` zentralisiert.
 
-## 3. Kernmodule
+## 4. Kernmodule
 
 ### `game-boot.js`
 
-Verantwortlich für:
-
 - Canvas/Context
 - interne Dimensionen und `GROUND`
+- Device-Pixel-Ratio-Setup
 - Hintergrund
-- Sprite-Loader
-- Asset-Readiness
-- Frame-Cropping
+- Kompatibilitätsbrücken von alten `spriteAssets` zu `SPRITES`
+- Asset-Readiness / Startfreigabe
 - Pose-Tabelle `P`
-- allgemeine Hilfsfunktionen
 
 ### `game-moves.js`
-
-Verantwortlich für:
 
 - `MOVES`
 - `ATTACKS`
 - `COMBOS`
 - `SPECIAL_COMBOS`
-- FX-Partikel und Text-Popups
-- allgemeine Mathe-/Interpolationshelfer
+- FX-Partikel/Text-Popups
+- Mathe-/Interpolationshelfer
 
 ### `game-fighter.js`
-
-Verantwortlich für:
 
 - `Fighter`-Klasse
 - Bewegungs-/Move-Zustand
 - Combo-Queue
-- Sprite-Grundmapping
 - Dr. BOB, KurzDurch und Theresa als Basiskämpfer
 - Fighter-Registry
 
-Hinweis: Theresa trägt intern weiterhin den Key `nova`. Das ist ein technischer Legacy-Key und sollte nicht ohne vollständige Migration umbenannt werden.
+Theresa trägt intern weiterhin den Legacy-Key `nova`. Eine Umbenennung benötigt eine vollständige Migration aller Registries, Combo-Maps und Auswahlpfade.
 
 ### `game-director.js`
-
-Verantwortlich für:
 
 - Hurtboxen und Basis-Hitboxen
 - Kollisionsprüfung
@@ -104,10 +132,8 @@ Verantwortlich für:
 
 ### `game-render.js`
 
-Verantwortlich für:
-
 - Arena-Rendering
-- Fighter-/FX-Zeichenreihenfolge
+- Aufruf von `drawFighterCatalog()` als primären Sprite-Pfad
 - HUD
 - Portraits
 - Fighter-Auswahl
@@ -117,40 +143,35 @@ Verantwortlich für:
 
 ### `game-brainbug.js`
 
-Erweitert die Runtime um:
-
 - Lt.BrainBug
-- dynamisch injizierte Auswahlbuttons
-- eigenen Basisatlas
+- Auswahlbuttons
 - eigene Kombos
 - `SOUR MILK SURGE`
-- modularen Sour-Milk-Beam
+- modularer Sour-Milk-Beam
 - eigene Trefferreaktion
-- bewusst chaotische AI-Variation
-- falsche Blickrichtung während einer Cooldown-Phase
+- absichtlich falsche Blickrichtung während einer Cooldown-Phase
+- AI-Variation
 
 ### `game-specials.js`
 
-Erweitert die Runtime um:
-
 - Theresa `PROTON ROUNDHOUSE`
 - KurzDurch `MICROWAVE METEOR`
-- 5×5 Spezialkatalog-Rendering
-- zielzentrierte Explosionsframes
+- Move-Timing
+- Spezial-Hitboxen
 - individuelle Damage-/Knockback-/Blockwerte
+
+Die sichtbaren Spezialframes selbst werden in v10 von `game-catalog.js` gezeichnet.
 
 ### `game-bob-hd.js`
 
-Erweitert die Runtime um:
-
-- Dr.-BOB-HD-Normalatlas
-- semantisches Frame-Mapping
-- 25-Frame-Kamehameha
-- modularen START/LOOP-A/LOOP-B/HEAD/IMPACT-Strahl
+- Dr.-BOB-Kamehameha-Move mit exakt 25 Schritten
+- modularer Mündungs-/Loop-/Head-/Impact-Beam
 - distanzabhängige Beam-Länge
-- synchronisierte Spezial-Hitbox
+- synchronisierte Kamehameha-Hitbox
 
-## 4. Kampfpipeline
+Die normale Dr.-BOB-Spriteauswahl liegt seit v10 im zentralen `MOVEMENT.bob`.
+
+## 5. Kampfpipeline
 
 ```text
 setPlan()
@@ -179,83 +200,91 @@ Damage / Knockback / Reaction
 FX / HUD / KO
 ```
 
-## 5. Fighter-Konfiguration
+Parallel dazu bestimmt `game-catalog.js` aus Fighter, Move, Phase und `moveStep` den sichtbaren Katalogframe.
 
-Zentrale Fighter-Werte:
+## 6. Produktionsassets
 
-| Feld | Bedeutung |
-|---|---|
-| `key` | technischer Fighter-Key |
-| `specialKey` | Move-Key der Spezialattacke |
-| `asset` | Basis-Spriteasset |
-| `displayH` | sichtbare Körperhöhe |
-| `spriteZoom` | Verhältnis Atlaszelle zu sichtbarer Figur |
-| `baseline` | Bodenlinienkorrektur |
-| `hurtW` | Hurtbox-Breite relativ zu `displayH` |
-| `walkSpeed` | Laufgeschwindigkeit |
-| `face` | Standardblickrichtung |
+Aktuelle Produktionsstruktur:
 
-## 6. Neue Figur sauber integrieren
+```text
+assets/bob.webp
+assets/kame.webp
+assets/kame-beam.webp
+assets/kurz.webp
+assets/kurz-comet.webp
+assets/theresa.webp
+assets/theresa-proton.webp
+assets/brainbug.webp
+assets/brainbug-sourmilk.webp
+assets/brainbug-sourmilk-beam.webp
+assets/catalog.json
+assets/catalog.js
+```
 
-Minimaler Integrationsablauf:
+Die vorherigen `*-row-1.webp ... row-5.webp`, `nova.webp` und `brainbug-sourmilk-special.webp` sind in v10 abgelöst.
 
-1. 25-Frame-Basisatlas in `assets/` ablegen.
-2. Asset registrieren und vollständig vor Start laden.
-3. `Fighter`-Instanz erstellen.
-4. `allFighters`, `fighterByKey` und `fighterLabel` erweitern.
-5. `COMBOS` und `SPECIAL_COMBOS` ergänzen.
-6. Auswahlbutton bereitstellen.
-7. Normal-Frame-Mapping definieren.
+## 7. Recut-Pipeline
+
+```text
+tools/recut.py
+tools/spritekit.py
+tools/source/*
+```
+
+`recut.py` definiert die Produktionskataloge und orchestriert die Aufbereitung. `spritekit.py` enthält die Bildoperationen.
+
+Wesentliche Schritte:
+
+- RGBA laden
+- Greenscreen-/Grid-Bereinigung
+- White-Halo-/Fringe-Cleanup
+- Despeckle/Pinholes
+- Subject-Isolation
+- Content-Bounding-Box
+- Fußanker
+- Baseline-/Scale-Berechnung
+- premultipliziertes LANCZOS-Resampling
+- Platzierung in 512-px-Zellen
+- WebP-Ausgabe
+- Katalogmetadaten schreiben
+- `catalog.js` aus dem JSON-Datensatz erzeugen
+
+### Reproduzierbarkeit
+
+```bash
+python tools/recut.py
+```
+
+oder gezielt:
+
+```bash
+python tools/recut.py --only bob kame
+```
+
+Python-Caches gehören nicht ins Repository:
+
+```text
+__pycache__/
+*.pyc
+```
+
+## 8. Neue Figur sauber integrieren
+
+1. Rohquelle unter `tools/source/` ablegen.
+2. Katalogdefinition in `tools/recut.py` ergänzen.
+3. Recut ausführen und `assets/catalog.json/js` aktualisieren.
+4. `MOVEMENT` in `game-catalog.js` ergänzen.
+5. `Fighter`-Instanz/Registry ergänzen.
+6. `COMBOS` und `SPECIAL_COMBOS` ergänzen.
+7. Auswahlbutton bereitstellen.
 8. Spezialmove und `attackInfo()` ergänzen.
-9. Spezial-Hitbox exakt auf sichtbare Trefferphase abstimmen.
-10. Render-/FX-Erweiterungen so wrappen, dass vorhandene Fighter weiterhin durchgereicht werden.
-11. Portrait testen.
-12. Alle Paarungen und beide Seiten testen.
+9. Spezial-Hitbox auf sichtbare Trefferphase abstimmen.
+10. Falls nötig modularen Beam/FX-Code ergänzen.
+11. alle Paarungen und beide Seiten testen.
 
-## 7. Asset-Regeln
+## 9. QA / CI
 
-### Normalatlanten
-
-- bevorzugt 5×5 / 25 Frames
-- transparente Zellränder
-- keine Raster-/Greenscreen-Reste
-- Figur bleibt vollständig in jeder Zelle
-- einheitliche Bodenlinie
-- keine wechselnde horizontale Verankerung
-
-### Modulare Strahlen
-
-Empfohlenes Schema:
-
-```text
-START | LOOP-A | LOOP-B | HEAD | IMPACT
-```
-
-oder bei vier Zellen:
-
-```text
-START | LOOP-A | LOOP-B | IMPACT
-```
-
-Loop-Zellen müssen an den horizontalen Kanten optisch nahtlos anschließen.
-
-## 8. QA-Checkliste
-
-Nach jeder Änderung an Fighter-, Sprite- oder Special-Code:
-
-- lokaler HTTP-Server statt direktem `file://` verwenden
-- alle Fighter-Paarungen starten
-- linkes und rechtes Special jeweils erzwingen
-- `__probeFight()` kontrollieren
-- Hitboxen einschalten
-- Block und Counter beobachten
-- K. o. / Gewinneroverlay / Neuer Kampf testen
-- Browser-Konsole auf Fehler prüfen
-- Desktop testen
-- Handy Hochformat testen
-- Handy Querformat testen
-
-Debug-Hooks:
+Lokaler Smoke-Test:
 
 ```js
 __forceSpecial('left')
@@ -263,29 +292,46 @@ __forceSpecial('right')
 __probeFight()
 ```
 
-## 9. Technische Risiken / nächste Härtung
+Nach Sprite-/Runtime-Änderungen:
+
+- alle sechs Fighter-Paarungen starten
+- beide Seiten-Specials testen
+- Hitboxen prüfen
+- Block/Counter prüfen
+- K. o. und Neustart prüfen
+- Desktop und Handy prüfen
+- Browser-Konsole kontrollieren
+
+GitHub Actions prüft zusätzlich statisch:
+
+- JavaScript-Syntax
+- Python-Syntax
+- Katalogasset-Existenz
+- Synchronität `catalog.json` ↔ `catalog.js`
+- lokale `index.html`-Referenzen
+- verbotene Python-Cachedateien
+
+## 10. Technische Risiken / nächste Härtung
 
 ### A. Globale Wrapper-Kette
 
-Der größte Wartungsrisikofaktor ist die globale Monkey-Patch-Kette. Langfristig sollten Fighter und Specials in registrierte Handler/Strategien überführt werden, z. B.:
+Trotz zentralem Sprite-Katalog existieren für Speziallogik noch Monkey-Patches. Langfristig sind Registries sinnvoll:
 
 ```js
-fighterRenderers[key]
 specialHitboxes[key]
 attackResolvers[key]
 effectRenderers[key]
+directorHooks[key]
 ```
 
-Damit würde die Script-Reihenfolge weniger kritisch.
+### B. Kein vollständiger automatisierter Browser-Test
 
-### B. Keine automatisierten Tests
+Die CI ist zunächst statisch. Ein Headless-Browser-Smoke-Test für Startmenü, Fighter-Auswahl, `__forceSpecial()`, Hitbox-Toggle und K.-o.-Flow wäre die nächste sinnvolle Teststufe.
 
-Das Projekt besitzt aktuell keinen Test-Runner. Ein kleiner Browser-Smoke-Test für Asset-Load, Fighter-Registry, Specials und K.-o.-Flow wäre der sinnvollste nächste Infrastruktur-Schritt.
+### C. Binärer ZIP-Snapshot
 
-### C. Binäre ZIP-Snapshots
-
-ZIP-Dateien im Git-Verlauf sind nicht diffbar und vergrößern die History. Der aktuelle Snapshot bleibt erhalten, sollte aber nicht zum normalen Austauschformat für einzelne Änderungen werden.
+`444444444444444_3.zip` bleibt historisch erhalten, ist aber nicht die Source-of-Truth. Neue Entwicklung erfolgt direkt im entpackten Quellbaum.
 
 ### D. Öffentliche Distribution
 
-Das Repository ist öffentlich. Vor einer echten Veröffentlichung sollten verwendete Hintergrund-/Marken-/Fremdmaterialien geprüft und gegebenenfalls ersetzt werden.
+Das Repository ist öffentlich. Vor echter Distribution sollten Hintergrund-/Marken-/Fremdmaterialien rechtlich geprüft und gegebenenfalls ersetzt werden.
