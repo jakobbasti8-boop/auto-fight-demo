@@ -4,52 +4,25 @@
    Main 5x5 atlas: idle / confused gestures / punches / kicks / hit+dizzy.
    Sour-milk special: dedicated 25-frame atlas plus a 4-cell modular beam atlas. */
 (function(){
-  const asset={
-    image:new Image(),sheet:null,defaultFacing:1,raw:true,
-    portrait:{x:.285,y:.025,w:.43,h:.43}
-  };
-  const sourAsset={image:new Image(),sheet:null};
-  const beamAsset={image:new Image(),sheet:null};
+  // Blaetter kommen aus dem Katalog; hier stehen nur noch schmale Bruecken.
+  const asset={catalog:"brainbug",defaultFacing:1,image:null,sheet:null,portrait:null};
+  const sourAsset={catalog:"brainbug-sourmilk",image:null,sheet:null};
+  const beamAsset={catalog:"brainbug-sourmilk-beam",image:null,sheet:null};
   spriteAssets.brainbug=asset;
 
-  let brainbugReadyCount=0;
-  let brainbugLoadFailed=false;
-  const startBtn=document.getElementById("demo-start");
-  const originalMaybeEnableStart=maybeEnableStart;
-  maybeEnableStart=function(){
-    if(brainbugLoadFailed){
-      startBtn.disabled=true;
-      startBtn.textContent="Lt.BrainBug-Assets fehlen";
-      return;
-    }
-    if(brainbugReadyCount<3){
-      startBtn.disabled=true;
-      startBtn.textContent="Lt.BrainBug wird geladen …";
-      return;
-    }
-    originalMaybeEnableStart();
-  };
-  startBtn.disabled=true;
-  startBtn.textContent="Lt.BrainBug wird geladen …";
-
-  function brainAssetLoaded(target){
-    target.sheet=rawSheet(target.image);
-    brainbugReadyCount++;
+  SPRITES.ready(function(missing){
+    [asset,sourAsset,beamAsset].forEach(shim=>{
+      const entry=SPRITES.get(shim.catalog);
+      if(!entry||!entry.ok)return;
+      shim.entry=entry;shim.image=entry.img;shim.sheet=entry.img;
+      shim.defaultFacing=entry.defaultFacing;
+      if(!shim.portrait&&typeof portraitRect==="function")shim.portrait=portraitRect(entry);
+    });
+    if(typeof applyCatalogMetrics==="function")applyCatalogMetrics();
+    if(asset.sheet&&document.getElementById("portrait-brainbug"))
+      renderPortrait("portrait-brainbug",asset);
     maybeEnableStart();
-  }
-  function brainAssetFailed(){
-    brainbugLoadFailed=true;
-    startBtn.disabled=true;
-    startBtn.textContent="Lt.BrainBug-Asset fehlt";
-    ui.selectionNote.textContent="Lt.BrainBug oder sein Spezialkatalog konnte nicht geladen werden.";
-  }
-  asset.image.onload=()=>brainAssetLoaded(asset);
-  sourAsset.image.onload=()=>brainAssetLoaded(sourAsset);
-  beamAsset.image.onload=()=>brainAssetLoaded(beamAsset);
-  asset.image.onerror=sourAsset.image.onerror=beamAsset.image.onerror=brainAssetFailed;
-  asset.image.src="assets/brainbug.webp";
-  sourAsset.image.src="assets/brainbug-sourmilk-special.webp";
-  beamAsset.image.src="assets/brainbug-sourmilk-beam.webp";
+  });
 
   MOVES.brainFlail=[
     ["idleB",180,"Orientierung"],
@@ -113,41 +86,8 @@
   fighterByKey.brainbug=brainbug;
   fighterLabel.brainbug="LT.BRAINBUG";
 
-  // Normal fighting uses the original catalog. The 25-frame special is rendered
-  // separately below, so no generic pose can accidentally replace a special frame.
-  const baseSpriteFrame=Fighter.prototype.spriteFrame;
-  Fighter.prototype.spriteFrame=function(){
-    if(this.cfg.key!=="brainbug")return baseSpriteFrame.call(this);
-    if(this.ko)return {row:4,col:4};
-    if(this.move){
-      const total=this.move.reduce((sum,f)=>sum+f[1],0);
-      const progress=clamp(this.moveElapsed/total,0,.999);
-      const phase=this.move[this.moveStep]?.[2];
-      if(this.key==="sourMilkBurst")return {row:0,col:0};
-      if(this.key==="brainFlail"){
-        if(phase==="Orientierung")return {row:1,col:Math.min(4,Math.floor((this.stepElapsed/180)*5))};
-        if(phase==="Ausholen")return this.moveStep<3?{row:2,col:1}:{row:3,col:0};
-        if(phase==="Treffer")return this.moveStep<4?{row:2,col:3}:{row:3,col:3};
-        if(phase==="Taumeln")return {row:4,col:1};
-        return {row:0,col:4};
-      }
-      if(this.key.startsWith("block"))return {row:2,col:0};
-      if(this.key.startsWith("hit")){
-        if(phase==="Aufstehen")return {row:4,col:Math.max(0,3-Math.floor((this.stepElapsed/(this.move[this.moveStep][1]||1))*3))};
-        return {row:4,col:Math.min(4,Math.floor(progress*5))};
-      }
-      if(this.key.startsWith("kick")||this.key==="jumpKick")return {row:3,col:Math.min(4,Math.floor(progress*5))};
-      if(this.key.startsWith("punch")||this.key==="headbutt")return {row:2,col:Math.min(4,Math.floor(progress*5))};
-      return {row:1,col:Math.min(4,Math.floor(progress*5))};
-    }
-    if(Math.abs(this.vx)>.01){
-      let col=Math.floor(this.walkCycle)%5;
-      if(this.vx*this.face<0)col=4-col;
-      return {row:0,col};
-    }
-    const col=Math.floor(this.idleTime*2.15)%5;
-    return Math.floor(this.idleTime/3.6)%3===2?{row:1,col}:{row:0,col};
-  };
+  // Die Bildauswahl steht jetzt im Bewegungskatalog (game-catalog.js,
+  // MOVEMENT.brainbug) - hier ist keine eigene Zeilenrechnerei mehr noetig.
 
   // During cooldown frame 22 he physically turns away from the opponent for 300 ms,
   // then restores the original facing before scratching his head.
@@ -195,35 +135,16 @@
     return baseActiveHitbox(f,foe);
   };
 
-  function specialCell(idx){
-    idx=clamp(idx|0,0,24);
-    const sw=sourAsset.sheet.width/5,sh=sourAsset.sheet.height/5;
-    return {sx:(idx%5)*sw,sy:((idx/5)|0)*sh,sw,sh};
-  }
   function beamCell(idx){
-    idx=clamp(idx|0,0,3);
-    const sw=beamAsset.sheet.width/4,sh=beamAsset.sheet.height;
-    return {sx:idx*sw,sy:0,sw,sh};
-  }
-  function drawSourMilkFrame(f){
-    if(!sourAsset.sheet)return false;
-    const idx=clamp(f.moveStep|0,0,24),r=specialCell(idx);
-    const dh=f.cfg.displayH/(f.cfg.spriteZoom||1),dw=dh;
-    ctx.save();
-    ctx.translate(Math.round(f.x),Math.round(GROUND+dh*(f.cfg.baseline||0)));
-    if(f.face<0)ctx.scale(-1,1);
-    ctx.imageSmoothingEnabled=true;
-    ctx.imageSmoothingQuality="high";
-    ctx.drawImage(sourAsset.sheet,r.sx,r.sy,r.sw,r.sh,-dw/2,-dh,dw,dh);
-    ctx.restore();
-    return true;
+    const entry=beamAsset.entry;
+    return spriteRect(entry,clamp(idx|0,0,entry.cols-1));
   }
   function drawBeamPiece(cellIdx,x,y,w,h){
     const r=beamCell(cellIdx);
     ctx.drawImage(beamAsset.sheet,r.sx,r.sy,r.sw,r.sh,x,y,w,h);
   }
   function drawSourMilkBeam(f,foe){
-    if(!beamAsset.sheet||!foe)return;
+    if(!beamAsset.sheet||!beamAsset.entry||!foe)return;
     const h=f.cfg.displayH,hb=getHurtbox(foe);
     const mouthX=f.x+f.face*h*.11;
     const mouthY=GROUND-h*.57;
@@ -265,12 +186,6 @@
       ctx.restore();
     }
   }
-
-  const baseBrainDrawFighter=drawFighter;
-  drawFighter=function(f,time){
-    if(f?.cfg?.key==="brainbug"&&f.key==="sourMilkBurst"&&drawSourMilkFrame(f))return;
-    return baseBrainDrawFighter(f,time);
-  };
 
   const baseBrainEffects=effects;
   effects=function(f,foe,time){

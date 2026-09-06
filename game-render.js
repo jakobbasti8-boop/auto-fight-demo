@@ -116,13 +116,19 @@
     }
 
     function drawFighter(f,time){
+      // Erster Weg ist der Katalog: er kennt Zoom, Bodenlinie und Spezialblatt
+      // und zeichnet weich skaliert. Der alte Weg bleibt als Rueckfallebene.
+      const foe=fighters.filter(x=>x!==f&&!x.ko)
+        .sort((a,b)=>Math.abs(a.x-f.x)-Math.abs(b.x-f.x))[0]||null;
+      if(typeof drawFighterCatalog==="function"&&drawFighterCatalog(f,foe))return;
+
       if(kameActive(f)){drawKame(f);return}
-      const asset=spriteAssets[f.cfg.asset];if(!asset.sheet)return;
+      const asset=spriteAssets[f.cfg.asset];if(!asset||!asset.sheet)return;
       const frame=f.spriteFrame(),r=frameRect(asset,frame.row,frame.col);
       const dh=f.cfg.displayH/(f.cfg.spriteZoom||1),dw=dh*(r.sw/r.sh),flip=f.face!==asset.defaultFacing;
       const groundFix=f.cfg.baseline!==undefined?dh*(f.cfg.baseline-.025):(f===bob?2:0);
       ctx.save();ctx.translate(Math.round(f.x),Math.round(GROUND+dh*.025+groundFix));if(flip)ctx.scale(-1,1);
-      ctx.imageSmoothingEnabled=false;
+      ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
       ctx.drawImage(asset.sheet,r.sx,r.sy,r.sw,r.sh,-dw/2,-dh,dw,dh);
       if(f.hitFlash>0){
         const a=Math.min(1,f.hitFlash/200)*.8;
@@ -145,6 +151,9 @@
       return 1;
     }
     function drawScene(time){
+      // Alles Weitere rechnet in logischen 1536x864; die Vergroesserung fuer
+      // hochaufloesende Bildschirme steckt allein in dieser Matrix.
+      ctx.setTransform(RENDER_SCALE,0,0,RENDER_SCALE,0,0);
       ctx.save();
       const z=koZoom(koTime);
       if(z>1.001){
@@ -183,9 +192,9 @@
     function renderPortrait(id,asset){
       const c=document.getElementById(id),g=c.getContext("2d");
       const grad=g.createLinearGradient(0,0,160,160);grad.addColorStop(0,"#35142f");grad.addColorStop(1,"#080a18");g.fillStyle=grad;g.fillRect(0,0,160,160);
-      if(asset.sheet){
+      if(asset&&asset.sheet){
         const r=frameRect(asset,0,0),pt=asset.portrait;
-        g.save();g.imageSmoothingEnabled=false;
+        g.save();g.imageSmoothingEnabled=true;g.imageSmoothingQuality="high";
         if(pt)g.drawImage(asset.sheet,r.sx+r.sw*pt.x,r.sy+r.sh*pt.y,r.sw*pt.w,r.sh*pt.h,0,0,160,160);
         else g.drawImage(asset.sheet,r.sx+r.sw*.08,r.sy,r.sw*.84,r.sh*.63,0,0,160,160);
         g.restore();

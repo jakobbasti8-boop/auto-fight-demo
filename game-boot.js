@@ -4,62 +4,67 @@
     const ctx = canvas.getContext("2d");
     const W = canvas.width, H = canvas.height, GROUND = 744;
     const GAME_SPEED = 1.5;
+
+    /* Die Spiellogik rechnet weiter in 1536x864. Auf hochaufloesenden
+       Bildschirmen wird die Zeichenflaeche dahinter vergroessert, damit die
+       Figuren nicht als hochskaliertes Canvas-Bild verwaschen ankommen.
+       Begrenzt auf Faktor 2 - darueber kostet es nur noch Fuellrate. */
+    const RENDER_SCALE = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    if (RENDER_SCALE > 1) {
+      canvas.width = Math.round(W * RENDER_SCALE);
+      canvas.height = Math.round(H * RENDER_SCALE);
+    }
     const bg = new Image();
     bg.src = "assets/background.webp";
 
+    /* Die Blaetter kommen aus dem Katalog (assets/catalog.js + game-catalog.js).
+       spriteAssets bleibt als schmale Bruecke bestehen, damit Portraits und
+       aeltere Zeichenwege unveraendert weiterlaufen. */
     const spriteAssets={
-      bob:{image:new Image(),sheet:null,defaultFacing:1,raw:true,portrait:{x:0.3791,y:0.4804,w:0.263,h:0.263}},
-      kurz:{image:new Image(),sheet:null,defaultFacing:-1,raw:true,portrait:{x:0.3617,y:0.463,w:0.2957,h:0.2957}},
-      nova:{image:new Image(),sheet:null,defaultFacing:1,raw:true,portrait:{x:0.3228,y:0.3674,w:0.2543,h:0.2543}},
-      kame:{image:new Image(),sheet:null,defaultFacing:1,raw:true}
+      bob:{catalog:"bob",defaultFacing:1,image:null,sheet:null,portrait:null},
+      kurz:{catalog:"kurz",defaultFacing:-1,image:null,sheet:null,portrait:null},
+      nova:{catalog:"theresa",defaultFacing:1,image:null,sheet:null,portrait:null},
+      kame:{catalog:"kame",defaultFacing:1,image:null,sheet:null,portrait:null}
     };
-    spriteAssets.bob.image.src="assets/bob.webp";
-    spriteAssets.kurz.image.src="assets/kurz.webp";
-    spriteAssets.nova.image.src="assets/nova.webp";
-    let spritesLoaded=0, specialRowsLoaded=0;
+    let spritesLoaded=0;
+
+    function bindSpriteAsset(name){
+      const shim=spriteAssets[name],entry=SPRITES.get(shim.catalog);
+      if(!entry||!entry.ok)return false;
+      shim.image=entry.img;shim.sheet=entry.img;shim.entry=entry;
+      shim.defaultFacing=entry.defaultFacing;
+      if(!shim.portrait)shim.portrait=portraitRect(entry);
+      return true;
+    }
 
     function maybeEnableStart(){
-      if(spritesLoaded===4&&specialRowsLoaded===10){
-        const b=document.getElementById("demo-start");
-        b.disabled=false;b.textContent="Demo starten";
+      const b=document.getElementById("demo-start");
+      if(!b)return;
+      if(SPRITES.missing()){
+        b.disabled=true;b.textContent="Katalog unvollständig";
+        return;
       }
+      if(SPRITES.isReady()){b.disabled=false;b.textContent="Demo starten"}
     }
-    function noteSpecialRowLoaded(){specialRowsLoaded++;maybeEnableStart();}
+    // Bleibt fuer aeltere Aufrufer erhalten, hat aber keine Aufgabe mehr.
+    function noteSpecialRowLoaded(){maybeEnableStart();}
+    function rawSheet(image){return image;}
 
-    function makeTransparentSpriteSheet(image){
-      const out=document.createElement("canvas");out.width=image.naturalWidth;out.height=image.naturalHeight;
-      const g=out.getContext("2d",{willReadFrequently:true});g.drawImage(image,0,0);
-      const frame=g.getImageData(0,0,out.width,out.height),d=frame.data,w=out.width,h=out.height;
-      const seen=new Uint8Array(w*h),queue=new Int32Array(w*h);let head=0,tail=0;
-      const candidate=i=>{const p=i*4,r=d[p],gg=d[p+1],b=d[p+2],mx=Math.max(r,gg,b),mn=Math.min(r,gg,b);return mx-mn<=15&&(r+gg+b)/3>=176};
-      const add=i=>{if(!seen[i]&&candidate(i)){seen[i]=1;queue[tail++]=i}};
-      for(let x=0;x<w;x++){add(x);add((h-1)*w+x)}
-      for(let y=0;y<h;y++){add(y*w);add(y*w+w-1)}
-      while(head<tail){const i=queue[head++],x=i%w;if(i>=w)add(i-w);if(i<w*(h-1))add(i+w);if(x)add(i-1);if(x<w-1)add(i+1)}
-      for(let i=0;i<seen.length;i++)if(seen[i])d[i*4+3]=0;
-      g.putImageData(frame,0,0);return out;
-    }
-    function rawSheet(image){
-      const out=document.createElement("canvas");out.width=image.naturalWidth;out.height=image.naturalHeight;
-      out.getContext("2d").drawImage(image,0,0);return out;
-    }
-    function spriteLoaded(key){
-      const asset=spriteAssets[key];
-      asset.sheet=asset.raw?rawSheet(asset.image):makeTransparentSpriteSheet(asset.image);spritesLoaded++;
-      if(key!=="kame")renderPortrait(key==="bob"?"portrait-bob":key==="kurz"?"portrait-kurz":"portrait-neu",asset);
+    SPRITES.ready(function(){
+      ["bob","kurz","nova","kame"].forEach(name=>{if(bindSpriteAsset(name))spritesLoaded++});
+      applyCatalogMetrics();
+      renderPortrait("portrait-bob",spriteAssets.bob);
+      renderPortrait("portrait-kurz",spriteAssets.kurz);
+      renderPortrait("portrait-neu",spriteAssets.nova);
       maybeEnableStart();
-    }
-    spriteAssets.bob.image.onload=()=>spriteLoaded("bob");
-    spriteAssets.kurz.image.onload=()=>spriteLoaded("kurz");
-    spriteAssets.nova.image.onload=()=>spriteLoaded("nova");
-    spriteAssets.kame.image.src="assets/kame.webp";
-    spriteAssets.kame.image.onload=()=>spriteLoaded("kame");
+    });
     const KAME_FRAMES={"1": {"w": 161, "h": 208, "x": 146, "y": 234}, "2": {"w": 165, "h": 201, "x": 146, "y": 241}, "3": {"w": 167, "h": 200, "x": 144, "y": 242}, "4": {"w": 176, "h": 201, "x": 140, "y": 241}, "5": {"w": 186, "h": 200, "x": 142, "y": 242}, "6": {"w": 185, "h": 205, "x": 138, "y": 237}, "7": {"w": 198, "h": 216, "x": 132, "y": 226}, "8": {"w": 197, "h": 216, "x": 132, "y": 226}, "9": {"w": 202, "h": 216, "x": 129, "y": 226}, "10": {"w": 208, "h": 207, "x": 139, "y": 235}, "11": {"w": 240, "h": 188, "x": 142, "y": 254}, "12": {"w": 238, "h": 96, "x": 111, "y": 182}, "13": {"w": 233, "h": 103, "x": 114, "y": 178}, "14": {"w": 235, "h": 171, "x": 112, "y": 144}, "15": {"w": 235, "h": 217, "x": 112, "y": 122}, "16": {"w": 235, "h": 180, "x": 134, "y": 262}, "17": {"w": 207, "h": 179, "x": 134, "y": 263}, "18": {"w": 184, "h": 181, "x": 144, "y": 261}, "19": {"w": 168, "h": 181, "x": 147, "y": 261}, "20": {"w": 170, "h": 201, "x": 142, "y": 241}, "21": {"w": 184, "h": 209, "x": 134, "y": 233}, "22": {"w": 182, "h": 199, "x": 130, "y": 243}, "23": {"w": 182, "h": 221, "x": 130, "y": 221}, "24": {"w": 176, "h": 219, "x": 137, "y": 223}, "25": {"w": 176, "h": 220, "x": 137, "y": 222}},KAME_ZOOM=0.4522,KAME_BASE=0.0391,KAME_BEAM={"x": 151.0, "y": 322.5};
 
     // Integer cell boundaries prevent 1px sprite bleeding because the source sheets
     // are not perfectly divisible by 5 in width/height.
     function frameRect(asset,row,col){
-      const w=asset.sheet.width,h=asset.sheet.height;
+      const src=asset.sheet||asset.image;
+      const w=src.naturalWidth||src.width,h=src.naturalHeight||src.height;
       const x0=Math.round(col*w/5),x1=Math.round((col+1)*w/5);
       const y0=Math.round(row*h/5),y1=Math.round((row+1)*h/5);
       return {sx:x0,sy:y0,sw:x1-x0,sh:y1-y0};

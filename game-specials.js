@@ -1,37 +1,9 @@
 "use strict";
 
-// 25-Frame-Spezialkataloge: Theresa Proton Roundhouse + KurzDurch Microwave Meteor.
-function loadSpecialCatalog(prefix){
-  return Array.from({length:5},(_,row)=>{
-    const img=new Image();
-    img.onload=noteSpecialRowLoaded;
-    img.src=`assets/${prefix}-row-${row+1}.webp`;
-    return img;
-  });
-}
-const theresaCatalogRows=loadSpecialCatalog("theresa-proton");
-const kurzCometCatalogRows=loadSpecialCatalog("kurz-comet");
-
-function specialCatalogCell(rows,idx){
-  idx=clamp(idx|0,0,24);
-  const row=(idx/5)|0,col=idx%5,img=rows[row];
-  const sw=img&&img.naturalWidth?img.naturalWidth/5:100;
-  const sh=img&&img.naturalHeight?img.naturalHeight:100;
-  return {img,sx:col*sw,sy:0,sw,sh};
-}
-function drawSpecialCatalogFrame(rows,f,idx,opts={}){
-  const cell=specialCatalogCell(rows,idx),img=cell.img;
-  if(!img||!img.complete||!img.naturalWidth)return false;
-  const target=opts.target||f;
-  const dh=f.cfg.displayH*(opts.scale||1.16),dw=dh;
-  const baseY=opts.baseY==null?GROUND+4:opts.baseY;
-  const flip=opts.flip===false?false:f.face<0;
-  ctx.save();ctx.translate(Math.round(target.x),Math.round(baseY));
-  if(flip)ctx.scale(-1,1);
-  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality="high";
-  ctx.drawImage(img,cell.sx,cell.sy,cell.sw,cell.sh,-dw/2,-dh,dw,dh);
-  ctx.restore();return true;
-}
+/* Die beiden Spezialkataloge (Theresa PROTON ROUNDHOUSE, KurzDurch
+   MICROWAVE METEOR) liegen jetzt als je ein Blatt im Katalog und werden von
+   game-catalog.js gezeichnet. Hier bleiben nur Ablauf, Trefferfenster und
+   Schadenswerte. */
 function nearestSpecialFoe(f){
   return fighters.filter(x=>x!==f&&!x.ko).sort((a,b)=>Math.abs(a.x-f.x)-Math.abs(b.x-f.x))[0]||null;
 }
@@ -95,32 +67,5 @@ decideBlock=function(defender,info){
   return baseSpecialBlock(defender,info);
 };
 
-const baseSpecialDrawFighter=drawFighter;
-drawFighter=function(f,time){
-  if(f&&f.cfg.key==="nova"&&f.key==="protonKick"){
-    const idx=clamp(f.moveStep|0,0,24);
-    if(idx>=15&&idx<=19)return;
-    if(drawSpecialCatalogFrame(theresaCatalogRows,f,idx,{scale:1.13}))return;
-  }
-  if(f&&f.cfg.key==="kurz"&&f.key==="comet"){
-    const idx=clamp(f.moveStep|0,0,24);
-    if(idx>=18&&idx<=20)return;
-    if(drawSpecialCatalogFrame(kurzCometCatalogRows,f,idx,{scale:1.18}))return;
-  }
-  return baseSpecialDrawFighter(f,time);
-};
-
-const baseSpecialEffects=effects;
-effects=function(f,foe,time){
-  if(f&&f.cfg.key==="nova"&&f.key==="protonKick"){
-    const idx=clamp(f.moveStep|0,0,24);
-    if(idx>=15&&idx<=19){const target=foe||nearestSpecialFoe(f);if(target)drawSpecialCatalogFrame(theresaCatalogRows,f,idx,{target,scale:1.48,flip:false,baseY:GROUND+18});}
-    return;
-  }
-  if(f&&f.cfg.key==="kurz"&&f.key==="comet"){
-    const idx=clamp(f.moveStep|0,0,24);
-    if(idx>=18&&idx<=20){const target=foe||nearestSpecialFoe(f);if(target)drawSpecialCatalogFrame(kurzCometCatalogRows,f,idx,{target,scale:1.52,flip:false,baseY:GROUND+22});}
-    return;
-  }
-  return baseSpecialEffects(f,foe,time);
-};
+/* drawFighter/effects brauchen hier keine Sonderfaelle mehr - der
+   Bewegungskatalog kennt beide Spezialblaetter samt reinen Explosionsbildern. */
