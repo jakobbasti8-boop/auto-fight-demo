@@ -37,7 +37,7 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
-          import json, re, sys
+          import json, re
 
           root = Path.cwd()
           catalog_path = root / 'assets/catalog.json'
@@ -80,14 +80,11 @@ jobs:
           if missing:
               raise SystemExit('missing catalog assets: ' + ', '.join(missing))
 
-          js = catalog_js_path.read_text(encoding='utf-8').strip()
-          prefix = 'window.SPRITE_CATALOG='
-          if not js.startswith(prefix):
+          js = catalog_js_path.read_text(encoding='utf-8')
+          match = re.search(r'window\.SPRITE_CATALOG\s*=\s*(\{.*\})\s*;\s*$', js, re.S)
+          if not match:
               raise SystemExit('catalog.js has unexpected wrapper')
-          payload = js[len(prefix):]
-          if payload.endswith(';'):
-              payload = payload[:-1]
-          js_catalog = json.loads(payload)
+          js_catalog = json.loads(match.group(1))
           if js_catalog != catalog:
               raise SystemExit('assets/catalog.js is not synchronized with assets/catalog.json')
 
