@@ -36,3 +36,24 @@ MOVES.comet=[
   ["idleB",120,"Mikrowelle abnehmen"],["idleA",125,"Triumph"],["idleA",135,"Lachen"],["idleA",160,"Erholung"]
 ];
 SPECIAL_COMBOS.kurz={name:"MICROWAVE METEOR",keys:["kickLowR","punchL","jumpKick","comet"]};
+
+// Mc. Money: KAPITAL-CRASH / WORDS INVEST
+// Flow entfesseln -> Schallwellen bündeln -> Börsen-Breakout -> Cash-Explosion -> Mic-Drop
+MOVES.kapitalCrash=[
+  ["idleA",100,"Fokus"],["idleB",105,"Mikrofon heben"],["windHighR",110,"Rhetorik sammeln"],
+  ["windHighR",120,"Goldene Aura"],["windHighR",130,"Kapital akkumulieren"],
+  ["windHighR",135,"Börsen-Chart steigt"],["windHighR",140,"Worte investieren"],
+  ["windHighR",145,"Schallwellen bündeln"],["windHighR",150,"Crown Power"],
+  ["windHighR",160,"MAXIMALER FLOW!"],["punchR",95,"Flow entfesseln"],
+  ["punchR",90,"KAPITAL IST EINE WAFFE!"],["punchR",90,"Schallwellen-Einschlag"],
+  ["punchR",90,"Börsen-Chart-Breakout"],["punchR",90,"Cash-Explosion"],
+  ["punchR",95,"Goldener Tsunami"],["punchR",100,"Börsen-Crash"],
+  ["punchR",105,"Bass-Drop"],["windHighR",110,"Druckwelle"],
+  ["windHighR",115,"Nachhall"],["sinkR",120,"Mikrofon senken"],
+  ["idleB",125,"Mic-Drop"],["idleA",130,"Hoodie richten"],
+  ["idleA",135,"Siegerlächeln"],["idleA",150,"Erholung"]
+];
+if(typeof mcmoney !== "undefined"){
+  mcmoney.cfg.specialKey="kapitalCrash";
+}
+SPECIAL_COMBOS.mcmoney={name:"KAPITAL-CRASH",keys:["punchR","kickHighR","punchL","kapitalCrash"]};

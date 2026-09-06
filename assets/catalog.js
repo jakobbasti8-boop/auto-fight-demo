@@ -1,3 +1,3891 @@
-"use strict";
-// Erzeugt von tools/recut.py - nicht von Hand aendern.
-window.SPRITE_CATALOG={"bob":{"file":"bob.webp","type":"anchored","cols":5,"rows":5,"cell":512,"spriteZoom":0.7144,"baseline":0.035,"defaultFacing":1,"sourceScale":1.54994,"portrait":{"x":0.37767,"y":0.19713,"w":0.31711,"h":0.31711},"frames":[{"row":0,"col":0,"grounded":true,"airborne":false,"bbox":[116,112,392,481]},{"row":0,"col":1,"grounded":true,"airborne":false,"bbox":[120,117,392,483]},{"row":0,"col":2,"grounded":true,"airborne":false,"bbox":[106,117,399,483]},{"row":0,"col":3,"grounded":true,"airborne":false,"bbox":[104,140,408,483]},{"row":0,"col":4,"grounded":true,"airborne":false,"bbox":[75,137,417,485]},{"row":1,"col":0,"grounded":true,"airborne":false,"bbox":[110,118,394,494]},{"row":1,"col":1,"grounded":true,"airborne":false,"bbox":[91,118,406,494]},{"row":1,"col":2,"grounded":true,"airborne":false,"bbox":[96,114,410,492]},{"row":1,"col":3,"grounded":true,"airborne":false,"bbox":[200,137,510,492]},{"row":1,"col":4,"grounded":true,"airborne":false,"bbox":[96,143,448,494]},{"row":2,"col":0,"grounded":true,"airborne":false,"bbox":[159,129,432,506]},{"row":2,"col":1,"grounded":true,"airborne":false,"bbox":[93,128,455,506]},{"row":2,"col":2,"grounded":true,"airborne":false,"bbox":[90,131,468,504]},{"row":2,"col":3,"grounded":true,"airborne":false,"bbox":[57,139,445,504]},{"row":2,"col":4,"grounded":true,"airborne":false,"bbox":[93,132,402,506]},{"row":3,"col":0,"grounded":true,"airborne":false,"bbox":[188,133,451,494]},{"row":3,"col":1,"grounded":true,"airborne":false,"bbox":[148,128,430,494]},{"row":3,"col":2,"grounded":true,"airborne":false,"bbox":[134,136,489,492]},{"row":3,"col":3,"grounded":true,"airborne":false,"bbox":[108,140,475,492]},{"row":3,"col":4,"grounded":true,"airborne":false,"bbox":[100,132,399,494]},{"row":4,"col":0,"grounded":false,"airborne":true,"bbox":[102,165,410,494]},{"row":4,"col":1,"grounded":false,"airborne":true,"bbox":[100,178,413,494]},{"row":4,"col":2,"grounded":false,"airborne":true,"bbox":[68,222,445,494]},{"row":4,"col":3,"grounded":false,"airborne":true,"bbox":[39,320,472,494]},{"row":4,"col":4,"grounded":false,"airborne":true,"bbox":[105,252,408,494]}]},"kame":{"file":"kame.webp","type":"uniform","cols":5,"rows":5,"cell":512,"spriteZoom":0.8785,"baseline":0.0159,"defaultFacing":1,"sourceScale":2.03984,"portrait":{"x":0.3153,"y":0.06502,"w":0.39273,"h":0.39273},"frames":[{"row":0,"col":0,"grounded":true,"airborne":false,"bbox":[49,47,417,504]},{"row":0,"col":1,"grounded":true,"airborne":false,"bbox":[52,61,436,504]},{"row":0,"col":2,"grounded":true,"airborne":false,"bbox":[43,63,459,504]},{"row":0,"col":3,"grounded":true,"airborne":false,"bbox":[40,60,466,504]},{"row":0,"col":4,"grounded":true,"airborne":false,"bbox":[39,58,478,504]},{"row":1,"col":0,"grounded":true,"airborne":false,"bbox":[27,47,500,512]},{"row":1,"col":1,"grounded":true,"airborne":false,"bbox":[40,46,504,512]},{"row":1,"col":2,"grounded":true,"airborne":false,"bbox":[34,45,491,512]},{"row":1,"col":3,"grounded":true,"airborne":false,"bbox":[13,48,499,512]},{"row":1,"col":4,"grounded":true,"airborne":false,"bbox":[7,48,488,512]},{"row":2,"col":0,"grounded":true,"airborne":false,"bbox":[14,0,500,506]},{"row":2,"col":1,"grounded":true,"airborne":false,"bbox":[20,0,490,507]},{"row":2,"col":2,"grounded":true,"airborne":false,"bbox":[9,0,512,502]},{"row":2,"col":3,"grounded":true,"airborne":false,"bbox":[0,0,512,503]},{"row":2,"col":4,"grounded":true,"airborne":false,"bbox":[0,0,512,501]},{"row":3,"col":0,"grounded":true,"airborne":false,"bbox":[7,23,512,465]},{"row":3,"col":1,"grounded":true,"airborne":false,"bbox":[0,35,512,466]},{"row":3,"col":2,"grounded":true,"airborne":false,"bbox":[0,25,512,465]},{"row":3,"col":3,"grounded":true,"airborne":false,"bbox":[0,46,497,512]},{"row":3,"col":4,"grounded":true,"airborne":false,"bbox":[5,72,481,512]},{"row":4,"col":0,"grounded":true,"airborne":false,"bbox":[25,35,441,454]},{"row":4,"col":1,"grounded":true,"airborne":false,"bbox":[39,44,454,453]},{"row":4,"col":2,"grounded":true,"airborne":false,"bbox":[42,2,462,454]},{"row":4,"col":3,"grounded":true,"airborne":false,"bbox":[56,0,444,451]},{"row":4,"col":4,"grounded":true,"airborne":false,"bbox":[57,0,445,450]}]},"kame-beam":{"file":"kame-beam.webp","type":"strip","modules":5,"moduleW":307,"moduleH":512},"theresa":{"file":"theresa.webp","type":"anchored","cols":5,"rows":5,"cell":512,"spriteZoom":0.74,"baseline":0.035,"defaultFacing":1,"sourceScale":1.30199,"portrait":{"x":0.33255,"y":0.19832,"w":0.32828,"h":0.32828},"frames":[{"row":0,"col":0,"grounded":true,"airborne":false,"bbox":[94,113,361,495]},{"row":0,"col":1,"grounded":true,"airborne":false,"bbox":[107,116,373,495]},{"row":0,"col":2,"grounded":true,"airborne":false,"bbox":[164,114,360,495]},{"row":0,"col":3,"grounded":true,"airborne":false,"bbox":[117,121,437,495]},{"row":0,"col":4,"grounded":true,"airborne":false,"bbox":[107,121,393,495]},{"row":1,"col":0,"grounded":true,"airborne":false,"bbox":[80,159,335,495]},{"row":1,"col":1,"grounded":true,"airborne":false,"bbox":[99,159,357,495]},{"row":1,"col":2,"grounded":true,"airborne":false,"bbox":[107,159,373,495]},{"row":1,"col":3,"grounded":true,"airborne":false,"bbox":[165,165,448,495]},{"row":1,"col":4,"grounded":true,"airborne":false,"bbox":[189,163,497,495]},{"row":2,"col":0,"grounded":true,"airborne":false,"bbox":[94,159,371,497]},{"row":2,"col":1,"grounded":true,"airborne":false,"bbox":[78,164,421,497]},{"row":2,"col":2,"grounded":true,"airborne":false,"bbox":[81,164,437,497]},{"row":2,"col":3,"grounded":true,"airborne":false,"bbox":[51,156,373,496]},{"row":2,"col":4,"grounded":true,"airborne":false,"bbox":[111,152,378,497]},{"row":3,"col":0,"grounded":true,"airborne":false,"bbox":[97,156,324,495]},{"row":3,"col":1,"grounded":true,"airborne":false,"bbox":[137,160,505,495]},{"row":3,"col":2,"grounded":true,"airborne":false,"bbox":[116,170,491,495]},{"row":3,"col":3,"grounded":true,"airborne":false,"bbox":[73,183,384,485]},{"row":3,"col":4,"grounded":true,"airborne":false,"bbox":[93,159,374,495]},{"row":4,"col":0,"grounded":false,"airborne":true,"bbox":[118,187,394,494]},{"row":4,"col":1,"grounded":false,"airborne":true,"bbox":[100,184,411,494]},{"row":4,"col":2,"grounded":false,"airborne":true,"bbox":[82,177,428,494]},{"row":4,"col":3,"grounded":false,"airborne":true,"bbox":[114,218,398,494]},{"row":4,"col":4,"grounded":false,"airborne":false,"bbox":[119,164,393,493]}]},"theresa-proton":{"file":"theresa-proton.webp","type":"uniform","cols":5,"rows":5,"cell":512,"spriteZoom":0.9479,"baseline":0.0195,"defaultFacing":1,"sourceScale":1.66775,"portrait":{"x":0.3127,"y":0.00076,"w":0.41852,"h":0.41852},"frames":[{"row":0,"col":0,"grounded":true,"airborne":false,"bbox":[67,15,420,502]},{"row":0,"col":1,"grounded":true,"airborne":false,"bbox":[46,17,389,502]},{"row":0,"col":2,"grounded":true,"airborne":false,"bbox":[47,25,394,502]},{"row":0,"col":3,"grounded":true,"airborne":false,"bbox":[33,28,432,502]},{"row":0,"col":4,"grounded":true,"airborne":false,"bbox":[41,26,421,502]},{"row":1,"col":0,"grounded":true,"airborne":false,"bbox":[50,10,501,502]},{"row":1,"col":1,"grounded":true,"airborne":false,"bbox":[35,10,451,502]},{"row":1,"col":2,"grounded":true,"airborne":false,"bbox":[33,10,455,502]},{"row":1,"col":3,"grounded":true,"airborne":false,"bbox":[23,10,500,502]},{"row":1,"col":4,"grounded":true,"airborne":false,"bbox":[32,10,478,502]},{"row":2,"col":0,"grounded":true,"airborne":false,"bbox":[14,10,502,502]},{"row":2,"col":1,"grounded":true,"airborne":false,"bbox":[18,10,502,502]},{"row":2,"col":2,"grounded":true,"airborne":false,"bbox":[10,10,502,502]},{"row":2,"col":3,"grounded":true,"airborne":false,"bbox":[16,10,502,502]},{"row":2,"col":4,"grounded":true,"airborne":false,"bbox":[34,10,501,502]},{"row":3,"col":0,"grounded":true,"airborne":false,"bbox":[37,10,502,502]},{"row":3,"col":1,"grounded":true,"airborne":false,"bbox":[18,10,501,445]},{"row":3,"col":2,"grounded":true,"airborne":false,"bbox":[18,10,500,502]},{"row":3,"col":3,"grounded":true,"airborne":false,"bbox":[12,10,502,502]},{"row":3,"col":4,"grounded":true,"airborne":false,"bbox":[10,10,501,502]},{"row":4,"col":0,"grounded":true,"airborne":false,"bbox":[88,21,425,479]},{"row":4,"col":1,"grounded":true,"airborne":false,"bbox":[78,25,402,482]},{"row":4,"col":2,"grounded":true,"airborne":false,"bbox":[55,16,432,482]},{"row":4,"col":3,"grounded":true,"airborne":false,"bbox":[56,43,394,469]},{"row":4,"col":4,"grounded":true,"airborne":false,"bbox":[54,20,418,479]}]},"kurz":{"file":"kurz.webp","type":"anchored","cols":5,"rows":5,"cell":512,"spriteZoom":0.6632,"baseline":0.035,"defaultFacing":-1,"sourceScale":1.70622,"portrait":{"x":0.2647,"y":0.27885,"w":0.29305,"h":0.29305},"frames":[{"row":0,"col":0,"grounded":true,"airborne":false,"bbox":[83,153,367,494]},{"row":0,"col":1,"grounded":true,"airborne":false,"bbox":[83,156,370,494]},{"row":0,"col":2,"grounded":true,"airborne":false,"bbox":[82,154,367,494]},{"row":0,"col":3,"grounded":true,"airborne":false,"bbox":[78,153,368,493]},{"row":0,"col":4,"grounded":true,"airborne":false,"bbox":[105,155,397,494]},{"row":1,"col":0,"grounded":true,"airborne":false,"bbox":[120,151,397,493]},{"row":1,"col":1,"grounded":true,"airborne":false,"bbox":[125,151,381,494]},{"row":1,"col":2,"grounded":true,"airborne":false,"bbox":[102,149,371,494]},{"row":1,"col":3,"grounded":true,"airborne":false,"bbox":[133,137,410,494]},{"row":1,"col":4,"grounded":true,"airborne":false,"bbox":[104,149,370,494]},{"row":2,"col":0,"grounded":true,"airborne":false,"bbox":[88,153,404,494]},{"row":2,"col":1,"grounded":true,"airborne":false,"bbox":[48,156,410,494]},{"row":2,"col":2,"grounded":true,"airborne":false,"bbox":[1,154,404,494]},{"row":2,"col":3,"grounded":true,"airborne":false,"bbox":[98,153,407,494]},{"row":2,"col":4,"grounded":true,"airborne":false,"bbox":[95,153,406,494]},{"row":3,"col":0,"grounded":true,"airborne":false,"bbox":[103,139,404,494]},{"row":3,"col":1,"grounded":true,"airborne":false,"bbox":[121,146,385,494]},{"row":3,"col":2,"grounded":true,"airborne":false,"bbox":[29,146,324,487]},{"row":3,"col":3,"grounded":true,"airborne":false,"bbox":[100,146,352,494]},{"row":3,"col":4,"grounded":true,"airborne":false,"bbox":[106,143,396,494]},{"row":4,"col":0,"grounded":false,"airborne":false,"bbox":[94,147,416,494]},{"row":4,"col":1,"grounded":false,"airborne":false,"bbox":[112,182,401,494]},{"row":4,"col":2,"grounded":false,"airborne":false,"bbox":[77,207,434,494]},{"row":4,"col":3,"grounded":false,"airborne":false,"bbox":[62,217,450,494]},{"row":4,"col":4,"grounded":false,"airborne":false,"bbox":[64,345,447,493]}]},"kurz-comet":{"file":"kurz-comet.webp","type":"uniform","cols":5,"rows":5,"cell":512,"spriteZoom":0.5098,"baseline":0.0391,"defaultFacing":-1,"sourceScale":1.11304,"portrait":{"x":0.39826,"y":0.43789,"w":0.22344,"h":0.22344},"frames":[{"row":0,"col":0,"grounded":true,"airborne":false,"bbox":[163,232,387,492]},{"row":0,"col":1,"grounded":true,"airborne":false,"bbox":[147,229,365,492]},{"row":0,"col":2,"grounded":true,"airborne":false,"bbox":[128,243,352,492]},{"row":0,"col":3,"grounded":true,"airborne":false,"bbox":[141,247,387,492]},{"row":0,"col":4,"grounded":true,"airborne":false,"bbox":[131,246,350,492]},{"row":1,"col":0,"grounded":true,"airborne":false,"bbox":[135,270,379,492]},{"row":1,"col":1,"grounded":true,"airborne":false,"bbox":[166,232,375,492]},{"row":1,"col":2,"grounded":true,"airborne":false,"bbox":[143,232,364,492]},{"row":1,"col":3,"grounded":true,"airborne":false,"bbox":[138,229,376,492]},{"row":1,"col":4,"grounded":true,"airborne":false,"bbox":[136,229,380,492]},{"row":2,"col":0,"grounded":true,"airborne":false,"bbox":[160,229,354,492]},{"row":2,"col":1,"grounded":true,"airborne":false,"bbox":[155,229,356,492]},{"row":2,"col":2,"grounded":true,"airborne":false,"bbox":[191,229,322,492]},{"row":2,"col":3,"grounded":true,"airborne":false,"bbox":[165,229,336,492]},{"row":2,"col":4,"grounded":true,"airborne":false,"bbox":[138,229,386,492]},{"row":3,"col":0,"grounded":true,"airborne":false,"bbox":[155,295,400,492]},{"row":3,"col":1,"grounded":true,"airborne":false,"bbox":[198,327,463,492]},{"row":3,"col":2,"grounded":true,"airborne":false,"bbox":[147,322,408,492]},{"row":3,"col":3,"grounded":true,"airborne":false,"bbox":[123,138,388,374]},{"row":3,"col":4,"grounded":true,"airborne":false,"bbox":[124,138,386,373]},{"row":4,"col":0,"grounded":true,"airborne":false,"bbox":[128,126,383,384]},{"row":4,"col":1,"grounded":true,"airborne":false,"bbox":[160,224,362,492]},{"row":4,"col":2,"grounded":true,"airborne":false,"bbox":[150,222,372,492]},{"row":4,"col":3,"grounded":true,"airborne":false,"bbox":[155,238,394,492]},{"row":4,"col":4,"grounded":true,"airborne":false,"bbox":[158,243,385,492]}]},"brainbug":{"file":"brainbug.webp","type":"anchored","cols":5,"rows":5,"cell":512,"spriteZoom":0.74,"baseline":0.035,"defaultFacing":1,"sourceScale":1.21436,"portrait":{"x":0.42446,"y":0.2024,"w":0.3257,"h":0.3257},"frames":[{"row":0,"col":0,"grounded":true,"airborne":false,"bbox":[140,115,377,494]},{"row":0,"col":1,"grounded":true,"airborne":false,"bbox":[138,115,379,494]},{"row":0,"col":2,"grounded":true,"airborne":false,"bbox":[140,111,380,494]},{"row":0,"col":3,"grounded":true,"airborne":false,"bbox":[141,128,380,494]},{"row":0,"col":4,"grounded":true,"airborne":false,"bbox":[139,114,374,494]},{"row":1,"col":0,"grounded":true,"airborne":false,"bbox":[138,111,380,494]},{"row":1,"col":1,"grounded":true,"airborne":false,"bbox":[130,114,387,494]},{"row":1,"col":2,"grounded":true,"airborne":false,"bbox":[130,118,386,494]},{"row":1,"col":3,"grounded":true,"airborne":false,"bbox":[137,113,380,494]},{"row":1,"col":4,"grounded":true,"airborne":false,"bbox":[109,111,384,494]},{"row":2,"col":0,"grounded":true,"airborne":false,"bbox":[105,118,405,492]},{"row":2,"col":1,"grounded":true,"airborne":false,"bbox":[81,117,419,494]},{"row":2,"col":2,"grounded":true,"airborne":false,"bbox":[89,118,433,494]},{"row":2,"col":3,"grounded":true,"airborne":false,"bbox":[83,124,453,494]},{"row":2,"col":4,"grounded":true,"airborne":false,"bbox":[75,112,416,492]},{"row":3,"col":0,"grounded":true,"airborne":false,"bbox":[166,107,453,494]},{"row":3,"col":1,"grounded":true,"airborne":false,"bbox":[115,106,442,494]},{"row":3,"col":2,"grounded":true,"airborne":false,"bbox":[142,114,499,494]},{"row":3,"col":3,"grounded":true,"airborne":false,"bbox":[115,113,466,494]},{"row":3,"col":4,"grounded":true,"airborne":false,"bbox":[92,121,429,494]},{"row":4,"col":0,"grounded":false,"airborne":true,"bbox":[91,136,419,494]},{"row":4,"col":1,"grounded":false,"airborne":false,"bbox":[132,151,381,494]},{"row":4,"col":2,"grounded":false,"airborne":false,"bbox":[133,120,378,494]},{"row":4,"col":3,"grounded":false,"airborne":false,"bbox":[134,128,378,494]},{"row":4,"col":4,"grounded":false,"airborne":false,"bbox":[134,120,377,494]}]},"brainbug-sourmilk":{"file":"brainbug-sourmilk.webp","type":"uniform","cols":5,"rows":5,"cell":512,"spriteZoom":0.982,"baseline":0.008,"defaultFacing":1,"sourceScale":2.048,"portrait":{"x":0.39535,"y":0.0,"w":0.43484,"h":0.43484},"frames":[{"row":0,"col":0,"grounded":true,"airborne":false,"bbox":[91,2,421,508]},{"row":0,"col":1,"grounded":true,"airborne":false,"bbox":[87,8,430,508]},{"row":0,"col":2,"grounded":true,"airborne":false,"bbox":[80,0,422,508]},{"row":0,"col":3,"grounded":true,"airborne":false,"bbox":[49,0,497,508]},{"row":0,"col":4,"grounded":true,"airborne":false,"bbox":[73,24,404,508]},{"row":1,"col":0,"grounded":true,"airborne":false,"bbox":[76,4,436,508]},{"row":1,"col":1,"grounded":true,"airborne":false,"bbox":[71,4,430,508]},{"row":1,"col":2,"grounded":true,"airborne":false,"bbox":[74,4,447,508]},{"row":1,"col":3,"grounded":true,"airborne":false,"bbox":[61,4,441,508]},{"row":1,"col":4,"grounded":true,"airborne":false,"bbox":[76,4,445,508]},{"row":2,"col":0,"grounded":true,"airborne":false,"bbox":[37,4,451,508]},{"row":2,"col":1,"grounded":true,"airborne":false,"bbox":[63,4,432,508]},{"row":2,"col":2,"grounded":true,"airborne":false,"bbox":[39,4,418,508]},{"row":2,"col":3,"grounded":true,"airborne":false,"bbox":[8,4,493,508]},{"row":2,"col":4,"grounded":true,"airborne":false,"bbox":[28,4,500,508]},{"row":3,"col":0,"grounded":true,"airborne":false,"bbox":[0,30,508,497]},{"row":3,"col":1,"grounded":true,"airborne":false,"bbox":[4,47,508,508]},{"row":3,"col":2,"grounded":true,"airborne":false,"bbox":[4,47,508,508]},{"row":3,"col":3,"grounded":true,"airborne":false,"bbox":[4,4,508,497]},{"row":3,"col":4,"grounded":true,"airborne":false,"bbox":[4,26,512,508]},{"row":4,"col":0,"grounded":true,"airborne":false,"bbox":[24,4,508,493]},{"row":4,"col":1,"grounded":true,"airborne":false,"bbox":[80,4,463,473]},{"row":4,"col":2,"grounded":true,"airborne":false,"bbox":[74,4,414,490]},{"row":4,"col":3,"grounded":true,"airborne":false,"bbox":[78,4,414,490]},{"row":4,"col":4,"grounded":true,"airborne":false,"bbox":[78,4,423,493]}]},"brainbug-sourmilk-beam":{"file":"brainbug-sourmilk-beam.webp","type":"strip","modules":4,"moduleW":384,"moduleH":512}};
+/* Autogenerierter Sprite-Katalog fuer das Auto-Fight-Spiel. */
+window.SPRITE_CATALOG = {
+  "bob": {
+    "file": "bob.webp",
+    "type": "anchored",
+    "cols": 5,
+    "rows": 5,
+    "cell": 512,
+    "spriteZoom": 0.7144,
+    "baseline": 0.035,
+    "defaultFacing": 1,
+    "sourceScale": 1.54994,
+    "portrait": {
+      "x": 0.37767,
+      "y": 0.19713,
+      "w": 0.31711,
+      "h": 0.31711
+    },
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          116,
+          112,
+          392,
+          481
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          120,
+          117,
+          392,
+          483
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          106,
+          117,
+          399,
+          483
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          104,
+          140,
+          408,
+          483
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          75,
+          137,
+          417,
+          485
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          110,
+          118,
+          394,
+          494
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          91,
+          118,
+          406,
+          494
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          96,
+          114,
+          410,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          200,
+          137,
+          510,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          96,
+          143,
+          448,
+          494
+        ]
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          159,
+          129,
+          432,
+          506
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          93,
+          128,
+          455,
+          506
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          90,
+          131,
+          468,
+          504
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          57,
+          139,
+          445,
+          504
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          93,
+          132,
+          402,
+          506
+        ]
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          188,
+          133,
+          451,
+          494
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          148,
+          128,
+          430,
+          494
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          134,
+          136,
+          489,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          108,
+          140,
+          475,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          100,
+          132,
+          399,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          102,
+          165,
+          410,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          100,
+          178,
+          413,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          68,
+          222,
+          445,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          39,
+          320,
+          472,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          105,
+          252,
+          408,
+          494
+        ]
+      }
+    ]
+  },
+  "kame": {
+    "file": "kame.webp",
+    "type": "uniform",
+    "cols": 5,
+    "rows": 5,
+    "cell": 512,
+    "spriteZoom": 0.8785,
+    "baseline": 0.0159,
+    "defaultFacing": 1,
+    "sourceScale": 2.03984,
+    "portrait": {
+      "x": 0.3153,
+      "y": 0.06502,
+      "w": 0.39273,
+      "h": 0.39273
+    },
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          49,
+          47,
+          417,
+          504
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          52,
+          61,
+          436,
+          504
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          43,
+          63,
+          459,
+          504
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          40,
+          60,
+          466,
+          504
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          39,
+          58,
+          478,
+          504
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          27,
+          47,
+          500,
+          512
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          40,
+          46,
+          504,
+          512
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          34,
+          45,
+          491,
+          512
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          13,
+          48,
+          499,
+          512
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          7,
+          48,
+          488,
+          512
+        ]
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          14,
+          0,
+          500,
+          506
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          0,
+          490,
+          507
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          9,
+          0,
+          512,
+          502
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          0,
+          0,
+          512,
+          503
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          0,
+          0,
+          512,
+          501
+        ]
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          7,
+          23,
+          512,
+          465
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          0,
+          35,
+          512,
+          466
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          0,
+          25,
+          512,
+          465
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          0,
+          46,
+          497,
+          512
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          5,
+          72,
+          481,
+          512
+        ]
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          25,
+          35,
+          441,
+          454
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          39,
+          44,
+          454,
+          453
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          42,
+          2,
+          462,
+          454
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          56,
+          0,
+          444,
+          451
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          57,
+          0,
+          445,
+          450
+        ]
+      }
+    ]
+  },
+  "kame-beam": {
+    "file": "kame-beam.webp",
+    "type": "strip",
+    "modules": 5,
+    "moduleW": 307,
+    "moduleH": 512
+  },
+  "theresa": {
+    "file": "theresa.webp",
+    "type": "anchored",
+    "cols": 5,
+    "rows": 5,
+    "cell": 512,
+    "spriteZoom": 0.74,
+    "baseline": 0.035,
+    "defaultFacing": 1,
+    "sourceScale": 1.30199,
+    "portrait": {
+      "x": 0.33255,
+      "y": 0.19832,
+      "w": 0.32828,
+      "h": 0.32828
+    },
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          94,
+          113,
+          361,
+          495
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          107,
+          116,
+          373,
+          495
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          164,
+          114,
+          360,
+          495
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          117,
+          121,
+          437,
+          495
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          107,
+          121,
+          393,
+          495
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          80,
+          159,
+          335,
+          495
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          99,
+          159,
+          357,
+          495
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          107,
+          159,
+          373,
+          495
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          165,
+          165,
+          448,
+          495
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          189,
+          163,
+          497,
+          495
+        ]
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          94,
+          159,
+          371,
+          497
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          78,
+          164,
+          421,
+          497
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          81,
+          164,
+          437,
+          497
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          51,
+          156,
+          373,
+          496
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          111,
+          152,
+          378,
+          497
+        ]
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          97,
+          156,
+          324,
+          495
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          137,
+          160,
+          505,
+          495
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          116,
+          170,
+          491,
+          495
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          73,
+          183,
+          384,
+          485
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          93,
+          159,
+          374,
+          495
+        ]
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          118,
+          187,
+          394,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          100,
+          184,
+          411,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          82,
+          177,
+          428,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          114,
+          218,
+          398,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "grounded": false,
+        "airborne": false,
+        "bbox": [
+          119,
+          164,
+          393,
+          493
+        ]
+      }
+    ]
+  },
+  "theresa-proton": {
+    "file": "theresa-proton.webp",
+    "type": "uniform",
+    "cols": 5,
+    "rows": 5,
+    "cell": 512,
+    "spriteZoom": 0.9479,
+    "baseline": 0.0195,
+    "defaultFacing": 1,
+    "sourceScale": 1.66775,
+    "portrait": {
+      "x": 0.3127,
+      "y": 0.00076,
+      "w": 0.41852,
+      "h": 0.41852
+    },
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          67,
+          15,
+          420,
+          502
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          46,
+          17,
+          389,
+          502
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          47,
+          25,
+          394,
+          502
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          33,
+          28,
+          432,
+          502
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          41,
+          26,
+          421,
+          502
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          50,
+          10,
+          501,
+          502
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          35,
+          10,
+          451,
+          502
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          33,
+          10,
+          455,
+          502
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          23,
+          10,
+          500,
+          502
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          32,
+          10,
+          478,
+          502
+        ]
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          14,
+          10,
+          502,
+          502
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          18,
+          10,
+          502,
+          502
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          10,
+          10,
+          502,
+          502
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          16,
+          10,
+          502,
+          502
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          34,
+          10,
+          501,
+          502
+        ]
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          37,
+          10,
+          502,
+          502
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          18,
+          10,
+          501,
+          445
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          18,
+          10,
+          500,
+          502
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          12,
+          10,
+          502,
+          502
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          10,
+          10,
+          501,
+          502
+        ]
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          88,
+          21,
+          425,
+          479
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          78,
+          25,
+          402,
+          482
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          55,
+          16,
+          432,
+          482
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          56,
+          43,
+          394,
+          469
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          54,
+          20,
+          418,
+          479
+        ]
+      }
+    ]
+  },
+  "kurz": {
+    "file": "kurz.webp",
+    "type": "anchored",
+    "cols": 5,
+    "rows": 5,
+    "cell": 512,
+    "spriteZoom": 0.6632,
+    "baseline": 0.035,
+    "defaultFacing": -1,
+    "sourceScale": 1.70622,
+    "portrait": {
+      "x": 0.2647,
+      "y": 0.27885,
+      "w": 0.29305,
+      "h": 0.29305
+    },
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          83,
+          153,
+          367,
+          494
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          83,
+          156,
+          370,
+          494
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          82,
+          154,
+          367,
+          494
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          78,
+          153,
+          368,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          105,
+          155,
+          397,
+          494
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          120,
+          151,
+          397,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          125,
+          151,
+          381,
+          494
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          102,
+          149,
+          371,
+          494
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          133,
+          137,
+          410,
+          494
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          104,
+          149,
+          370,
+          494
+        ]
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          88,
+          153,
+          404,
+          494
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          48,
+          156,
+          410,
+          494
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          1,
+          154,
+          404,
+          494
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          98,
+          153,
+          407,
+          494
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          95,
+          153,
+          406,
+          494
+        ]
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          103,
+          139,
+          404,
+          494
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          121,
+          146,
+          385,
+          494
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          29,
+          146,
+          324,
+          487
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          100,
+          146,
+          352,
+          494
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          106,
+          143,
+          396,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "grounded": false,
+        "airborne": false,
+        "bbox": [
+          94,
+          147,
+          416,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "grounded": false,
+        "airborne": false,
+        "bbox": [
+          112,
+          182,
+          401,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "grounded": false,
+        "airborne": false,
+        "bbox": [
+          77,
+          207,
+          434,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "grounded": false,
+        "airborne": false,
+        "bbox": [
+          62,
+          217,
+          450,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "grounded": false,
+        "airborne": false,
+        "bbox": [
+          64,
+          345,
+          447,
+          493
+        ]
+      }
+    ]
+  },
+  "kurz-comet": {
+    "file": "kurz-comet.webp",
+    "type": "uniform",
+    "cols": 5,
+    "rows": 5,
+    "cell": 512,
+    "spriteZoom": 0.5098,
+    "baseline": 0.0391,
+    "defaultFacing": -1,
+    "sourceScale": 1.11304,
+    "portrait": {
+      "x": 0.39826,
+      "y": 0.43789,
+      "w": 0.22344,
+      "h": 0.22344
+    },
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          163,
+          232,
+          387,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          147,
+          229,
+          365,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          128,
+          243,
+          352,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          141,
+          247,
+          387,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          131,
+          246,
+          350,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          135,
+          270,
+          379,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          166,
+          232,
+          375,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          143,
+          232,
+          364,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          138,
+          229,
+          376,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          136,
+          229,
+          380,
+          492
+        ]
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          160,
+          229,
+          354,
+          492
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          155,
+          229,
+          356,
+          492
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          191,
+          229,
+          322,
+          492
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          165,
+          229,
+          336,
+          492
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          138,
+          229,
+          386,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          155,
+          295,
+          400,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          198,
+          327,
+          463,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          147,
+          322,
+          408,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          123,
+          138,
+          388,
+          374
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          124,
+          138,
+          386,
+          373
+        ]
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          128,
+          126,
+          383,
+          384
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          160,
+          224,
+          362,
+          492
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          150,
+          222,
+          372,
+          492
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          155,
+          238,
+          394,
+          492
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          158,
+          243,
+          385,
+          492
+        ]
+      }
+    ]
+  },
+  "brainbug": {
+    "file": "brainbug.webp",
+    "type": "anchored",
+    "cols": 5,
+    "rows": 5,
+    "cell": 512,
+    "spriteZoom": 0.74,
+    "baseline": 0.035,
+    "defaultFacing": 1,
+    "sourceScale": 1.21436,
+    "portrait": {
+      "x": 0.42446,
+      "y": 0.2024,
+      "w": 0.3257,
+      "h": 0.3257
+    },
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          140,
+          115,
+          377,
+          494
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          138,
+          115,
+          379,
+          494
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          140,
+          111,
+          380,
+          494
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          141,
+          128,
+          380,
+          494
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          139,
+          114,
+          374,
+          494
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          138,
+          111,
+          380,
+          494
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          130,
+          114,
+          387,
+          494
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          130,
+          118,
+          386,
+          494
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          137,
+          113,
+          380,
+          494
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          109,
+          111,
+          384,
+          494
+        ]
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          105,
+          118,
+          405,
+          492
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          81,
+          117,
+          419,
+          494
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          89,
+          118,
+          433,
+          494
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          83,
+          124,
+          453,
+          494
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          75,
+          112,
+          416,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          166,
+          107,
+          453,
+          494
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          115,
+          106,
+          442,
+          494
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          142,
+          114,
+          499,
+          494
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          115,
+          113,
+          466,
+          494
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          92,
+          121,
+          429,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          91,
+          136,
+          419,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "grounded": false,
+        "airborne": false,
+        "bbox": [
+          132,
+          151,
+          381,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "grounded": false,
+        "airborne": false,
+        "bbox": [
+          133,
+          120,
+          378,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "grounded": false,
+        "airborne": false,
+        "bbox": [
+          134,
+          128,
+          378,
+          494
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "grounded": false,
+        "airborne": false,
+        "bbox": [
+          134,
+          120,
+          377,
+          494
+        ]
+      }
+    ]
+  },
+  "brainbug-sourmilk": {
+    "file": "brainbug-sourmilk.webp",
+    "type": "uniform",
+    "cols": 5,
+    "rows": 5,
+    "cell": 512,
+    "spriteZoom": 0.982,
+    "baseline": 0.008,
+    "defaultFacing": 1,
+    "sourceScale": 2.048,
+    "portrait": {
+      "x": 0.39535,
+      "y": 0,
+      "w": 0.43484,
+      "h": 0.43484
+    },
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          91,
+          2,
+          421,
+          508
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          87,
+          8,
+          430,
+          508
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          80,
+          0,
+          422,
+          508
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          49,
+          0,
+          497,
+          508
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          73,
+          24,
+          404,
+          508
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          76,
+          4,
+          436,
+          508
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          71,
+          4,
+          430,
+          508
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          74,
+          4,
+          447,
+          508
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          61,
+          4,
+          441,
+          508
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          76,
+          4,
+          445,
+          508
+        ]
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          37,
+          4,
+          451,
+          508
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          63,
+          4,
+          432,
+          508
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          39,
+          4,
+          418,
+          508
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          8,
+          4,
+          493,
+          508
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          28,
+          4,
+          500,
+          508
+        ]
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          0,
+          30,
+          508,
+          497
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          4,
+          47,
+          508,
+          508
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          4,
+          47,
+          508,
+          508
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          4,
+          4,
+          508,
+          497
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          4,
+          26,
+          512,
+          508
+        ]
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          24,
+          4,
+          508,
+          493
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          80,
+          4,
+          463,
+          473
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          74,
+          4,
+          414,
+          490
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          78,
+          4,
+          414,
+          490
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          78,
+          4,
+          423,
+          493
+        ]
+      }
+    ]
+  },
+  "brainbug-sourmilk-beam": {
+    "file": "brainbug-sourmilk-beam.webp",
+    "type": "strip",
+    "modules": 4,
+    "moduleW": 384,
+    "moduleH": 512
+  },
+  "mcmoney": {
+    "file": "mcmoney.webp",
+    "type": "anchored",
+    "cols": 5,
+    "rows": 5,
+    "cell": 512,
+    "spriteZoom": 0.74,
+    "baseline": 0.035,
+    "defaultFacing": 1,
+    "sourceScale": 1.35,
+    "portrait": {
+      "x": 0.33,
+      "y": 0.18,
+      "w": 0.33,
+      "h": 0.33
+    },
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          158,
+          116,
+          383,
+          497
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          157,
+          116,
+          380,
+          497
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          158,
+          117,
+          380,
+          496
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          158,
+          113,
+          381,
+          495
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          157,
+          114,
+          371,
+          495
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          147,
+          105,
+          357,
+          496
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          143,
+          104,
+          353,
+          496
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          139,
+          104,
+          355,
+          496
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          146,
+          106,
+          354,
+          497
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          170,
+          102,
+          348,
+          496
+        ]
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          150,
+          119,
+          449,
+          495
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          147,
+          119,
+          457,
+          495
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          149,
+          118,
+          373,
+          495
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          144,
+          120,
+          403,
+          495
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          152,
+          119,
+          381,
+          495
+        ]
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          140,
+          121,
+          374,
+          495
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          140,
+          109,
+          463,
+          495
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          123,
+          115,
+          438,
+          495
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          62,
+          67,
+          344,
+          463
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          154,
+          149,
+          370,
+          495
+        ]
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          120,
+          104,
+          354,
+          495
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          127,
+          115,
+          424,
+          495
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "grounded": false,
+        "airborne": true,
+        "bbox": [
+          4,
+          90,
+          372,
+          371
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          50,
+          368,
+          461,
+          496
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          151,
+          172,
+          381,
+          496
+        ]
+      }
+    ]
+  },
+  "mcmoney-special": {
+    "file": "mcmoney-special.webp",
+    "type": "uniform",
+    "cols": 5,
+    "rows": 5,
+    "cell": 512,
+    "spriteZoom": 0.95,
+    "baseline": 0.02,
+    "defaultFacing": 1,
+    "sourceScale": 1.6,
+    "portrait": {
+      "x": 0.33,
+      "y": 0.18,
+      "w": 0.33,
+      "h": 0.33
+    },
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 2,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 3,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      },
+      {
+        "row": 4,
+        "col": 4,
+        "grounded": true,
+        "airborne": false,
+        "bbox": [
+          20,
+          20,
+          492,
+          492
+        ]
+      }
+    ]
+  },
+  "drslop": {
+    "file": "drslop-base.webp",
+    "type": "anchored",
+    "cols": 5,
+    "rows": 2,
+    "cell": 512,
+    "spriteZoom": 0.74,
+    "baseline": 0.039,
+    "defaultFacing": 1,
+    "sourceScale": 1.35,
+    "portrait": {
+      "x": 0.33,
+      "y": 0.18,
+      "w": 0.34,
+      "h": 0.34
+    },
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "bbox": [
+          137,
+          112,
+          360,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "bbox": [
+          145,
+          112,
+          369,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "bbox": [
+          137,
+          113,
+          361,
+          494
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "bbox": [
+          143,
+          112,
+          367,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "bbox": [
+          144,
+          112,
+          369,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "bbox": [
+          141,
+          113,
+          374,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          150,
+          113,
+          380,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          139,
+          113,
+          375,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          153,
+          112,
+          381,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "bbox": [
+          145,
+          113,
+          377,
+          492
+        ]
+      }
+    ]
+  },
+  "drslop-attacks": {
+    "file": "drslop-attacks.webp",
+    "type": "anchored",
+    "cols": 5,
+    "rows": 2,
+    "cell": 512,
+    "spriteZoom": 0.74,
+    "baseline": 0.039,
+    "defaultFacing": 1,
+    "sourceScale": 1.35,
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "bbox": [
+          131,
+          112,
+          403,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "bbox": [
+          138,
+          112,
+          410,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "bbox": [
+          119,
+          112,
+          392,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "bbox": [
+          107,
+          112,
+          379,
+          492
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "bbox": [
+          122,
+          112,
+          394,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "bbox": [
+          114,
+          112,
+          386,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          95,
+          112,
+          367,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          120,
+          112,
+          393,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          123,
+          112,
+          395,
+          492
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "bbox": [
+          159,
+          112,
+          431,
+          492
+        ]
+      }
+    ]
+  },
+  "drslop-sp1": {
+    "file": "drslop-sp1.webp",
+    "type": "anchored",
+    "cols": 5,
+    "rows": 2,
+    "cell": 512,
+    "spriteZoom": 0.74,
+    "baseline": 0.039,
+    "defaultFacing": 1,
+    "sourceScale": 1.35,
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "bbox": [
+          96,
+          52,
+          411,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "bbox": [
+          108,
+          52,
+          423,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "bbox": [
+          101,
+          52,
+          417,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "bbox": [
+          97,
+          52,
+          412,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "bbox": [
+          120,
+          52,
+          435,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "bbox": [
+          137,
+          52,
+          452,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          151,
+          52,
+          466,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          147,
+          52,
+          463,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          123,
+          52,
+          438,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "bbox": [
+          98,
+          52,
+          413,
+          493
+        ]
+      }
+    ]
+  },
+  "drslop-sp23": {
+    "file": "drslop-sp23.webp",
+    "type": "anchored",
+    "cols": 5,
+    "rows": 2,
+    "cell": 512,
+    "spriteZoom": 0.74,
+    "baseline": 0.039,
+    "defaultFacing": 1,
+    "sourceScale": 1.35,
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "bbox": [
+          125,
+          52,
+          413,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "bbox": [
+          139,
+          52,
+          454,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "bbox": [
+          145,
+          52,
+          461,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "bbox": [
+          95,
+          52,
+          410,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "bbox": [
+          256,
+          52,
+          511,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "bbox": [
+          110,
+          52,
+          406,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          92,
+          52,
+          407,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          84,
+          52,
+          400,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          99,
+          52,
+          414,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "bbox": [
+          89,
+          52,
+          379,
+          493
+        ]
+      }
+    ]
+  },
+  "drslop-charge": {
+    "file": "drslop-charge.webp",
+    "type": "anchored",
+    "cols": 5,
+    "rows": 2,
+    "cell": 512,
+    "spriteZoom": 0.74,
+    "baseline": 0.039,
+    "defaultFacing": 1,
+    "sourceScale": 1.35,
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "bbox": [
+          97,
+          52,
+          412,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "bbox": [
+          99,
+          52,
+          414,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "bbox": [
+          99,
+          52,
+          415,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "bbox": [
+          99,
+          52,
+          414,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "bbox": [
+          101,
+          52,
+          416,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "bbox": [
+          96,
+          52,
+          411,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          96,
+          52,
+          411,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          100,
+          52,
+          416,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          99,
+          52,
+          414,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "bbox": [
+          103,
+          52,
+          418,
+          493
+        ]
+      }
+    ]
+  },
+  "drslop-kaioken": {
+    "file": "drslop-kaioken.webp",
+    "type": "anchored",
+    "cols": 5,
+    "rows": 2,
+    "cell": 512,
+    "spriteZoom": 0.74,
+    "baseline": 0.039,
+    "defaultFacing": 1,
+    "sourceScale": 1.35,
+    "frames": [
+      {
+        "row": 0,
+        "col": 0,
+        "bbox": [
+          100,
+          52,
+          415,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "bbox": [
+          102,
+          52,
+          417,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "bbox": [
+          101,
+          52,
+          417,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "bbox": [
+          102,
+          52,
+          417,
+          493
+        ]
+      },
+      {
+        "row": 0,
+        "col": 4,
+        "bbox": [
+          103,
+          52,
+          418,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "bbox": [
+          119,
+          52,
+          434,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "bbox": [
+          140,
+          52,
+          455,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "bbox": [
+          95,
+          52,
+          411,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "bbox": [
+          102,
+          52,
+          417,
+          493
+        ]
+      },
+      {
+        "row": 1,
+        "col": 4,
+        "bbox": [
+          99,
+          52,
+          414,
+          493
+        ]
+      }
+    ]
+  }
+};

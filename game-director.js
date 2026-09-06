@@ -52,6 +52,10 @@
         const left=Math.min(mouthX,targetX),right=Math.max(mouthX,targetX);
         return {x:left,y:mouthY-h*0.12,w:Math.max(28,right-left),h:h*0.24,type:"sourMilk"};
       }
+      if(f.key==="kapitalCrash"&&f.moveStep>=11&&f.moveStep<=18&&foe){
+        const hb=getHurtbox(foe);
+        return {x:hb.x-65,y:hb.y-80,w:hb.w+130,h:hb.h+135,type:"kapital"};
+      }
       return null;
     }
     function intersects(a,b){return a&&b&&a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y}
@@ -77,6 +81,21 @@
       }
       if(key==="sourMilkBurst"){
         return {...ATTACKS.special,type:"special",reaction:"hitSourMilk",damage:24,range:9999,knock:54,blockChance:0.06};
+      }
+      if(key==="kapitalCrash"){
+        return {...ATTACKS.special,type:"special",reaction:"hitBeam",damage:33,range:9999,knock:155,blockChance:0.05};
+      }
+      if(key==="slopKiHack"){
+        return {...ATTACKS.special,type:"special",reaction:"hitBeam",damage:28,range:9999,knock:140,blockChance:0.06};
+      }
+      if(key==="slopSpeedBlitz"){
+        return {...ATTACKS.special,type:"special",reaction:"hitKickHigh",damage:26,range:460,knock:110,blockChance:0.08};
+      }
+      if(key==="slopChaosApocalypse"){
+        return {...ATTACKS.special,type:"special",reaction:"hitBeam",damage:34,range:9999,knock:170,blockChance:0.04};
+      }
+      if(key==="slopKaiokenCharge"){
+        return {damage:0,range:0,knock:0,type:"special",reaction:"hitPunch",blockChance:0};
       }
       const type=attackTypeFromKey(key),base=ATTACKS[type]||ATTACKS.punch;
       return {...base,type};
@@ -127,7 +146,8 @@
       const counter=!!defender.move&&!defender.key.startsWith("hit")&&
                     !defender.key.startsWith("block")&&STARTUP.includes(defPhase);
 
-      const dmg=Math.round(info.damage*(counter?1.6:1));
+      let dmg=Math.round(info.damage*(counter?1.6:1));
+      if(attacker.isKaioken) dmg=Math.round(dmg*1.35);
       const comboLink=attacker.comboActive&&attacker.comboQueue.length>0;
       const knock=info.knock*(counter?1.3:1)*(comboLink ? .38 : 1);
       defender.health=Math.max(0,defender.health-dmg);
@@ -179,6 +199,16 @@
       const roll=Math.random();
       const fighterKey=attacker.cfg.key;
 
+      // Dr. Slop Kaioken transformation trigger
+      if(fighterKey==="drslop" && !attacker.isKaioken && (attacker.health<85 || Math.random()<0.20)){
+        const key="slopKaiokenCharge", info=attackInfo(key);
+        activePlan={attacker,defender,key,info,combo:null,comboName:"SSJ BLUE KAIOKEN",specialCombo:true,
+                    evade:false,prestep:false,counter:false};
+        attacker.face=attacker.x<defender.x?1:-1;defender.face=-attacker.face;
+        launchPlan();
+        return;
+      }
+
       // Roughly one third of exchanges are chained attacks; a smaller share ends
       // in a cinematic special finisher.
       if(roll<.13){
@@ -195,7 +225,16 @@
         const r=Math.random();
         let type=r<.28?"punch":r<.52?"kickLow":r<.76?"kickHigh":r<.90?"jumpKick":"special";
         if((active.some(f=>f.health<35))&&Math.random()<.32)type="special";
-        let key=type==="special"?attacker.cfg.specialKey:choose(ATTACKS[type].keys);
+        let key;
+        if(fighterKey==="drslop"){
+          if(type==="punch") key=choose(["slopPunchR","slopPunchL","slopHaymaker"]);
+          else if(type==="kickHigh") key="slopKickHigh";
+          else if(type==="kickLow") key="slopKickLow";
+          else if(type==="jumpKick") key="slopJumpKick";
+          else key=choose(["slopKiHack","slopSpeedBlitz","slopChaosApocalypse"]);
+        }else{
+          key=type==="special"?attacker.cfg.specialKey:choose(ATTACKS[type].keys);
+        }
         const info=attackInfo(key);
         activePlan={attacker,defender,key,info,combo:null,comboName:"",specialCombo:false,
                     evade:Math.random()<.22&&type!=="special",prestep:Math.random()<.36,
@@ -232,7 +271,7 @@
       if(activePlan.counter&&info.type!=="special"&&!evade){
         counterPending={f:defender,foe:attacker,delay:80+Math.random()*170};
       }
-      ui.status.textContent=specialCombo?"SPEZIAL-KOMBO":combo?"KAMPF-KOMBO":key==="kame"?"ENERGIESTRAHL":key==="comet"?"MICROWAVE METEOR":key==="protonKick"?"PROTON ROUNDHOUSE":key==="sourMilkBurst"?"SOUR MILK SURGE":key==="brainFlail"?"PANIK-FLAIL":choose(["ANGRIFF","DUELL","ACTION"]);
+      ui.status.textContent=specialCombo?"SPEZIAL-KOMBO":combo?"KAMPF-KOMBO":key==="kame"?"ENERGIESTRAHL":key==="comet"?"MICROWAVE METEOR":key==="protonKick"?"PROTON ROUNDHOUSE":key==="sourMilkBurst"?"SOUR MILK SURGE":key==="kapitalCrash"?"KAPITAL-CRASH":key==="slopKiHack"?"KI-THRONEN STURM":key==="slopSpeedBlitz"?"PSYCHO SPEED-BLITZ":key==="slopChaosApocalypse"?"CHAOS APOCALYPSE":key==="slopKaiokenCharge"?"SSJ BLUE KAIOKEN!":key==="brainFlail"?"PANIK-FLAIL":choose(["ANGRIFF","DUELL","ACTION"]);
     }
 
     function director(dt){

@@ -66,6 +66,7 @@ const SPRITES = (function () {
     missing() { return failed; }
   };
 })();
+if (typeof window !== "undefined") window.SPRITES = SPRITES;
 
 /* Ganzzahlige Zellgrenzen: die Blaetter sind nicht immer exakt durch die
    Spaltenzahl teilbar, und ein halbes Pixel Versatz zieht beim Skalieren
@@ -149,7 +150,7 @@ function portraitRect(entry) {
 /* Zoom und Bodenlinie stammen aus der Messung im Katalog - damit muss im
    Spiel nichts mehr von Hand nachjustiert werden. */
 function applyCatalogMetrics() {
-  const map = { bob: "bob", kurz: "kurz", nova: "theresa", brainbug: "brainbug" };
+  const map = { bob: "bob", kurz: "kurz", nova: "theresa", brainbug: "brainbug", mcmoney: "mcmoney", drslop: "drslop" };
   for (const key of Object.keys(map)) {
     const fighter = (typeof fighterByKey !== "undefined") && fighterByKey[key];
     const entry = SPRITES.get(map[key]);
@@ -225,6 +226,16 @@ const MOVEMENT = {
               getUp: [23, 22, 21] },
     special: { key: "sourMilkBurst", sheet: "brainbug-sourmilk",
                beamFrames: [15, 16, 17, 18, 19], clipAhead: 0.20 }
+  },
+  mcmoney: {
+    sheet: "mcmoney",
+    idle: { frames: [0, 1, 2, 3, 4], rate: 3.8 },
+    walk: { frames: [5, 6, 7, 8, 9], rate: 1.0 },
+    jump: { crouch: 15, rise: 8, strike: 18, fall: 9, land: 19 },
+    damage: { hit: 20, stagger: 21, air: 22, land: 23, down: 23, ko: 23,
+              getUp: [24, 0] },
+    special: { key: "kapitalCrash", sheet: "mcmoney-special",
+               fxOnly: [16, 17, 18], fxPose: 11, fxScale: 1.5, fxDrop: 16 }
   }
 };
 
@@ -339,6 +350,9 @@ function catalogIndex(f) {
 /* Zeichnet die Figur inklusive Spezialkatalog. Rueckgabe false, wenn das
    Blatt noch nicht geladen ist - dann uebernimmt der alte Zeichenweg. */
 function drawFighterCatalog(f, foe) {
+  if (f.cfg.key === "drslop" && typeof drawDrSlopCatalog === "function") {
+    return drawDrSlopCatalog(f, foe);
+  }
   const m = movementFor(f);
   const sp = m.special;
 

@@ -20,11 +20,17 @@
     /* Die Blaetter kommen aus dem Katalog (assets/catalog.js + game-catalog.js).
        spriteAssets bleibt als schmale Bruecke bestehen, damit Portraits und
        aeltere Zeichenwege unveraendert weiterlaufen. */
+    const mcmoneyPortrait = new Image();
+    mcmoneyPortrait.src = "assets/mcmoney-portrait.webp";
+    const drslopPortrait = new Image();
+    drslopPortrait.src = "assets/drslop-portrait.webp";
     const spriteAssets={
       bob:{catalog:"bob",defaultFacing:1,image:null,sheet:null,portrait:null},
       kurz:{catalog:"kurz",defaultFacing:-1,image:null,sheet:null,portrait:null},
       nova:{catalog:"theresa",defaultFacing:1,image:null,sheet:null,portrait:null},
       brainbug:{catalog:"brainbug",defaultFacing:1,image:null,sheet:null,portrait:null},
+      mcmoney:{catalog:"mcmoney",defaultFacing:1,image:null,sheet:null,portrait:null,portraitImage:mcmoneyPortrait},
+      drslop:{catalog:"drslop",defaultFacing:1,image:null,sheet:null,portrait:null,portraitImage:drslopPortrait},
       kame:{catalog:"kame",defaultFacing:1,image:null,sheet:null,portrait:null}
     };
     let spritesLoaded=0;
@@ -49,7 +55,7 @@
     }
 
     SPRITES.ready(function(){
-      ["bob","kurz","nova","brainbug","kame"].forEach(name=>{if(bindSpriteAsset(name))spritesLoaded++});
+      ["bob","kurz","nova","brainbug","mcmoney","drslop","kame"].forEach(name=>{if(bindSpriteAsset(name))spritesLoaded++});
       applyCatalogMetrics();
       if(typeof renderPortrait==="function"){
         renderPortrait("portrait-left",spriteAssets.bob);

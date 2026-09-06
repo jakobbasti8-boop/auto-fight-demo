@@ -122,12 +122,28 @@
       name:"LT. BRAINBUG",short:"LT.BRAINBUG",key:"brainbug",specialKey:"sourMilkBurst",asset:"brainbug",displayH:330,spriteZoom:.94,baseline:.052,hurtW:.43,startX:760,face:1,scale:1.16,girth:.94,walkSpeed:.175,hair:"helmet",doctor:false,
       col:{skin:"#d9a279",skinD:"#9f684c",hair:"#4a2e20",hairD:"#24150f",shirt:"#7c7449",shirtD:"#4d492e",pants:"#69623e",pantsD:"#403c27",boot:"#3a2b1f",bootD:"#1d1712"}
     });
+    const mcmoney=new Fighter({
+      name:"MC. MONEY",short:"MC. MONEY",key:"mcmoney",specialKey:"kapitalCrash",asset:"mcmoney",displayH:330,spriteZoom:0.74,baseline:0.035,hurtW:.40,startX:450,face:1,scale:1.24,girth:.96,walkSpeed:.235,hair:"modern",doctor:false,
+      col:{skin:"#dfa77e",skinD:"#ad704b",hair:"#543825",hairD:"#2e1e13",shirt:"#6e2bb5",shirtD:"#47157d",pants:"#2f4b75",pantsD:"#1b2c47",boot:"#161616",bootD:"#0a0a0a"}
+    });
+    const drslop=new Fighter({
+      name:"DR. SLOP",short:"DR. SLOP",key:"drslop",specialKey:"slopKiHack",asset:"drslop",displayH:338,spriteZoom:0.74,baseline:0.039,hurtW:.38,startX:450,face:1,scale:1.26,girth:.97,walkSpeed:.265,hair:"mohawk",doctor:true,
+      col:{skin:"#e5b08a",skinD:"#ad6f4c",hair:"#ff1414",hairD:"#9b0909",shirt:"#141416",shirtD:"#08080a",pants:"#9aa1aa",pantsD:"#636973",boot:"#ffffff",bootD:"#18181a"}
+    });
+    drslop.isKaioken=false;
+    drslop.kaiokenChargeTime=0;
 
-    const allFighters=[bob,kurz,nova,brainbug];
+    const allFighters=[bob,kurz,nova,brainbug,mcmoney,drslop];
     let fighters=[bob,kurz];
     let selectedLeft="bob",selectedRight="kurz";
-    const fighterByKey={bob,kurz,nova,brainbug};
-    const fighterLabel={bob:"DR. BOB",kurz:"KURZDURCH",nova:"THERESA MACHSLOCHUFF",brainbug:"LT. BRAINBUG"};
+    const fighterByKey={bob,kurz,nova,brainbug,mcmoney,drslop};
+    const fighterLabel={bob:"DR. BOB",kurz:"KURZDURCH",nova:"THERESA MACHSLOCHUFF",brainbug:"LT. BRAINBUG",mcmoney:"MC. MONEY",drslop:"DR. SLOP"};
+    if(typeof window!=="undefined"){
+      window.mcmoney=mcmoney;
+      window.drslop=drslop;
+      window.fighterByKey=fighterByKey;
+      window.allFighters=allFighters;
+    }
 
     const ui={
       lifeLeft:document.getElementById("life-left"),lifeRight:document.getElementById("life-right"),

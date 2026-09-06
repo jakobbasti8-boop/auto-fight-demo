@@ -143,13 +143,19 @@
       brainbug:[
         {name:"WRONG WAY",keys:["punchR","kickLowL","punchL"]},
         {name:"LOST FORMATION",keys:["kickHighR","punchR","jumpKick"]}
+      ],
+      mcmoney:[
+        {name:"RHYME RUSH",keys:["punchR","punchL","kickHighR"]},
+        {name:"CASH OUT",keys:["kickLowR","punchR","jumpKick"]},
+        {name:"BULL RUN",keys:["punchL","kickHighR","kickLowL"]}
       ]
     };
     const SPECIAL_COMBOS = {
       bob:{name:"DOC OVERDRIVE",keys:["punchR","kickLowL","kickHighR","kame"]},
       kurz:{name:"MICROWAVE METEOR",keys:["kickLowR","punchL","jumpKick","comet"]},
       nova:{name:"PROTON ROUNDHOUSE",keys:["punchR","kickHighL","protonKick"]},
-      brainbug:{name:"SOUR MILK SURGE",keys:["punchL","kickLowR","sourMilkBurst"]}
+      brainbug:{name:"SOUR MILK SURGE",keys:["punchL","kickLowR","sourMilkBurst"]},
+      mcmoney:{name:"KAPITAL-CRASH",keys:["punchR","kickHighR","punchL","kapitalCrash"]}
     };
 
     const lerp = (a,b,t) => a+(b-a)*t;

@@ -1,6 +1,6 @@
 {
   "name": "Auto Fight Demo",
-  "description": "Browserbasierte 2D-Auto-Fight-Demo mit Dr. BOB, KurzDurch und weiteren Kämpfern.",
+  "description": "Browserbasierte 2D-Auto-Fight-Demo mit Dr. BOB, KurzDurch, Theresa, Lt. BrainBug und Mc. Money.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
