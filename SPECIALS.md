@@ -1,6 +1,6 @@
-# Spezialattacken
+# Spezialattacken — v10
 
-Diese Datei beschreibt die aktuell implementierten Spezialattacken der vier Kämpfer. Frame-Angaben beziehen sich auf die sichtbaren Katalogframes 1–25.
+Die vier Spezialattacken verwenden in v10 konsolidierte Kataloge. Frame-Angaben sind **1-basiert** und beziehen sich auf die sichtbaren 25 Katalogbilder.
 
 ## Dr. BOB — KAMEHAMEHA
 
@@ -10,16 +10,16 @@ Diese Datei beschreibt die aktuell implementierten Spezialattacken der vier Käm
 - Spezialkombo: **DOC OVERDRIVE**
 - Schaden: **20**
 - Knockback: **92**
-- Blockchance: reguläre Special-Logik, ca. **16 %**, bei niedriger HP des Verteidigers erhöht
+- Blockchance: normale Special-Logik; bei niedriger HP des Verteidigers erhöht
 - Aktives Trefferfenster: **Frames 12–18**
-- Charakter-Asset: `assets/kame.webp`
-- Strahl-Asset: `assets/kame-beam.webp`
-- Strahlmodule: Start → Loop A → Loop B → Head → Impact
-- Besonderheit: Die Strahllänge wird zur Laufzeit an die Distanz zum Gegner angepasst.
+- Charakteratlas: `assets/kame.webp`
+- Beam-Strip: `assets/kame-beam.webp`
+- Beam-Module: Mündung → Loop A → Loop B → Head → Impact
+- Besonderheit: Strahllänge wird zur Laufzeit bis zum Gegner aufgebaut; Beam-Frames des Charakterkatalogs werden hinter der Hand geclippt, damit keine harte rechteckige Zellkante sichtbar bleibt.
 
 ## Theresa MachsLochuff — PROTON ROUNDHOUSE
 
-25 Frames: Fokus → Knie/Kammer → gelbe Protonenladung → lila Protonenaura → High-Roundhouse → Abwärtstreffer → gelb-lila Detonation → Photonenkern/Schockwelle → Pose/Kusshand → Erholung.
+25 Frames: Fokus → Kammer → gelbe Protonenladung → lila Protonenaura → High-Roundhouse/Abwärtstreffer → Detonation → Photonenkern/Schockwelle → Pose/Kusshand → Erholung.
 
 - Move-Key: `protonKick`
 - Spezialkombo: **PROTON ROUNDHOUSE**
@@ -27,12 +27,12 @@ Diese Datei beschreibt die aktuell implementierten Spezialattacken der vier Käm
 - Knockback: **145**
 - Blockchance: **8 %**, bei niedriger HP leicht erhöht
 - Aktives Trefferfenster: **Frames 15–20**
-- Assets: `assets/theresa-proton-row-1.webp` bis `assets/theresa-proton-row-5.webp`
-- Besonderheit: Explosionsframes werden gegnerzentriert gezeichnet und ersetzen in dieser Phase das normale Fighter-Rendering.
+- Spezialatlas: `assets/theresa-proton.webp`
+- Besonderheit: reine Explosionsframes werden gegnerzentriert gezeichnet; Theresa bleibt dabei in einer passenden Trittpose sichtbar.
 
 ## KurzDurch — MICROWAVE METEOR
 
-25 Frames: Fokus → Mikrowelle greifen/öffnen → als Helm aufsetzen → rote Aura und dünne Blitze → Hände hoch → Komet heranziehen und vergrößern → Blitzwurf → Flug → Einschlag/rote Blitzexplosion → Mikrowelle abnehmen → Triumph/Lachen → Erholung.
+25 Frames: Fokus → Mikrowelle greifen/öffnen → als Helm aufsetzen → rote Aura und Blitze → Hände hoch → Komet heranziehen → Blitzwurf → Flug → Einschlag/rote Blitzexplosion → Mikrowelle abnehmen → Triumph/Lachen → Erholung.
 
 - Move-Key: `comet`
 - Spezialkombo: **MICROWAVE METEOR**
@@ -40,12 +40,12 @@ Diese Datei beschreibt die aktuell implementierten Spezialattacken der vier Käm
 - Knockback: **168**
 - Blockchance: **4 %**, bei niedriger HP leicht erhöht
 - Aktives Trefferfenster: **Frames 19–21**
-- Assets: `assets/kurz-comet-row-1.webp` bis `assets/kurz-comet-row-5.webp`
-- Besonderheit: Die reinen Einschlags-/Explosionsframes werden am Gegner statt am Angreifer gezeichnet.
+- Spezialatlas: `assets/kurz-comet.webp`
+- Besonderheit: reine Komet-/Explosionsframes werden am Gegner gezeichnet; KurzDurch bleibt in seiner Wurfpose sichtbar.
 
 ## Lt.BrainBug — SOUR MILK SURGE
 
-25 Frames: Schüssel/Cornflakes/Milch vorbereiten → probieren → Reaktion auf saure Milch → grüne Übelkeit/aufgeblasene Backen → energetische Aufladung → grün-weißer Flüssigkeitsstrahl mit braunem Blitzcharakter → Treffer/Betäubung → Rückstoß → auf die Knie → kurz falsch zum Gegner gedreht → orientieren/Kopf kratzen → benommen zurück.
+25 Frames: Schüssel/Cornflakes/Milch vorbereiten → probieren → Reaktion auf saure Milch → Übelkeit/aufgeblasene Backen → energetische Aufladung → grün-weißer Flüssigkeitsstrahl → Treffer/Betäubung → Rückstoß → auf die Knie → kurz falsch gedreht → orientieren/Kopf kratzen → benommen zurück.
 
 - Move-Key: `sourMilkBurst`
 - Spezialkombo: **SOUR MILK SURGE**
@@ -53,18 +53,21 @@ Diese Datei beschreibt die aktuell implementierten Spezialattacken der vier Käm
 - Knockback: **54**
 - Blockchance: **6 %**, bei niedriger HP leicht erhöht
 - Aktives Trefferfenster: **Frames 19–20**
-- Charakter-Asset: `assets/brainbug-sourmilk-special.webp`
-- Strahl-Asset: `assets/brainbug-sourmilk-beam.webp`
+- Spezialatlas: `assets/brainbug-sourmilk.webp`
+- Beam-Strip: `assets/brainbug-sourmilk-beam.webp`
 - Trefferreaktion: `hitSourMilk`
-- Besonderheit: Der Beam wird modular bis zum Gegner gekachelt; Start-, zwei Loop- und Impact-Zellen bilden die Distanz dynamisch ab. Während der Cooldown-Phase dreht Lt.BrainBug kurz absichtlich in die falsche Richtung und stellt anschließend seine Blickrichtung wieder her.
+- Besonderheit: der Strahl wird aus Mündungs-/Loop-/Impact-Modulen bis zum Gegner aufgebaut. Während des Cooldowns dreht Lt.BrainBug absichtlich kurz in die falsche Richtung und stellt danach seine ursprüngliche Blickrichtung wieder her.
 
 ---
 
-## Rendering-Regeln für Spezialkataloge
+## v10 Rendering-Regeln
 
-- Theresa und KurzDurch laden je fünf transparente Reihen mit je fünf Frames.
-- Dr. BOB verwendet einen 5×5-HD-Charakteratlas plus einen separaten fünfteiligen Beam-Strip.
-- Lt.BrainBug verwendet einen 5×5-Spezialatlas plus einen vierteiligen modularen Beam-Strip.
-- Fighterframes werden abhängig von der Blickrichtung gespiegelt.
-- Reine Einschlags-/Explosionsframes werden nicht blind mitgespiegelt, sondern auf den Zielbereich des Gegners gesetzt.
-- Trefferlogik und sichtbarer Impact müssen zeitlich synchron bleiben; Änderungen an Frame-Timings erfordern daher immer einen Hitbox-Smoke-Test.
+Die zentrale Spezialdarstellung liegt in `game-catalog.js` plus den fighter-spezifischen Beam-/Hitbox-Dateien.
+
+- `drawSprite()` ist der gemeinsame Zeichenpfad für Katalogframes.
+- Theresa und KurzDurch verwenden je einen konsolidierten 2560×2560-Spezialatlas.
+- Dr. BOB verwendet einen 2560×2560-Charakteratlas plus separaten modularen Beam-Strip.
+- Lt.BrainBug verwendet einen 2560×2560-Spezialatlas plus separaten modularen Beam-Strip.
+- Blickrichtung wird anhand von `defaultFacing` aus dem Katalog gespiegelt.
+- Reine FX-Frames werden zielzentriert und nicht blind mit der Angreiferfigur verknüpft.
+- Trefferfenster und sichtbarer Impact müssen zeitlich synchron bleiben; Änderungen an Frame-Timings erfordern einen Hitbox-Smoke-Test.
